@@ -1,5 +1,6 @@
 body {
     font-family: Lato, Helvetica, sans-serif;
+    font-size: 100%;
 }
 
 .Frame {
@@ -17,7 +18,7 @@ body {
     font-weight: 400;
     font-size: 150%;
     padding: 10px 16px;
-    margin-top: 20px;
+    margin-top: 1rem;
     cursor: pointer;
 }
 
@@ -48,6 +49,18 @@ body {
     color: #3c763d;
 }
 
+.Subhead {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.Note {
+    font-size: 0.8rem;
+    font-weight: 200;
+    display: block;
+    margin-top: 1rem;
+}
+
 .dndDropzone {
     border: 2px dashed #0087F7;
     border-radius: 5px;
@@ -56,6 +69,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 1rem;
 }
 
 .dndDropzone.dndDropping {
@@ -63,7 +77,7 @@ body {
 }
 
 .dndDropzone  img {
-    max-height: 490px;
+    max-height: 350px;
 }
 
 .dndDropzone  .dndDzMessage {

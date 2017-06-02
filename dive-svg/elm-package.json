@@ -29,5 +29,9 @@
         "simonh1000/file-reader": "1.2.0 <= v < 2.0.0",
         "truqu/elm-base64": "1.0.5 <= v < 2.0.0"
     },
+    "dependency-sources": {
+        "myrho/dive-svg": "https://github.com/myrho/dive-svg.git",
+        "simonh1000/file-reader" : "https://github.com/simonh1000/file-reader.git"
+    },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }

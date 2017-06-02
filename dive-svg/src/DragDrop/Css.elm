@@ -31,12 +31,13 @@ general =
         , displayFlex
         , justifyContent center
         , alignItems center
+        , marginTop (Css.rem 1)
         , withClass Dropping
             [ borderStyle solid
             ]
         , descendants
             [ img
-                [ maxHeight (px 490)
+                [ maxHeight (px 350)
                 ]
             , class DzMessage
                 [ textAlign center

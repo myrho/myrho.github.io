@@ -1,6 +1,6 @@
 module DragDrop.DragDrop exposing (..)
 
-import Html exposing (Html, div, input, button, p, text, img, span)
+import Html exposing (Html, div, text, img)
 import Html.Attributes exposing (..)
 import Task
 import FileReader exposing (..)
@@ -8,6 +8,7 @@ import MimeType exposing (MimeType(..))
 import DragDrop.DragDropModel as DragDrop exposing (Msg(Drop), dragDropEventHandlers, HoverState(..))
 import Html.CssHelpers
 import DragDrop.Css as Css
+import Json.Encode as Enc
 
 
 { class, classList } =
@@ -17,7 +18,7 @@ import DragDrop.Css as Css
 type alias Model =
     { dnDModel : DragDrop.HoverState
     , imageData :
-        Maybe FileContentDataUrl
+        MaybeLoading FileContentDataUrl
 
     -- the image data once it has been loaded
     , imageLoadError :
@@ -27,9 +28,15 @@ type alias Model =
     }
 
 
+type MaybeLoading a
+    = None
+    | Loading
+    | Image a
+
+
 init : Model
 init =
-    Model DragDrop.init Nothing Nothing
+    Model DragDrop.init None Nothing
 
 
 type Msg
@@ -48,6 +55,7 @@ update msg model =
         DnD (Drop files) ->
             ( { model
                 | dnDModel = DragDrop.update (Drop files) model.dnDModel
+                , imageData = Loading
               }
             , loadFirstFile files
             )
@@ -62,7 +70,7 @@ update msg model =
 
         FileData (Ok val) ->
             { model
-                | imageData = Just val
+                | imageData = Image val
                 , imageLoadError = Nothing
             }
                 ! []
@@ -90,8 +98,8 @@ dropAllowedForFile file =
                     False
 
 
-view : Model -> Html Msg
-view model =
+view : String -> Model -> Html Msg
+view demoFile model =
     Html.map DnD <|
         div
             (classList
@@ -100,57 +108,44 @@ view model =
                 ]
                 :: dragDropEventHandlers
             )
-            [ renderImageOrPrompt model
+            [ renderImageOrPrompt demoFile model
             ]
 
 
-renderImageOrPrompt : Model -> Html a
-renderImageOrPrompt model =
-    case model.imageData of
-        Nothing ->
-            div
-                [ class [ Css.DzMessage ]
+renderImageOrPrompt : String -> Model -> Html a
+renderImageOrPrompt demoFile model =
+    let
+        image text_ source =
+            [ div
+                [ class [ Css.Note ]
                 ]
-                [ text "Drop your presentation SVG file here"
-                , div
-                    [ class [ Css.Note ]
-                    ]
-                    [ text "Groups of "
-                    , span
-                        [ style
-                            [ ( "font-weight", "bold" )
-                            ]
-                        ]
-                        [ span
-                            [ style
-                                [ ( "color", "red" )
-                                ]
-                            ]
-                            [ text "red rectangles "
-                            ]
-                        , text
-                            "plus a number "
-                        ]
-                    , text
-                        "are recognized as frames."
-                    ]
-                , div
-                    [ class [ Css.Note ]
-                    ]
-                    [ text "Check out this example:"
-                    ]
-                , img
-                    [ src "samples/3frames.svg"
-                    ]
-                    []
+                [ text text_
                 ]
-
-        Just result ->
-            img
-                [ property "src" result
+            , img
+                [ property "src" source
                 , style [ ( "max-width", "100%" ) ]
                 ]
                 []
+            ]
+    in
+        div
+            []
+            (div
+                [ class [ Css.DzMessage ]
+                ]
+                [ text "Drop your presentation SVG file here"
+                ]
+                :: (case model.imageData of
+                        None ->
+                            image "" <| Enc.string demoFile
+
+                        Loading ->
+                            image "Loading ..." <| Enc.string ""
+
+                        Image result ->
+                            image "Current file:" result
+                   )
+            )
 
 
 countStyle : DragDrop.HoverState -> Html.Attribute a
@@ -218,6 +213,6 @@ main =
     Html.program
         { init = ( init, Cmd.none )
         , update = update
-        , view = view
+        , view = view ""
         , subscriptions = (always Sub.none)
         }

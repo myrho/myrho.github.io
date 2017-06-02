@@ -11134,17 +11134,19 @@ var _myrho$dive_svg$DiveSvg_Model$Model = F4(
 	function (a, b, c, d) {
 		return {current: a, frames: b, animation: c, slides: d};
 	});
+var _myrho$dive_svg$DiveSvg_Model$init = function (current) {
+	return A4(
+		_myrho$dive_svg$DiveSvg_Model$Model,
+		current,
+		{ctor: '[]'},
+		_elm_lang$core$Maybe$Nothing,
+		_elm_lang$core$Basics$always(
+			_elm_lang$virtual_dom$VirtualDom$text('Please wait. SVG is loading.')));
+};
 var _myrho$dive_svg$DiveSvg_Model$Frame = F4(
 	function (a, b, c, d) {
 		return {x: a, y: b, w: c, h: d};
 	});
-var _myrho$dive_svg$DiveSvg_Model$init = A4(
-	_myrho$dive_svg$DiveSvg_Model$Model,
-	A4(_myrho$dive_svg$DiveSvg_Model$Frame, 0, 0, 0, 0),
-	{ctor: '[]'},
-	_elm_lang$core$Maybe$Nothing,
-	_elm_lang$core$Basics$always(
-		_elm_lang$virtual_dom$VirtualDom$text('Please wait. SVG is loading.')));
 var _myrho$dive_svg$DiveSvg_Model$Load = function (a) {
 	return {ctor: 'Load', _0: a};
 };
@@ -12204,7 +12206,11 @@ var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$svg$Svg_Attributes$height('99vh'),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: A2(_elm_lang$virtual_dom$VirtualDom$attribute, 'preserveAspectRatio', 'xMidYMid meet'),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}),
@@ -12308,7 +12314,10 @@ var _myrho$dive_svg$DiveSvg_Update$update = F2(
 			});
 		var calcProgress = F2(
 			function (oldProgress, diff) {
-				return A2(_elm_lang$core$Basics$min, 1, oldProgress + (diff / _myrho$dive_svg$DiveSvg_Model$duration));
+				return A2(
+					_elm_lang$core$Basics$min,
+					1,
+					oldProgress + (diff / _elm_lang$core$Basics$toFloat(_myrho$dive_svg$DiveSvg_Model$duration)));
 			});
 		var _p0 = A2(_elm_lang$core$Debug$log, 'msg', msg);
 		switch (_p0.ctor) {
@@ -17618,7 +17627,7 @@ var _simonh1000$file_reader$Native_FileReader = function() {
         return scheduler.nativeBinding(function(callback){
 
             /*
-             * Test for existence of FileRader using
+             * Test for existence of FileReader using
              * if(window.FileReader) { ...
              * http://caniuse.com/#search=filereader
              * main gap is IE10 and 11 which do not support readAsBinaryFile
@@ -17665,11 +17674,20 @@ var _simonh1000$file_reader$Native_FileReader = function() {
         }
     };
 
+    var rawBody = function (mimeType, blob) {
+        return {
+            ctor: "StringBody",
+            _0: mimeType,
+            _1: blob
+        };
+    };
+    
     return {
         readAsTextFile : readAsTextFile,
         readAsArrayBuffer : readAsArrayBuffer,
         readAsDataUrl: readAsDataUrl,
-        filePart: F2(filePart)
+        filePart: F2(filePart),
+        rawBody: F2(rawBody)
     };
 }();
 
@@ -17706,12 +17724,20 @@ var _simonh1000$file_reader$FileReader$prettyPrint = function (err) {
 			return 'Not a text file';
 	}
 };
+var _simonh1000$file_reader$FileReader$rawBody = F2(
+	function (mimeType, nf) {
+		return A2(_simonh1000$file_reader$Native_FileReader.rawBody, mimeType, nf.blob);
+	});
 var _simonh1000$file_reader$FileReader$filePart = F2(
 	function (name, nf) {
 		return A2(_simonh1000$file_reader$Native_FileReader.filePart, name, nf.blob);
 	});
-var _simonh1000$file_reader$FileReader$readAsDataUrl = _simonh1000$file_reader$Native_FileReader.readAsDataUrl;
-var _simonh1000$file_reader$FileReader$readAsArrayBuffer = _simonh1000$file_reader$Native_FileReader.readAsArrayBuffer;
+var _simonh1000$file_reader$FileReader$readAsDataUrl = function (fileRef) {
+	return _simonh1000$file_reader$Native_FileReader.readAsDataUrl(fileRef);
+};
+var _simonh1000$file_reader$FileReader$readAsArrayBuffer = function (fileRef) {
+	return _simonh1000$file_reader$Native_FileReader.readAsArrayBuffer(fileRef);
+};
 var _simonh1000$file_reader$FileReader$NativeFile = F4(
 	function (a, b, c, d) {
 		return {name: a, size: b, mimeType: c, blob: d};
@@ -18060,6 +18086,8 @@ var _truqu$elm_base64$Base64$encode = function (s) {
 					_truqu$elm_base64$Base64$toCodeList(s)))));
 };
 
+var _user$project$Css_Css$Subhead = {ctor: 'Subhead'};
+var _user$project$Css_Css$Note = {ctor: 'Note'};
 var _user$project$Css_Css$SuccessMsg = {ctor: 'SuccessMsg'};
 var _user$project$Css_Css$ErrorMsg = {ctor: 'ErrorMsg'};
 var _user$project$Css_Css$Msg = {ctor: 'Msg'};
@@ -18085,7 +18113,12 @@ var _user$project$Css_Css$general = {
 						}
 					}
 				}),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$fontSize(
+					_rtfeldman$elm_css$Css$pct(100)),
+				_1: {ctor: '[]'}
+			}
 		}),
 	_1: {
 		ctor: '::',
@@ -18151,7 +18184,7 @@ var _user$project$Css_Css$general = {
 											_1: {
 												ctor: '::',
 												_0: _rtfeldman$elm_css$Css$marginTop(
-													_rtfeldman$elm_css$Css$px(20)),
+													_rtfeldman$elm_css$Css$rem(1)),
 												_1: {
 													ctor: '::',
 													_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
@@ -18264,7 +18297,49 @@ var _user$project$Css_Css$general = {
 									}
 								}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rtfeldman$elm_css$Css$class,
+								_user$project$Css_Css$Subhead,
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css$fontSize(
+										_rtfeldman$elm_css$Css$rem(1.2)),
+									_1: {
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$bold),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rtfeldman$elm_css$Css$class,
+									_user$project$Css_Css$Note,
+									{
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$fontSize(
+											_rtfeldman$elm_css$Css$rem(0.8)),
+										_1: {
+											ctor: '::',
+											_0: _rtfeldman$elm_css$Css$fontWeight(
+												_rtfeldman$elm_css$Css$int(200)),
+											_1: {
+												ctor: '::',
+												_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'block'),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$marginTop(
+														_rtfeldman$elm_css$Css$rem(1)),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			}
@@ -18314,88 +18389,93 @@ var _user$project$DragDrop_Css$general = {
 									_0: _rtfeldman$elm_css$Css$alignItems(_rtfeldman$elm_css$Css$center),
 									_1: {
 										ctor: '::',
-										_0: A2(
-											_rtfeldman$elm_css$Css$withClass,
-											_user$project$DragDrop_Css$Dropping,
-											{
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$borderStyle(_rtfeldman$elm_css$Css$solid),
-												_1: {ctor: '[]'}
-											}),
+										_0: _rtfeldman$elm_css$Css$marginTop(
+											_rtfeldman$elm_css$Css$rem(1)),
 										_1: {
 											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$descendants(
+											_0: A2(
+												_rtfeldman$elm_css$Css$withClass,
+												_user$project$DragDrop_Css$Dropping,
 												{
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css_Elements$img(
-														{
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$maxHeight(
-																_rtfeldman$elm_css$Css$px(490)),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
+													_0: _rtfeldman$elm_css$Css$borderStyle(_rtfeldman$elm_css$Css$solid),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$descendants(
+													{
 														ctor: '::',
-														_0: A2(
-															_rtfeldman$elm_css$Css$class,
-															_user$project$DragDrop_Css$DzMessage,
+														_0: _rtfeldman$elm_css$Css_Elements$img(
 															{
 																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
-																_1: {
+																_0: _rtfeldman$elm_css$Css$maxHeight(
+																	_rtfeldman$elm_css$Css$px(350)),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_rtfeldman$elm_css$Css$class,
+																_user$project$DragDrop_Css$DzMessage,
+																{
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$color(
-																		_rtfeldman$elm_css$Css$hex('646C7F')),
+																	_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
 																	_1: {
 																		ctor: '::',
-																		_0: A2(
-																			_rtfeldman$elm_css$Css$margin2,
-																			_rtfeldman$elm_css$Css$em(2),
-																			_rtfeldman$elm_css$Css$zero),
+																		_0: _rtfeldman$elm_css$Css$color(
+																			_rtfeldman$elm_css$Css$hex('646C7F')),
 																		_1: {
 																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$fontWeight(
-																				_rtfeldman$elm_css$Css$int(400)),
+																			_0: A2(
+																				_rtfeldman$elm_css$Css$margin2,
+																				_rtfeldman$elm_css$Css$em(2),
+																				_rtfeldman$elm_css$Css$zero),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$descendants(
-																					{
-																						ctor: '::',
-																						_0: A2(
-																							_rtfeldman$elm_css$Css$class,
-																							_user$project$DragDrop_Css$Note,
-																							{
-																								ctor: '::',
-																								_0: _rtfeldman$elm_css$Css$fontSize(
-																									_rtfeldman$elm_css$Css$em(0.8)),
-																								_1: {
+																				_0: _rtfeldman$elm_css$Css$fontWeight(
+																					_rtfeldman$elm_css$Css$int(400)),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$descendants(
+																						{
+																							ctor: '::',
+																							_0: A2(
+																								_rtfeldman$elm_css$Css$class,
+																								_user$project$DragDrop_Css$Note,
+																								{
 																									ctor: '::',
-																									_0: _rtfeldman$elm_css$Css$fontWeight(
-																										_rtfeldman$elm_css$Css$int(200)),
+																									_0: _rtfeldman$elm_css$Css$fontSize(
+																										_rtfeldman$elm_css$Css$em(0.8)),
 																									_1: {
 																										ctor: '::',
-																										_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'block'),
+																										_0: _rtfeldman$elm_css$Css$fontWeight(
+																											_rtfeldman$elm_css$Css$int(200)),
 																										_1: {
 																											ctor: '::',
-																											_0: _rtfeldman$elm_css$Css$marginTop(
-																												_rtfeldman$elm_css$Css$rem(1.4)),
-																											_1: {ctor: '[]'}
+																											_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'block'),
+																											_1: {
+																												ctor: '::',
+																												_0: _rtfeldman$elm_css$Css$marginTop(
+																													_rtfeldman$elm_css$Css$rem(1.4)),
+																												_1: {ctor: '[]'}
+																											}
 																										}
 																									}
-																								}
-																							}),
-																						_1: {ctor: '[]'}
-																					}),
-																				_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {ctor: '[]'}
+																				}
 																			}
 																		}
 																	}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
@@ -18555,25 +18635,11 @@ var _user$project$DragDrop_DragDrop$loadFirstFileWithLoader = F2(
 var _user$project$DragDrop_DragDrop$_p4 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('dnd');
 var _user$project$DragDrop_DragDrop$class = _user$project$DragDrop_DragDrop$_p4.$class;
 var _user$project$DragDrop_DragDrop$classList = _user$project$DragDrop_DragDrop$_p4.classList;
-var _user$project$DragDrop_DragDrop$renderImageOrPrompt = function (model) {
-	var _p5 = model.imageData;
-	if (_p5.ctor === 'Nothing') {
-		return A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _user$project$DragDrop_DragDrop$class(
-					{
-						ctor: '::',
-						_0: _user$project$DragDrop_Css$DzMessage,
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Drop your presentation SVG file here'),
-				_1: {
+var _user$project$DragDrop_DragDrop$renderImageOrPrompt = F2(
+	function (demoFile, model) {
+		var image = F2(
+			function (text_, source) {
+				return {
 					ctor: '::',
 					_0: A2(
 						_elm_lang$html$Html$div,
@@ -18589,112 +18655,83 @@ var _user$project$DragDrop_DragDrop$renderImageOrPrompt = function (model) {
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Groups of '),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$span,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'font-weight', _1: 'bold'},
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$span,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$style(
-													{
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 'color', _1: 'red'},
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('red rectangles '),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('plus a number '),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('are recognized as frames.'),
-									_1: {ctor: '[]'}
-								}
-							}
+							_0: _elm_lang$html$Html$text(text_),
+							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$div,
+							_elm_lang$html$Html$img,
 							{
 								ctor: '::',
-								_0: _user$project$DragDrop_DragDrop$class(
-									{
-										ctor: '::',
-										_0: _user$project$DragDrop_Css$Note,
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Check out this example:'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$img,
-								{
+								_0: A2(_elm_lang$html$Html_Attributes$property, 'src', source),
+								_1: {
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$src('samples/3frames.svg'),
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'max-width', _1: '100%'},
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
-								},
-								{ctor: '[]'}),
-							_1: {ctor: '[]'}
-						}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
 					}
-				}
+				};
 			});
-	} else {
 		return A2(
-			_elm_lang$html$Html$img,
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: A2(_elm_lang$html$Html_Attributes$property, 'src', _p5._0),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'max-width', _1: '100%'},
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			},
-			{ctor: '[]'});
-	}
-};
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _user$project$DragDrop_DragDrop$class(
+							{
+								ctor: '::',
+								_0: _user$project$DragDrop_Css$DzMessage,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Drop your presentation SVG file here'),
+						_1: {ctor: '[]'}
+					}),
+				_1: function () {
+					var _p5 = model.imageData;
+					switch (_p5.ctor) {
+						case 'None':
+							return A2(
+								image,
+								'',
+								_elm_lang$core$Json_Encode$string(demoFile));
+						case 'Loading':
+							return A2(
+								image,
+								'Loading ...',
+								_elm_lang$core$Json_Encode$string(''));
+						default:
+							return A2(image, 'Current file:', _p5._0);
+					}
+				}()
+			});
+	});
 var _user$project$DragDrop_DragDrop$Model = F3(
 	function (a, b, c) {
 		return {dnDModel: a, imageData: b, imageLoadError: c};
 	});
-var _user$project$DragDrop_DragDrop$init = A3(_user$project$DragDrop_DragDrop$Model, _user$project$DragDrop_DragDropModel$init, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing);
+var _user$project$DragDrop_DragDrop$Image = function (a) {
+	return {ctor: 'Image', _0: a};
+};
+var _user$project$DragDrop_DragDrop$Loading = {ctor: 'Loading'};
+var _user$project$DragDrop_DragDrop$None = {ctor: 'None'};
+var _user$project$DragDrop_DragDrop$init = A3(_user$project$DragDrop_DragDrop$Model, _user$project$DragDrop_DragDropModel$init, _user$project$DragDrop_DragDrop$None, _elm_lang$core$Maybe$Nothing);
 var _user$project$DragDrop_DragDrop$FileData = function (a) {
 	return {ctor: 'FileData', _0: a};
 };
@@ -18728,7 +18765,8 @@ var _user$project$DragDrop_DragDrop$update = F2(
 							dnDModel: A2(
 								_user$project$DragDrop_DragDropModel$update,
 								_user$project$DragDrop_DragDropModel$Drop(_p8),
-								model.dnDModel)
+								model.dnDModel),
+							imageData: _user$project$DragDrop_DragDrop$Loading
 						}),
 					_1: _user$project$DragDrop_DragDrop$loadFirstFile(_p8)
 				};
@@ -18750,7 +18788,7 @@ var _user$project$DragDrop_DragDrop$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							imageData: _elm_lang$core$Maybe$Just(_p7._0._0),
+							imageData: _user$project$DragDrop_DragDrop$Image(_p7._0._0),
 							imageLoadError: _elm_lang$core$Maybe$Nothing
 						}),
 					{ctor: '[]'});
@@ -18770,63 +18808,75 @@ var _user$project$DragDrop_DragDrop$update = F2(
 var _user$project$DragDrop_DragDrop$DnD = function (a) {
 	return {ctor: 'DnD', _0: a};
 };
-var _user$project$DragDrop_DragDrop$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$map,
-		_user$project$DragDrop_DragDrop$DnD,
-		A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _user$project$DragDrop_DragDrop$classList(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: _user$project$DragDrop_Css$Dropzone, _1: true},
-						_1: {
+var _user$project$DragDrop_DragDrop$view = F2(
+	function (demoFile, model) {
+		return A2(
+			_elm_lang$html$Html$map,
+			_user$project$DragDrop_DragDrop$DnD,
+			A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _user$project$DragDrop_DragDrop$classList(
+						{
 							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: _user$project$DragDrop_Css$Dropping,
-								_1: _elm_lang$core$Native_Utils.eq(model.dnDModel, _user$project$DragDrop_DragDropModel$Hovering)
-							},
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: _user$project$DragDrop_DragDropModel$dragDropEventHandlers
-			},
-			{
-				ctor: '::',
-				_0: _user$project$DragDrop_DragDrop$renderImageOrPrompt(model),
-				_1: {ctor: '[]'}
-			}));
-};
+							_0: {ctor: '_Tuple2', _0: _user$project$DragDrop_Css$Dropzone, _1: true},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: _user$project$DragDrop_Css$Dropping,
+									_1: _elm_lang$core$Native_Utils.eq(model.dnDModel, _user$project$DragDrop_DragDropModel$Hovering)
+								},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: _user$project$DragDrop_DragDropModel$dragDropEventHandlers
+				},
+				{
+					ctor: '::',
+					_0: A2(_user$project$DragDrop_DragDrop$renderImageOrPrompt, demoFile, model),
+					_1: {ctor: '[]'}
+				}));
+	});
 var _user$project$DragDrop_DragDrop$main = _elm_lang$html$Html$program(
 	{
 		init: {ctor: '_Tuple2', _0: _user$project$DragDrop_DragDrop$init, _1: _elm_lang$core$Platform_Cmd$none},
 		update: _user$project$DragDrop_DragDrop$update,
-		view: _user$project$DragDrop_DragDrop$view,
+		view: _user$project$DragDrop_DragDrop$view(''),
 		subscriptions: _elm_lang$core$Basics$always(_elm_lang$core$Platform_Sub$none)
 	})();
 
 var _user$project$Main$runnable = function (model) {
-	return _elm_lang$core$Native_Utils.eq(model.dnd.imageLoadError, _elm_lang$core$Maybe$Nothing) && (!_elm_lang$core$List$isEmpty(model.dive.frames));
+	return !_elm_lang$core$Native_Utils.eq(model.dive, _elm_lang$core$Maybe$Nothing);
 };
 var _user$project$Main$removeUriStart = A3(
 	_elm_lang$core$Regex$replace,
 	_elm_lang$core$Regex$AtMost(1),
 	_elm_lang$core$Regex$regex('^.*;.*,'),
 	_elm_lang$core$Basics$always(''));
+var _user$project$Main$demoFile = 'samples/demo.svg?7';
 var _user$project$Main$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
 var _user$project$Main$class = _user$project$Main$_p0.$class;
 var _user$project$Main$classList = _user$project$Main$_p0.classList;
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {dive: a, dnd: b, run: c};
+var _user$project$Main$Model = F4(
+	function (a, b, c, d) {
+		return {dive: a, dnd: b, run: c, demoFile: d};
 	});
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: A3(_user$project$Main$Model, _myrho$dive_svg$DiveSvg_Model$init, _user$project$DragDrop_DragDrop$init, false),
-	_1: _elm_lang$core$Platform_Cmd$none
+var _user$project$Main$Load = function (a) {
+	return {ctor: 'Load', _0: a};
+};
+var _user$project$Main$init = function (_p1) {
+	var _p2 = _p1;
+	var f = A2(_elm_lang$core$Maybe$withDefault, _user$project$Main$demoFile, _p2.file);
+	return {
+		ctor: '_Tuple2',
+		_0: A4(_user$project$Main$Model, _elm_lang$core$Maybe$Nothing, _user$project$DragDrop_DragDrop$init, false, f),
+		_1: A2(
+			_elm_lang$http$Http$send,
+			_user$project$Main$Load,
+			_elm_lang$http$Http$getString(f))
+	};
 };
 var _user$project$Main$Run = {ctor: 'Run'};
 var _user$project$Main$DndMsg = function (a) {
@@ -18837,47 +18887,56 @@ var _user$project$Main$DiveMsg = function (a) {
 };
 var _user$project$Main$updateSubmodels = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p3 = msg;
+		switch (_p3.ctor) {
 			case 'DndMsg':
-				return function (_p2) {
-					var _p3 = _p2;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{dnd: _p3._0}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DndMsg, _p3._1)
-					};
-				}(
-					A2(_user$project$DragDrop_DragDrop$update, _p1._0, model.dnd));
-			case 'DiveMsg':
 				return function (_p4) {
 					var _p5 = _p4;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{dive: _p5._0}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DiveMsg, _p5._1)
+							{dnd: _p5._0}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DndMsg, _p5._1)
 					};
 				}(
-					A2(_myrho$dive_svg$DiveSvg_Update$update, _p1._0, model.dive));
+					A2(_user$project$DragDrop_DragDrop$update, _p3._0, model.dnd));
+			case 'DiveMsg':
+				var _p6 = model.dive;
+				if (_p6.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					return function (_p7) {
+						var _p8 = _p7;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									dive: _elm_lang$core$Maybe$Just(_p8._0)
+								}),
+							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DiveMsg, _p8._1)
+						};
+					}(
+						A2(_myrho$dive_svg$DiveSvg_Update$update, _p3._0, _p6._0));
+				}
+			case 'Run':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			default:
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		return function (_p6) {
-			var _p7 = _p6;
-			var _p11 = _p7._0;
-			var _p10 = _p7._1;
-			var _p8 = A2(_elm_lang$core$Debug$log, 'msg', msg);
-			switch (_p8.ctor) {
+		return function (_p9) {
+			var _p10 = _p9;
+			var _p14 = _p10._0;
+			var _p13 = _p10._1;
+			var _p11 = A2(_elm_lang$core$Debug$log, 'msg', msg);
+			switch (_p11.ctor) {
 				case 'DndMsg':
-					if ((_p8._0.ctor === 'FileData') && (_p8._0._0.ctor === 'Ok')) {
-						var _p9 = A2(
+					if ((_p11._0.ctor === 'FileData') && (_p11._0._0.ctor === 'Ok')) {
+						var _p12 = A2(
 							_elm_lang$core$Result$andThen,
 							_myrho$dive_svg$DiveSvg_Parser$load,
 							A2(
@@ -18886,66 +18945,87 @@ var _user$project$Main$update = F2(
 								A2(
 									_elm_lang$core$Result$map,
 									_user$project$Main$removeUriStart,
-									A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, _p8._0._0._0))));
-						if (_p9.ctor === 'Err') {
+									A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, _p11._0._0._0))));
+						if (_p12.ctor === 'Err') {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
-									_p11,
+									_p14,
 									{
 										dnd: function (dnd) {
 											return _elm_lang$core$Native_Utils.update(
 												dnd,
 												{
-													imageLoadError: _elm_lang$core$Maybe$Just(_p9._0)
+													imageLoadError: _elm_lang$core$Maybe$Just(_p12._0)
 												});
-										}(_p11.dnd)
+										}(_p14.dnd),
+										dive: _elm_lang$core$Maybe$Nothing
 									}),
 								{
 									ctor: '::',
-									_0: _p10,
+									_0: _p13,
 									_1: {ctor: '[]'}
 								});
 						} else {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
-									_p11,
-									{dive: _p9._0}),
+									_p14,
+									{
+										dive: _elm_lang$core$Maybe$Just(
+											A2(_elm_lang$core$Debug$log, 'dive', _p12._0))
+									}),
 								{
 									ctor: '::',
-									_0: _p10,
+									_0: _p13,
 									_1: {ctor: '[]'}
 								});
 						}
 					} else {
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
-							_p11,
+							_p14,
 							{
 								ctor: '::',
-								_0: _p10,
+								_0: _p13,
 								_1: {ctor: '[]'}
 							});
 					}
 				case 'DiveMsg':
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
-						_p11,
+						_p14,
 						{
 							ctor: '::',
-							_0: _p10,
+							_0: _p13,
+							_1: {ctor: '[]'}
+						});
+				case 'Run':
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							_p14,
+							{run: true}),
+						{
+							ctor: '::',
+							_0: _p13,
 							_1: {ctor: '[]'}
 						});
 				default:
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
-							_p11,
-							{run: true}),
+							_p14,
+							{
+								dive: _elm_lang$core$Result$toMaybe(
+									A2(
+										_elm_lang$core$Result$andThen,
+										_myrho$dive_svg$DiveSvg_Parser$load,
+										A2(_elm_lang$core$Result$mapError, _elm_lang$core$Basics$toString, _p11._0)))
+							}),
 						{
 							ctor: '::',
-							_0: _p10,
+							_0: _p13,
 							_1: {ctor: '[]'}
 						});
 			}
@@ -18953,159 +19033,410 @@ var _user$project$Main$update = F2(
 			A2(_user$project$Main$updateSubmodels, msg, model));
 	});
 var _user$project$Main$subscriptions = function (model) {
-	return model.run ? A2(
-		_elm_lang$core$Platform_Sub$map,
-		_user$project$Main$DiveMsg,
-		_myrho$dive_svg$DiveSvg_Sub$subscriptions(model.dive)) : _elm_lang$core$Platform_Sub$none;
+	if (model.run) {
+		var _p15 = model.dive;
+		if (_p15.ctor === 'Nothing') {
+			return _elm_lang$core$Platform_Sub$none;
+		} else {
+			return A2(
+				_elm_lang$core$Platform_Sub$map,
+				_user$project$Main$DiveMsg,
+				_myrho$dive_svg$DiveSvg_Sub$subscriptions(_p15._0));
+		}
+	} else {
+		return _elm_lang$core$Platform_Sub$none;
+	}
 };
 var _user$project$Main$view = function (model) {
-	return model.run ? A2(
-		_elm_lang$html$Html$map,
-		_user$project$Main$DiveMsg,
-		_myrho$dive_svg$DiveSvg_View$view(model.dive)) : A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _user$project$Main$class(
-				{
-					ctor: '::',
-					_0: _user$project$Css_Css$Frame,
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Dive SVG'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
+	if (model.run) {
+		var _p16 = model.dive;
+		if (_p16.ctor === 'Nothing') {
+			return _elm_lang$html$Html$text('nothing to run');
+		} else {
+			return A2(
+				_elm_lang$html$Html$map,
+				_user$project$Main$DiveMsg,
+				_myrho$dive_svg$DiveSvg_View$view(_p16._0));
+		}
+	} else {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
 				ctor: '::',
-				_0: function () {
-					var numFrames = _elm_lang$core$List$length(model.dive.frames);
-					return A2(
+				_0: _user$project$Main$class(
+					{
+						ctor: '::',
+						_0: _user$project$Css_Css$Frame,
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h1,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Dive SVG'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
 						_elm_lang$html$Html$div,
-						{ctor: '[]'},
 						{
 							ctor: '::',
+							_0: _user$project$Main$class(
+								{
+									ctor: '::',
+									_0: _user$project$Css_Css$Subhead,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Prezi-like presentations based on plain SVG'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _user$project$Main$class(
+									{
+										ctor: '::',
+										_0: _user$project$Css_Css$Note,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Groups of '),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$style(
+												{
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'font-weight', _1: 'bold'},
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$span,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$style(
+														{
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: 'color', _1: 'red'},
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('red rectangles '),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('plus a number '),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('are removed and turned into frames.'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$map,
-								_user$project$Main$DndMsg,
-								_user$project$DragDrop_DragDrop$view(model.dnd)),
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _user$project$Main$class(
+										{
+											ctor: '::',
+											_0: _user$project$Css_Css$Note,
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('These are the parts of your SVG where you want to put focus on in your presentation.'),
+									_1: {ctor: '[]'}
+								}),
 							_1: {
 								ctor: '::',
-								_0: (_elm_lang$core$Native_Utils.eq(model.dnd.imageData, _elm_lang$core$Maybe$Nothing) && _elm_lang$core$Native_Utils.eq(model.dnd.imageLoadError, _elm_lang$core$Maybe$Nothing)) ? _elm_lang$html$Html$text('') : A2(
+								_0: A2(
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
 										_0: _user$project$Main$class(
 											{
 												ctor: '::',
-												_0: _user$project$Css_Css$Msg,
+												_0: _user$project$Css_Css$Note,
 												_1: {ctor: '[]'}
 											}),
-										_1: {
-											ctor: '::',
-											_0: _user$project$Main$classList(
-												{
-													ctor: '::',
-													_0: {
-														ctor: '_Tuple2',
-														_0: _user$project$Css_Css$ErrorMsg,
-														_1: !_user$project$Main$runnable(model)
-													},
-													_1: {
-														ctor: '::',
-														_0: {
-															ctor: '_Tuple2',
-															_0: _user$project$Css_Css$SuccessMsg,
-															_1: _user$project$Main$runnable(model)
-														},
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}
+										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text(
-											function () {
-												var _p12 = model.dnd.imageLoadError;
-												if (_p12.ctor === 'Nothing') {
-													return A2(
-														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(numFrames),
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															' frame',
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																_elm_lang$core$Native_Utils.eq(numFrames, 1) ? '' : 's',
-																' found')));
-												} else {
-													return _p12._0;
-												}
-											}()),
+										_0: _elm_lang$html$Html$text('Works best in the Chrome browser.'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$button,
+										_elm_lang$html$Html$div,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$disabled(
-												!_user$project$Main$runnable(model)),
+											_0: _user$project$Main$class(
+												{
+													ctor: '::',
+													_0: _user$project$Css_Css$Note,
+													_1: {ctor: '[]'}
+												}),
 											_1: {
 												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Run),
-												_1: {
-													ctor: '::',
-													_0: _user$project$Main$class(
-														{
-															ctor: '::',
-															_0: _user$project$Css_Css$StartButton,
-															_1: {ctor: '[]'}
-														}),
-													_1: {
+												_0: _elm_lang$html$Html_Attributes$style(
+													{
 														ctor: '::',
-														_0: _user$project$Main$classList(
-															{
-																ctor: '::',
-																_0: {
-																	ctor: '_Tuple2',
-																	_0: _user$project$Css_Css$Disabled,
-																	_1: !_user$project$Main$runnable(model)
-																},
-																_1: {ctor: '[]'}
-															}),
+														_0: {ctor: '_Tuple2', _0: 'font-weight', _1: 'bold'},
 														_1: {ctor: '[]'}
-													}
-												}
+													}),
+												_1: {ctor: '[]'}
 											}
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Let\'s go'),
+											_0: _elm_lang$html$Html$text('100% open source, completely client side, your file never gets uploaded anywhere!'),
 											_1: {ctor: '[]'}
 										}),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _user$project$Main$class(
+													{
+														ctor: '::',
+														_0: _user$project$Css_Css$Note,
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Source code of this page can be found '),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$href('https://github.com/myrho/myrho.github.io/tree/master/dive-svg'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('here'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('.'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: function () {
+												var numFrames = A2(
+													_elm_lang$core$Maybe$withDefault,
+													0,
+													A2(
+														_elm_lang$core$Maybe$map,
+														function (_p17) {
+															return A2(
+																F2(
+																	function (x, y) {
+																		return x + y;
+																	}),
+																1,
+																_elm_lang$core$List$length(
+																	function (_) {
+																		return _.frames;
+																	}(_p17)));
+														},
+														model.dive));
+												return A2(
+													_elm_lang$html$Html$div,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$map,
+															_user$project$Main$DndMsg,
+															A2(_user$project$DragDrop_DragDrop$view, model.demoFile, model.dnd)),
+														_1: {
+															ctor: '::',
+															_0: (_elm_lang$core$Native_Utils.eq(model.dive, _elm_lang$core$Maybe$Nothing) && _elm_lang$core$Native_Utils.eq(model.dnd.imageLoadError, _elm_lang$core$Maybe$Nothing)) ? _elm_lang$html$Html$text('') : A2(
+																_elm_lang$html$Html$div,
+																{
+																	ctor: '::',
+																	_0: _user$project$Main$class(
+																		{
+																			ctor: '::',
+																			_0: _user$project$Css_Css$Msg,
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$Main$classList(
+																			{
+																				ctor: '::',
+																				_0: {
+																					ctor: '_Tuple2',
+																					_0: _user$project$Css_Css$ErrorMsg,
+																					_1: !_user$project$Main$runnable(model)
+																				},
+																				_1: {
+																					ctor: '::',
+																					_0: {
+																						ctor: '_Tuple2',
+																						_0: _user$project$Css_Css$SuccessMsg,
+																						_1: _user$project$Main$runnable(model)
+																					},
+																					_1: {ctor: '[]'}
+																				}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(
+																		function () {
+																			var _p18 = model.dnd.imageLoadError;
+																			if (_p18.ctor === 'Nothing') {
+																				return A2(
+																					_elm_lang$core$Basics_ops['++'],
+																					_elm_lang$core$Basics$toString(numFrames),
+																					A2(
+																						_elm_lang$core$Basics_ops['++'],
+																						' frame',
+																						A2(
+																							_elm_lang$core$Basics_ops['++'],
+																							_elm_lang$core$Native_Utils.eq(numFrames, 1) ? '' : 's',
+																							' found')));
+																			} else {
+																				return _p18._0;
+																			}
+																		}()),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$button,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$disabled(
+																			!_user$project$Main$runnable(model)),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Run),
+																			_1: {
+																				ctor: '::',
+																				_0: _user$project$Main$class(
+																					{
+																						ctor: '::',
+																						_0: _user$project$Css_Css$StartButton,
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {
+																					ctor: '::',
+																					_0: _user$project$Main$classList(
+																						{
+																							ctor: '::',
+																							_0: {
+																								ctor: '_Tuple2',
+																								_0: _user$project$Css_Css$Disabled,
+																								_1: !_user$project$Main$runnable(model)
+																							},
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('Let\'s go'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													});
+											}(),
+											_1: {ctor: '[]'}
+										}
+									}
 								}
 							}
-						});
-				}(),
-				_1: {ctor: '[]'}
-			}
-		});
+						}
+					}
+				}
+			});
+	}
 };
-var _user$project$Main$main = _elm_lang$html$Html$program(
-	{init: _user$project$Main$init, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$Main$view})();
+var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
+	{init: _user$project$Main$init, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions, view: _user$project$Main$view})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (file) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (time) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{file: file, time: time});
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'time', _elm_lang$core$Json_Decode$int));
+		},
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'file',
+			_elm_lang$core$Json_Decode$oneOf(
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$string),
+						_1: {ctor: '[]'}
+					}
+				}))));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

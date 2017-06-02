@@ -6,24 +6,30 @@ import DiveSvg.Sub
 import DiveSvg.Update
 import DiveSvg.Parser
 import DragDrop.DragDrop as DragDrop
-import Html exposing (Html, div, text, ul, li, button, h1)
-import Html.Attributes exposing (disabled)
+import Html exposing (Html, div, h1, button, text, img, span, a)
+import Html.Attributes exposing (disabled, style, href)
 import Html.Events exposing (onClick)
 import Json.Decode as Dec
 import Base64
 import Regex
 import Css.Css as Css
 import Html.CssHelpers
+import Http
 
 
 { class, classList } =
     Html.CssHelpers.withNamespace ""
 
 
+demoFile =
+    "samples/demo.svg?7"
+
+
 type alias Model =
-    { dive : DiveSvg.Model.Model DiveSvg.Model.Msg
+    { dive : Maybe (DiveSvg.Model.Model DiveSvg.Model.Msg)
     , dnd : DragDrop.Model
     , run : Bool
+    , demoFile : String
     }
 
 
@@ -31,13 +37,18 @@ type Msg
     = DiveMsg DiveSvg.Model.Msg
     | DndMsg DragDrop.Msg
     | Run
+    | Load (Result Http.Error String)
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( Model DiveSvg.Model.init DragDrop.init False
-    , Cmd.none
-    )
+init : { file : Maybe String, time : Int } -> ( Model, Cmd Msg )
+init { file, time } =
+    let
+        f =
+            Maybe.withDefault demoFile file
+    in
+        ( Model Nothing DragDrop.init False f
+        , Http.getString f |> Http.send Load
+        )
 
 
 updateSubmodels : Msg -> Model -> ( Model, Cmd Msg )
@@ -54,16 +65,24 @@ updateSubmodels msg model =
                    )
 
         DiveMsg msg ->
-            DiveSvg.Update.update msg model.dive
-                |> (\( dive, cmd ) ->
-                        ( { model
-                            | dive = dive
-                          }
-                        , Cmd.map DiveMsg cmd
-                        )
-                   )
+            case model.dive of
+                Nothing ->
+                    ( model, Cmd.none )
+
+                Just dive ->
+                    DiveSvg.Update.update msg dive
+                        |> (\( dive, cmd ) ->
+                                ( { model
+                                    | dive = Just dive
+                                  }
+                                , Cmd.map DiveMsg cmd
+                                )
+                           )
 
         Run ->
+            ( model, Cmd.none )
+
+        Load _ ->
             ( model, Cmd.none )
 
 
@@ -88,12 +107,13 @@ update msg model =
                                                         | imageLoadError = Just err
                                                     }
                                                )
+                                    , dive = Nothing
                                 }
                                     ! [ cmd ]
 
                             Ok dive ->
                                 { model
-                                    | dive = dive
+                                    | dive = Just <| Debug.log "dive" dive
                                 }
                                     ! [ cmd ]
 
@@ -108,6 +128,15 @@ update msg model =
                             | run = True
                         }
                             ! [ cmd ]
+
+                    Load result ->
+                        { model
+                            | dive =
+                                Result.mapError toString result
+                                    |> Result.andThen DiveSvg.Parser.load
+                                    |> Result.toMaybe
+                        }
+                            ! [ cmd ]
            )
 
 
@@ -119,24 +148,32 @@ removeUriStart =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     if model.run then
-        DiveSvg.Sub.subscriptions model.dive
-            |> Sub.map DiveMsg
+        case model.dive of
+            Nothing ->
+                Sub.none
+
+            Just dive ->
+                DiveSvg.Sub.subscriptions dive
+                    |> Sub.map DiveMsg
     else
         Sub.none
 
 
 runnable : Model -> Bool
 runnable model =
-    model.dnd.imageLoadError
-        == Nothing
-        && (not <| List.isEmpty model.dive.frames)
+    model.dive /= Nothing
 
 
 view : Model -> Html Msg
 view model =
     if model.run then
-        DiveSvg.View.view model.dive
-            |> Html.map DiveMsg
+        case model.dive of
+            Nothing ->
+                text "nothing to run"
+
+            Just dive ->
+                DiveSvg.View.view dive
+                    |> Html.map DiveMsg
     else
         div
             [ class [ Css.Frame ]
@@ -145,15 +182,70 @@ view model =
                 []
                 [ text "Dive SVG"
                 ]
+            , div
+                [ class [ Css.Subhead ]
+                ]
+                [ text "Prezi-like presentations based on plain SVG"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Groups of "
+                , span
+                    [ style
+                        [ ( "font-weight", "bold" )
+                        ]
+                    ]
+                    [ span
+                        [ style
+                            [ ( "color", "red" )
+                            ]
+                        ]
+                        [ text "red rectangles "
+                        ]
+                    , text
+                        "plus a number "
+                    ]
+                , text
+                    "are removed and turned into frames."
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "These are the parts of your SVG where you want to put focus on in your presentation."
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Works best in the Chrome browser."
+                ]
+            , div
+                [ class [ Css.Note ]
+                , style [ ( "font-weight", "bold" ) ]
+                ]
+                [ text "100% open source, completely client side, your file never gets uploaded anywhere!"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Source code of this page can be found "
+                , a
+                    [ href "https://github.com/myrho/myrho.github.io/tree/master/dive-svg"
+                    ]
+                    [ text "here"
+                    ]
+                , text "."
+                ]
             , let
                 numFrames =
-                    List.length model.dive.frames
+                    Maybe.map (.frames >> List.length >> (+) 1) model.dive
+                        |> Maybe.withDefault 0
               in
                 div
                     []
-                    [ DragDrop.view model.dnd
+                    [ DragDrop.view model.demoFile model.dnd
                         |> Html.map DndMsg
-                    , if model.dnd.imageData == Nothing && model.dnd.imageLoadError == Nothing then
+                    , if model.dive == Nothing && model.dnd.imageLoadError == Nothing then
                         text ""
                       else
                         div
@@ -191,7 +283,7 @@ view model =
 
 
 main =
-    Html.program
+    Html.programWithFlags
         { init = init
         , update = update
         , subscriptions = subscriptions

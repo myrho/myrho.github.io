@@ -4,4 +4,17 @@ body { font-family: calibri, helvetica, arial, sans-serif; }</style>
    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
    <link rel="stylesheet" href="css/styles.css"/>
     <script type="text/javascript" src="elm.js">
-</script></head><body><script type="text/javascript">Elm.Main.fullscreen()</script></body></html>
+</script></head><body>
+  
+  <script type="text/javascript">
+    var uri = window.location.href.split("?");
+    var file = null;
+    if( uri.length > 1 ) {
+      file = decodeURI(uri[1].split("#")[0]);
+    }
+    Elm.Main.fullscreen({
+        file : file,
+        time : (new Date()).getTime()
+        })
+  </script>
+</body></html>

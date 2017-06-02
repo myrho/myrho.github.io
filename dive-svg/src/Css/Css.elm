@@ -1,7 +1,7 @@
 module Css.Css exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (..)
+import Css.Elements exposing (body)
 import Css.Namespace exposing (..)
 
 
@@ -16,11 +16,14 @@ type Classes
     | Msg
     | ErrorMsg
     | SuccessMsg
+    | Note
+    | Subhead
 
 
 general =
     [ body
         [ fontFamilies [ "Lato", "Helvetica", "sans-serif" ]
+        , fontSize (pct 100)
         ]
     , class Frame
         [ maxWidth (px 720)
@@ -36,7 +39,7 @@ general =
         , fontWeight <| int 400
         , fontSize <| pct 150
         , padding2 (px 10) <| px 16
-        , marginTop <| px 20
+        , marginTop <| Css.rem 1
         , cursor pointer
         , withClass Disabled
             [ opacity <| num 0.65
@@ -61,5 +64,15 @@ general =
         [ borderColor <| hex "d6e9c6"
         , backgroundColor <| hex "dff0d8"
         , color <| hex "3c763d"
+        ]
+    , class Subhead
+        [ fontSize (Css.rem 1.2)
+        , fontWeight bold
+        ]
+    , class Note
+        [ fontSize (Css.rem 0.8)
+        , fontWeight (int 200)
+        , property "display" "block"
+        , marginTop (Css.rem 1)
         ]
     ]
