@@ -24,6 +24,8 @@
         "elm-lang/virtual-dom": "2.0.4 <= v < 3.0.0",
         "myrho/dive-svg": "1.0.0 <= v < 2.0.0",
         "myrho/elm-xml": "2.2.3 <= v < 3.0.0",
+        "rtfeldman/elm-css": "8.2.0 <= v < 9.0.0",
+        "rtfeldman/elm-css-helpers": "2.1.0 <= v < 3.0.0",
         "simonh1000/file-reader": "1.2.0 <= v < 2.0.0",
         "truqu/elm-base64": "1.0.5 <= v < 2.0.0"
     },

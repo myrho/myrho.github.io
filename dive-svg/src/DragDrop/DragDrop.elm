@@ -1,11 +1,17 @@
 module DragDrop.DragDrop exposing (..)
 
-import Html exposing (Html, div, input, button, p, text, img)
+import Html exposing (Html, div, input, button, p, text, img, span)
 import Html.Attributes exposing (..)
 import Task
 import FileReader exposing (..)
 import MimeType exposing (MimeType(..))
 import DragDrop.DragDropModel as DragDrop exposing (Msg(Drop), dragDropEventHandlers, HoverState(..))
+import Html.CssHelpers
+import DragDrop.Css as Css
+
+
+{ class, classList } =
+    Html.CssHelpers.withNamespace "dnd"
 
 
 type alias Model =
@@ -15,7 +21,7 @@ type alias Model =
 
     -- the image data once it has been loaded
     , imageLoadError :
-        Maybe FileReader.Error
+        Maybe String
 
     -- the Error in case loading failed
     }
@@ -55,10 +61,14 @@ update msg model =
             )
 
         FileData (Ok val) ->
-            { model | imageData = Just val } ! []
+            { model
+                | imageData = Just val
+                , imageLoadError = Nothing
+            }
+                ! []
 
         FileData (Err err) ->
-            { model | imageLoadError = Just err } ! []
+            { model | imageLoadError = Just (FileReader.prettyPrint err) } ! []
 
 
 
@@ -84,7 +94,10 @@ view : Model -> Html Msg
 view model =
     Html.map DnD <|
         div
-            (countStyle model.dnDModel
+            (classList
+                [ ( Css.Dropzone, True )
+                , ( Css.Dropping, model.dnDModel == Hovering )
+                ]
                 :: dragDropEventHandlers
             )
             [ renderImageOrPrompt model
@@ -93,26 +106,51 @@ view model =
 
 renderImageOrPrompt : Model -> Html a
 renderImageOrPrompt model =
-    case model.imageLoadError of
-        Just err ->
-            text (FileReader.prettyPrint err)
-
+    case model.imageData of
         Nothing ->
-            case model.imageData of
-                Nothing ->
-                    case model.dnDModel of
-                        Normal ->
-                            text "Drop stuff here"
-
-                        Hovering ->
-                            text "Gimmie!"
-
-                Just result ->
-                    img
-                        [ property "src" result
-                        , style [ ( "max-width", "100%" ) ]
+            div
+                [ class [ Css.DzMessage ]
+                ]
+                [ text "Drop your presentation SVG file here"
+                , div
+                    [ class [ Css.Note ]
+                    ]
+                    [ text "Groups of "
+                    , span
+                        [ style
+                            [ ( "font-weight", "bold" )
+                            ]
                         ]
-                        []
+                        [ span
+                            [ style
+                                [ ( "color", "red" )
+                                ]
+                            ]
+                            [ text "red rectangles "
+                            ]
+                        , text
+                            "plus a number "
+                        ]
+                    , text
+                        "are recognized as frames."
+                    ]
+                , div
+                    [ class [ Css.Note ]
+                    ]
+                    [ text "Check out this example:"
+                    ]
+                , img
+                    [ src "samples/3frames.svg"
+                    ]
+                    []
+                ]
+
+        Just result ->
+            img
+                [ property "src" result
+                , style [ ( "max-width", "100%" ) ]
+                ]
+                []
 
 
 countStyle : DragDrop.HoverState -> Html.Attribute a

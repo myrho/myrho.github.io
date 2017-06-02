@@ -6,27 +6,36 @@ import DiveSvg.Sub
 import DiveSvg.Update
 import DiveSvg.Parser
 import DragDrop.DragDrop as DragDrop
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, text, ul, li, button, h1)
+import Html.Attributes exposing (disabled)
+import Html.Events exposing (onClick)
 import Json.Decode as Dec
 import Base64
 import Regex
+import Css.Css as Css
+import Html.CssHelpers
+
+
+{ class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 type alias Model =
     { dive : DiveSvg.Model.Model DiveSvg.Model.Msg
     , dnd : DragDrop.Model
-    , message : String
+    , run : Bool
     }
 
 
 type Msg
     = DiveMsg DiveSvg.Model.Msg
     | DndMsg DragDrop.Msg
+    | Run
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model DiveSvg.Model.init DragDrop.init ""
+    ( Model DiveSvg.Model.init DragDrop.init False
     , Cmd.none
     )
 
@@ -54,6 +63,9 @@ updateSubmodels msg model =
                         )
                    )
 
+        Run ->
+            ( model, Cmd.none )
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -69,7 +81,13 @@ update msg model =
                         of
                             Err err ->
                                 { model
-                                    | message = err
+                                    | dnd =
+                                        model.dnd
+                                            |> (\dnd ->
+                                                    { dnd
+                                                        | imageLoadError = Just err
+                                                    }
+                                               )
                                 }
                                     ! [ cmd ]
 
@@ -79,8 +97,17 @@ update msg model =
                                 }
                                     ! [ cmd ]
 
-                    _ ->
+                    DndMsg _ ->
                         model ! [ cmd ]
+
+                    DiveMsg _ ->
+                        model ! [ cmd ]
+
+                    Run ->
+                        { model
+                            | run = True
+                        }
+                            ! [ cmd ]
            )
 
 
@@ -91,23 +118,76 @@ removeUriStart =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    DiveSvg.Sub.subscriptions model.dive
-        |> Sub.map DiveMsg
+    if model.run then
+        DiveSvg.Sub.subscriptions model.dive
+            |> Sub.map DiveMsg
+    else
+        Sub.none
+
+
+runnable : Model -> Bool
+runnable model =
+    model.dnd.imageLoadError
+        == Nothing
+        && (not <| List.isEmpty model.dive.frames)
 
 
 view : Model -> Html Msg
 view model =
-    case model.dnd.imageData of
-        Nothing ->
-            DragDrop.view model.dnd
-                |> Html.map DndMsg
+    if model.run then
+        DiveSvg.View.view model.dive
+            |> Html.map DiveMsg
+    else
+        div
+            [ class [ Css.Frame ]
+            ]
+            [ h1
+                []
+                [ text "Dive SVG"
+                ]
+            , let
+                numFrames =
+                    List.length model.dive.frames
+              in
+                div
+                    []
+                    [ DragDrop.view model.dnd
+                        |> Html.map DndMsg
+                    , if model.dnd.imageData == Nothing && model.dnd.imageLoadError == Nothing then
+                        text ""
+                      else
+                        div
+                            [ class [ Css.Msg ]
+                            , classList
+                                [ ( Css.ErrorMsg, not <| runnable model )
+                                , ( Css.SuccessMsg, runnable model )
+                                ]
+                            ]
+                            [ text <|
+                                case model.dnd.imageLoadError of
+                                    Nothing ->
+                                        toString numFrames
+                                            ++ " frame"
+                                            ++ (if numFrames == 1 then
+                                                    ""
+                                                else
+                                                    "s"
+                                               )
+                                            ++ " found"
 
-        Just _ ->
-            if model.message == "" then
-                DiveSvg.View.view model.dive
-                    |> Html.map DiveMsg
-            else
-                text model.message
+                                    Just err ->
+                                        err
+                            ]
+                    , button
+                        [ disabled <| not <| runnable model
+                        , onClick Run
+                        , class [ Css.StartButton ]
+                        , classList [ ( Css.Disabled, not <| runnable model ) ]
+                        ]
+                        [ text "Let's go"
+                        ]
+                    ]
+            ]
 
 
 main =

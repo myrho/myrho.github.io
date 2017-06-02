@@ -1,0 +1,81 @@
+body {
+    font-family: Lato, Helvetica, sans-serif;
+}
+
+.Frame {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.StartButton {
+    background-color: #337ab7;
+    border: 1px solid #2e6da4;
+    color: #fff;
+    border-radius: 6px;
+    font-weight: 400;
+    font-size: 150%;
+    padding: 10px 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.StartButton.Disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.Msg {
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    height: 30px;
+    margin-top: 20px;
+}
+
+.ErrorMsg {
+    border-color: #ebccd1;
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.SuccessMsg {
+    border-color: #d6e9c6;
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.dndDropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background-color: #F3F4F5;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dndDropzone.dndDropping {
+    border-style: solid;
+}
+
+.dndDropzone  img {
+    max-height: 490px;
+}
+
+.dndDropzone  .dndDzMessage {
+    text-align: center;
+    color: #646C7F;
+    margin: 2em 0;
+    font-weight: 400;
+}
+
+.dndDropzone  .dndDzMessage  .dndNote {
+    font-size: 0.8em;
+    font-weight: 200;
+    display: block;
+    margin-top: 1.4rem;
+}
