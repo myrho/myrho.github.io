@@ -30,6 +30,7 @@ general =
         , marginLeft auto
         , marginRight auto
         , textAlign center
+        , padding (em 1)
         ]
     , class StartButton
         [ backgroundColor <| hex "337ab7"

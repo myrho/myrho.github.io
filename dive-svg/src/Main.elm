@@ -185,7 +185,7 @@ view model =
             , div
                 [ class [ Css.Subhead ]
                 ]
-                [ text "Prezi-like presentations based on plain SVG"
+                [ text "Prezi-like presentations in plain SVG"
                 ]
             , div
                 [ class [ Css.Note ]
@@ -248,7 +248,7 @@ view model =
                     ]
                     [ text "Prezi"
                     ]
-                , text "'s) contain all the content in one big picture. Content is presented by moving and zooming into certain parts (frames) of this picture."
+                , text "'s) contain all the content in one big picture. Content is presented by moving to and zooming into certain parts (frames) of this picture."
                 ]
             , div
                 [ class [ Css.Note ]

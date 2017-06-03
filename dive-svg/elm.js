@@ -18138,7 +18138,12 @@ var _user$project$Css_Css$general = {
 						_1: {
 							ctor: '::',
 							_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: _rtfeldman$elm_css$Css$padding(
+									_rtfeldman$elm_css$Css$em(1)),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
@@ -19097,7 +19102,7 @@ var _user$project$Main$view = function (model) {
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Prezi-like presentations based on plain SVG'),
+							_0: _elm_lang$html$Html$text('Prezi-like presentations in plain SVG'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -19295,7 +19300,7 @@ var _user$project$Main$view = function (model) {
 													}),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('\'s) contain all the content in one big picture. Content is presented by moving and zooming into certain parts (frames) of this picture.'),
+													_0: _elm_lang$html$Html$text('\'s) contain all the content in one big picture. Content is presented by moving to and zooming into certain parts (frames) of this picture.'),
 													_1: {ctor: '[]'}
 												}
 											}
