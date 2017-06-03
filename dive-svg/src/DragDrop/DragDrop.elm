@@ -1,7 +1,8 @@
 module DragDrop.DragDrop exposing (..)
 
-import Html exposing (Html, div, text, img)
+import Html exposing (Html, div, text, img, input, br)
 import Html.Attributes exposing (..)
+import Html.Events exposing (on)
 import Task
 import FileReader exposing (..)
 import MimeType exposing (MimeType(..))
@@ -9,6 +10,7 @@ import DragDrop.DragDropModel as DragDrop exposing (Msg(Drop), dragDropEventHand
 import Html.CssHelpers
 import DragDrop.Css as Css
 import Json.Encode as Enc
+import Json.Decode as Dec
 
 
 { class, classList } =
@@ -41,6 +43,7 @@ init =
 
 type Msg
     = DnD DragDrop.Msg
+    | Drop2 DragDrop.Msg
     | FileData (Result Error FileContentDataUrl)
 
 
@@ -54,11 +57,21 @@ update msg model =
         -- Case drop. Let the DnD library update it's model and emmit the loading effect
         DnD (Drop files) ->
             ( { model
+                | imageData = Loading
+              }
+            , Task.perform Drop (Task.succeed files)
+                |> Cmd.map Drop2
+            )
+
+        Drop2 (Drop files) ->
+            ( { model
                 | dnDModel = DragDrop.update (Drop files) model.dnDModel
-                , imageData = Loading
               }
             , loadFirstFile files
             )
+
+        Drop2 _ ->
+            model ! []
 
         -- Other DnD cases. Let the DnD library update it's model.
         DnD a ->
@@ -109,7 +122,18 @@ view demoFile model =
                 :: dragDropEventHandlers
             )
             [ renderImageOrPrompt demoFile model
+            , input
+                [ type_ "file"
+                , onchange Drop
+                ]
+                []
             ]
+
+
+onchange action =
+    on
+        "change"
+        (Dec.map action parseSelectedFiles)
 
 
 renderImageOrPrompt : String -> Model -> Html a
@@ -134,10 +158,12 @@ renderImageOrPrompt demoFile model =
                 [ class [ Css.DzMessage ]
                 ]
                 [ text "Drop your presentation SVG file here"
+                , br [] []
+                , text "or click to choose one from your disk"
                 ]
                 :: (case model.imageData of
                         None ->
-                            image "" <| Enc.string demoFile
+                            image "Example file:" <| Enc.string demoFile
 
                         Loading ->
                             image "Loading ..." <| Enc.string ""

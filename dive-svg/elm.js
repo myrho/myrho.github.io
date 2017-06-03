@@ -11716,17 +11716,11 @@ var _myrho$dive_svg$DiveSvg_Parser$frame2Matrix = function (_p6) {
 };
 var _myrho$dive_svg$DiveSvg_Parser$transformFrame = F2(
 	function (matrix, frame) {
-		return A2(
-			_elm_lang$core$Debug$log,
-			'newframe',
-			_myrho$dive_svg$DiveSvg_Parser$matrix2Frame(
-				A2(
-					_Zinggi$elm_webgl_math$Matrix3$mul,
-					A2(
-						_elm_lang$core$Debug$log,
-						'oldFrame',
-						_myrho$dive_svg$DiveSvg_Parser$frame2Matrix(frame)),
-					matrix)));
+		return _myrho$dive_svg$DiveSvg_Parser$matrix2Frame(
+			A2(
+				_Zinggi$elm_webgl_math$Matrix3$mul,
+				_myrho$dive_svg$DiveSvg_Parser$frame2Matrix(frame),
+				matrix));
 	});
 var _myrho$dive_svg$DiveSvg_Parser$map6 = F7(
 	function (mapFunc, a, b, c, d, e, f) {
@@ -11759,14 +11753,11 @@ var _myrho$dive_svg$DiveSvg_Parser$map6 = F7(
 	});
 var _myrho$dive_svg$DiveSvg_Parser$floatRegex = _elm_lang$core$Regex$regex('[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?');
 var _myrho$dive_svg$DiveSvg_Parser$numbers2 = function (op) {
-	var _p12 = A2(
-		_elm_lang$core$Debug$log,
-		'floatRegex',
-		A3(
-			_elm_lang$core$Regex$find,
-			_elm_lang$core$Regex$AtMost(2),
-			_myrho$dive_svg$DiveSvg_Parser$floatRegex,
-			op));
+	var _p12 = A3(
+		_elm_lang$core$Regex$find,
+		_elm_lang$core$Regex$AtMost(2),
+		_myrho$dive_svg$DiveSvg_Parser$floatRegex,
+		op);
 	if (_p12.ctor === '::') {
 		return A2(
 			_elm_lang$core$Maybe$andThen,
@@ -11804,14 +11795,11 @@ var _myrho$dive_svg$DiveSvg_Parser$numbers6 = function (op) {
 					return _.match;
 				}(_p14)));
 	};
-	var _p15 = A2(
-		_elm_lang$core$Debug$log,
-		'floatRegex',
-		A3(
-			_elm_lang$core$Regex$find,
-			_elm_lang$core$Regex$AtMost(6),
-			_myrho$dive_svg$DiveSvg_Parser$floatRegex,
-			op));
+	var _p15 = A3(
+		_elm_lang$core$Regex$find,
+		_elm_lang$core$Regex$AtMost(6),
+		_myrho$dive_svg$DiveSvg_Parser$floatRegex,
+		op);
 	if ((((((_p15.ctor === '::') && (_p15._1.ctor === '::')) && (_p15._1._1.ctor === '::')) && (_p15._1._1._1.ctor === '::')) && (_p15._1._1._1._1.ctor === '::')) && (_p15._1._1._1._1._1.ctor === '::')) {
 		return A7(
 			_myrho$dive_svg$DiveSvg_Parser$map6,
@@ -11883,7 +11871,7 @@ var _myrho$dive_svg$DiveSvg_Parser$attr2Matrix = function (attr) {
 var _myrho$dive_svg$DiveSvg_Parser$findNumber = function (children) {
 	findNumber:
 	while (true) {
-		var _p23 = A2(_elm_lang$core$Debug$log, 'findNumber', children);
+		var _p23 = children;
 		_v12_4:
 		do {
 			switch (_p23.ctor) {
@@ -11913,10 +11901,7 @@ var _myrho$dive_svg$DiveSvg_Parser$findNumber = function (children) {
 };
 var _myrho$dive_svg$DiveSvg_Parser$getFloat = F2(
 	function (key, attr) {
-		var _p24 = A2(
-			_elm_lang$core$Debug$log,
-			'getFloat',
-			A2(_elm_lang$core$Dict$get, key, attr));
+		var _p24 = A2(_elm_lang$core$Dict$get, key, attr);
 		_v15_2:
 		do {
 			if (_p24.ctor === 'Just') {
@@ -11938,8 +11923,8 @@ var _myrho$dive_svg$DiveSvg_Parser$getFloat = F2(
 var _myrho$dive_svg$DiveSvg_Parser$foldFrame = F2(
 	function (child, _p25) {
 		var _p26 = _p25;
-		var _p35 = _p26._0;
-		var _p34 = _p26._1;
+		var _p34 = _p26._0;
+		var _p33 = _p26._1;
 		var getFrame = function (attr) {
 			return A2(
 				_elm_lang$core$Maybe$andThen,
@@ -11966,58 +11951,48 @@ var _myrho$dive_svg$DiveSvg_Parser$foldFrame = F2(
 		};
 		var _p27 = child;
 		if (_p27.ctor === 'Tag') {
-			var _p33 = _p27._0;
-			var _p32 = _p27._1;
-			if (_elm_lang$core$Native_Utils.eq(_p33, 'rect')) {
-				var _p28 = A2(_elm_lang$core$Debug$log, 'rect found2', _p32);
-				var _p29 = A2(
-					_elm_lang$core$Debug$log,
-					'rect found style',
-					A2(_elm_lang$core$Dict$get, 'style', _p32));
-				if ((_p29.ctor === 'Just') && (_p29._0.ctor === 'StrNode')) {
-					return (!A2(_elm_lang$core$String$contains, 'stroke:#ff0000', _p29._0._0)) ? {ctor: '_Tuple2', _0: _p35, _1: _p34} : {
+			var _p32 = _p27._0;
+			var _p31 = _p27._1;
+			if (_elm_lang$core$Native_Utils.eq(_p32, 'rect')) {
+				var _p28 = A2(_elm_lang$core$Dict$get, 'style', _p31);
+				if ((_p28.ctor === 'Just') && (_p28._0.ctor === 'StrNode')) {
+					return (!A2(_elm_lang$core$String$contains, 'stroke:#ff0000', _p28._0._0)) ? {ctor: '_Tuple2', _0: _p34, _1: _p33} : {
 						ctor: '_Tuple2',
-						_0: _p35,
-						_1: getFrame(_p32)
+						_0: _p34,
+						_1: getFrame(_p31)
 					};
 				} else {
-					var _p30 = A2(
-						_elm_lang$core$Debug$log,
-						'rect found color',
-						A2(_elm_lang$core$Dict$get, 'stroke', _p32));
-					if ((_p30.ctor === 'Just') && (_p30._0.ctor === 'StrNode')) {
-						return (!_elm_lang$core$Native_Utils.eq(_p30._0._0, '#ff0000')) ? {ctor: '_Tuple2', _0: _p35, _1: _p34} : {
+					var _p29 = A2(_elm_lang$core$Dict$get, 'stroke', _p31);
+					if ((_p29.ctor === 'Just') && (_p29._0.ctor === 'StrNode')) {
+						return (!_elm_lang$core$Native_Utils.eq(_p29._0._0, '#ff0000')) ? {ctor: '_Tuple2', _0: _p34, _1: _p33} : {
 							ctor: '_Tuple2',
-							_0: _p35,
-							_1: A2(
-								_elm_lang$core$Debug$log,
-								'rect found, getFrame',
-								getFrame(_p32))
+							_0: _p34,
+							_1: getFrame(_p31)
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: _p35, _1: _p34};
+						return {ctor: '_Tuple2', _0: _p34, _1: _p33};
 					}
 				}
 			} else {
-				if (_elm_lang$core$Native_Utils.eq(_p33, 'text')) {
+				if (_elm_lang$core$Native_Utils.eq(_p32, 'text')) {
 					return {
 						ctor: '_Tuple2',
 						_0: function () {
-							var _p31 = _myrho$dive_svg$DiveSvg_Parser$findNumber(_p27._2);
-							if (_p31.ctor === 'Just') {
-								return _elm_lang$core$Maybe$Just(_p31._0);
+							var _p30 = _myrho$dive_svg$DiveSvg_Parser$findNumber(_p27._2);
+							if (_p30.ctor === 'Just') {
+								return _elm_lang$core$Maybe$Just(_p30._0);
 							} else {
-								return _p35;
+								return _p34;
 							}
 						}(),
-						_1: _p34
+						_1: _p33
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p35, _1: _p34};
+					return {ctor: '_Tuple2', _0: _p34, _1: _p33};
 				}
 			}
 		} else {
-			return {ctor: '_Tuple2', _0: _p35, _1: _p34};
+			return {ctor: '_Tuple2', _0: _p34, _1: _p33};
 		}
 	});
 var _myrho$dive_svg$DiveSvg_Parser$findFrame = F3(
@@ -12025,13 +12000,13 @@ var _myrho$dive_svg$DiveSvg_Parser$findFrame = F3(
 		if (!_elm_lang$core$Native_Utils.eq(name, 'g')) {
 			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
 		} else {
-			var _p36 = children;
-			if (_p36.ctor === 'Object') {
+			var _p35 = children;
+			if (_p35.ctor === 'Object') {
 				return A3(
 					_elm_lang$core$List$foldl,
 					_myrho$dive_svg$DiveSvg_Parser$foldFrame,
 					{ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing},
-					_p36._0);
+					_p35._0);
 			} else {
 				return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
 			}
@@ -12039,18 +12014,18 @@ var _myrho$dive_svg$DiveSvg_Parser$findFrame = F3(
 	});
 var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 	function (frames, parentTransformations, value) {
-		var _p37 = A2(_elm_lang$core$Debug$log, 'value', value);
-		switch (_p37.ctor) {
+		var _p36 = value;
+		switch (_p36.ctor) {
 			case 'Tag':
-				var _p42 = _p37._0;
-				var _p41 = _p37._2;
-				var _p40 = _p37._1;
+				var _p41 = _p36._0;
+				var _p40 = _p36._2;
+				var _p39 = _p36._1;
 				var parentTransformations_ = A2(
 					_Zinggi$elm_webgl_math$Matrix3$mul,
-					_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p40),
+					_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p39),
 					parentTransformations);
-				var _p38 = A3(_myrho$dive_svg$DiveSvg_Parser$findFrame, _p42, _p40, _p41);
-				if (((_p38.ctor === '_Tuple2') && (_p38._0.ctor === 'Just')) && (_p38._1.ctor === 'Just')) {
+				var _p37 = A3(_myrho$dive_svg$DiveSvg_Parser$findFrame, _p41, _p39, _p40);
+				if (((_p37.ctor === '_Tuple2') && (_p37._0.ctor === 'Just')) && (_p37._1.ctor === 'Just')) {
 					return {
 						ctor: '_Tuple2',
 						_0: {ctor: '[]'},
@@ -12058,24 +12033,24 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
-								_0: _p38._0._0,
-								_1: A2(_myrho$dive_svg$DiveSvg_Parser$transformFrame, parentTransformations_, _p38._1._0)
+								_0: _p37._0._0,
+								_1: A2(_myrho$dive_svg$DiveSvg_Parser$transformFrame, parentTransformations_, _p37._1._0)
 							},
 							_1: frames
 						}
 					};
 				} else {
-					var _p39 = A3(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations_, _p41);
-					var nodes = _p39._0;
-					var frames_ = _p39._1;
+					var _p38 = A3(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations_, _p40);
+					var nodes = _p38._0;
+					var frames_ = _p38._1;
 					return {
 						ctor: '_Tuple2',
 						_0: {
 							ctor: '::',
 							_0: A3(
 								_elm_lang$svg$Svg$node,
-								_p42,
-								_myrho$dive_svg$DiveSvg_Parser$toAttr(_p40),
+								_p41,
+								_myrho$dive_svg$DiveSvg_Parser$toAttr(_p39),
 								nodes),
 							_1: {ctor: '[]'}
 						},
@@ -12093,7 +12068,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 							A2(
 								_elm_lang$core$List$map,
 								A2(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations),
-								_p37._0))));
+								_p36._0))));
 			case 'StrNode':
 				return {
 					ctor: '_Tuple2',
@@ -12106,7 +12081,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 								_0: A2(
 									_elm_lang$virtual_dom$VirtualDom$property,
 									'innerHTML',
-									_elm_lang$core$Json_Encode$string(_p37._0)),
+									_elm_lang$core$Json_Encode$string(_p36._0)),
 								_1: {ctor: '[]'}
 							},
 							{ctor: '[]'}),
@@ -12120,7 +12095,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 					_0: {
 						ctor: '::',
 						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p37._0)),
+							_elm_lang$core$Basics$toString(_p36._0)),
 						_1: {ctor: '[]'}
 					},
 					_1: frames
@@ -12131,7 +12106,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 					_0: {
 						ctor: '::',
 						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p37._0)),
+							_elm_lang$core$Basics$toString(_p36._0)),
 						_1: {ctor: '[]'}
 					},
 					_1: frames
@@ -12142,7 +12117,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 					_0: {
 						ctor: '::',
 						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p37._0)),
+							_elm_lang$core$Basics$toString(_p36._0)),
 						_1: {ctor: '[]'}
 					},
 					_1: frames
@@ -12157,8 +12132,8 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 	});
 var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 	var isSvgTag = function (item) {
-		var _p43 = item;
-		if ((_p43.ctor === 'Tag') && (_p43._0 === 'svg')) {
+		var _p42 = item;
+		if ((_p42.ctor === 'Tag') && (_p42._0 === 'svg')) {
 			return true;
 		} else {
 			return false;
@@ -12167,27 +12142,24 @@ var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 	var errorMsg = function (msg) {
 		return {
 			ctor: '_Tuple2',
-			_0: function (_p44) {
+			_0: function (_p43) {
 				return _elm_lang$virtual_dom$VirtualDom$text(msg);
 			},
 			_1: {ctor: '[]'}
 		};
 	};
-	var _p45 = value;
-	if (_p45.ctor === 'Object') {
-		var _p46 = A2(
-			_elm_lang$core$Debug$log,
-			'filtered',
-			A2(_elm_lang$core$List$filter, isSvgTag, _p45._0));
-		if (((_p46.ctor === '::') && (_p46._0.ctor === 'Tag')) && (_p46._0._0 === 'svg')) {
-			var _p48 = _p46._0._1;
-			var _p47 = A3(
+	var _p44 = value;
+	if (_p44.ctor === 'Object') {
+		var _p45 = A2(_elm_lang$core$List$filter, isSvgTag, _p44._0);
+		if (((_p45.ctor === '::') && (_p45._0.ctor === 'Tag')) && (_p45._0._0 === 'svg')) {
+			var _p47 = _p45._0._1;
+			var _p46 = A3(
 				_myrho$dive_svg$DiveSvg_Parser$parse,
 				{ctor: '[]'},
-				_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p48),
-				_p46._0._2);
-			var nodes = _p47._0;
-			var frames = _p47._1;
+				_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p47),
+				_p45._0._2);
+			var nodes = _p46._0;
+			var frames = _p46._1;
 			return {
 				ctor: '_Tuple2',
 				_0: function (frame) {
@@ -12195,7 +12167,7 @@ var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 						_elm_lang$svg$Svg$svg,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_myrho$dive_svg$DiveSvg_Parser$toAttr(_p48),
+							_myrho$dive_svg$DiveSvg_Parser$toAttr(_p47),
 							{
 								ctor: '::',
 								_0: _elm_lang$svg$Svg_Attributes$viewBox(
@@ -12229,19 +12201,15 @@ var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 	}
 };
 var _myrho$dive_svg$DiveSvg_Parser$load = function (xml) {
-	var _p49 = function (result) {
-		var _p50 = result;
-		if (_p50.ctor === 'Ok') {
-			return {
-				ctor: '_Tuple2',
-				_0: _p50._0._0,
-				_1: A2(_elm_lang$core$Debug$log, 'Frames', _p50._0._1)
-			};
+	var _p48 = function (result) {
+		var _p49 = result;
+		if (_p49.ctor === 'Ok') {
+			return {ctor: '_Tuple2', _0: _p49._0._0, _1: _p49._0._1};
 		} else {
 			return {
 				ctor: '_Tuple2',
-				_0: function (_p51) {
-					return _elm_lang$virtual_dom$VirtualDom$text(_p50._0);
+				_0: function (_p50) {
+					return _elm_lang$virtual_dom$VirtualDom$text(_p49._0);
 				},
 				_1: {ctor: '[]'}
 			};
@@ -12251,12 +12219,12 @@ var _myrho$dive_svg$DiveSvg_Parser$load = function (xml) {
 			_elm_lang$core$Result$map,
 			_myrho$dive_svg$DiveSvg_Parser$parseRoot,
 			_myrho$elm_xml$Xml_Decode$decode(xml)));
-	var slides = _p49._0;
-	var frames = _p49._1;
-	var _p52 = frames;
-	if (_p52.ctor === '::') {
+	var slides = _p48._0;
+	var frames = _p48._1;
+	var _p51 = frames;
+	if (_p51.ctor === '::') {
 		return _elm_lang$core$Result$Ok(
-			A4(_myrho$dive_svg$DiveSvg_Model$Model, _p52._0, _p52._1, _elm_lang$core$Maybe$Nothing, slides));
+			A4(_myrho$dive_svg$DiveSvg_Model$Model, _p51._0, _p51._1, _elm_lang$core$Maybe$Nothing, slides));
 	} else {
 		return _elm_lang$core$Result$Err('no frames found');
 	}
@@ -18398,88 +18366,139 @@ var _user$project$DragDrop_Css$general = {
 											_rtfeldman$elm_css$Css$rem(1)),
 										_1: {
 											ctor: '::',
-											_0: A2(
-												_rtfeldman$elm_css$Css$withClass,
-												_user$project$DragDrop_Css$Dropping,
-												{
-													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$borderStyle(_rtfeldman$elm_css$Css$solid),
-													_1: {ctor: '[]'}
-												}),
+											_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$relative),
 											_1: {
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$descendants(
+												_0: A2(
+													_rtfeldman$elm_css$Css$withClass,
+													_user$project$DragDrop_Css$Dropping,
 													{
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css_Elements$img(
-															{
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$maxHeight(
-																	_rtfeldman$elm_css$Css$px(350)),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
+														_0: _rtfeldman$elm_css$Css$borderStyle(_rtfeldman$elm_css$Css$solid),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$descendants(
+														{
 															ctor: '::',
-															_0: A2(
-																_rtfeldman$elm_css$Css$class,
-																_user$project$DragDrop_Css$DzMessage,
+															_0: _rtfeldman$elm_css$Css_Elements$img(
 																{
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
-																	_1: {
+																	_0: _rtfeldman$elm_css$Css$maxHeight(
+																		_rtfeldman$elm_css$Css$px(350)),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css_Elements$input(
+																	{
 																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$color(
-																			_rtfeldman$elm_css$Css$hex('646C7F')),
+																		_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
 																		_1: {
 																			ctor: '::',
-																			_0: A2(
-																				_rtfeldman$elm_css$Css$margin2,
-																				_rtfeldman$elm_css$Css$em(2),
-																				_rtfeldman$elm_css$Css$zero),
+																			_0: _rtfeldman$elm_css$Css$left(
+																				_rtfeldman$elm_css$Css$px(0)),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$fontWeight(
-																					_rtfeldman$elm_css$Css$int(400)),
+																				_0: _rtfeldman$elm_css$Css$top(
+																					_rtfeldman$elm_css$Css$px(0)),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$descendants(
-																						{
+																					_0: _rtfeldman$elm_css$Css$margin(
+																						_rtfeldman$elm_css$Css$px(0)),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$padding(
+																							_rtfeldman$elm_css$Css$px(0)),
+																						_1: {
 																							ctor: '::',
-																							_0: A2(
-																								_rtfeldman$elm_css$Css$class,
-																								_user$project$DragDrop_Css$Note,
-																								{
+																							_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$opacity(_rtfeldman$elm_css$Css$zero),
+																								_1: {
 																									ctor: '::',
-																									_0: _rtfeldman$elm_css$Css$fontSize(
-																										_rtfeldman$elm_css$Css$em(0.8)),
+																									_0: _rtfeldman$elm_css$Css$height(
+																										_rtfeldman$elm_css$Css$pct(100)),
 																									_1: {
 																										ctor: '::',
-																										_0: _rtfeldman$elm_css$Css$fontWeight(
-																											_rtfeldman$elm_css$Css$int(200)),
-																										_1: {
-																											ctor: '::',
-																											_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'block'),
-																											_1: {
-																												ctor: '::',
-																												_0: _rtfeldman$elm_css$Css$marginTop(
-																													_rtfeldman$elm_css$Css$rem(1.4)),
-																												_1: {ctor: '[]'}
-																											}
-																										}
+																										_0: _rtfeldman$elm_css$Css$width(
+																											_rtfeldman$elm_css$Css$pct(100)),
+																										_1: {ctor: '[]'}
 																									}
-																								}),
-																							_1: {ctor: '[]'}
-																						}),
-																					_1: {ctor: '[]'}
+																								}
+																							}
+																						}
+																					}
 																				}
 																			}
 																		}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_rtfeldman$elm_css$Css$class,
+																		_user$project$DragDrop_Css$DzMessage,
+																		{
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$color(
+																					_rtfeldman$elm_css$Css$hex('646C7F')),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(
+																						_rtfeldman$elm_css$Css$margin2,
+																						_rtfeldman$elm_css$Css$em(2),
+																						_rtfeldman$elm_css$Css$zero),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$fontWeight(
+																							_rtfeldman$elm_css$Css$int(400)),
+																						_1: {
+																							ctor: '::',
+																							_0: _rtfeldman$elm_css$Css$descendants(
+																								{
+																									ctor: '::',
+																									_0: A2(
+																										_rtfeldman$elm_css$Css$class,
+																										_user$project$DragDrop_Css$Note,
+																										{
+																											ctor: '::',
+																											_0: _rtfeldman$elm_css$Css$fontSize(
+																												_rtfeldman$elm_css$Css$em(0.8)),
+																											_1: {
+																												ctor: '::',
+																												_0: _rtfeldman$elm_css$Css$fontWeight(
+																													_rtfeldman$elm_css$Css$int(200)),
+																												_1: {
+																													ctor: '::',
+																													_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'block'),
+																													_1: {
+																														ctor: '::',
+																														_0: _rtfeldman$elm_css$Css$marginTop(
+																															_rtfeldman$elm_css$Css$rem(1.4)),
+																														_1: {ctor: '[]'}
+																													}
+																												}
+																											}
+																										}),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				}
+																			}
+																		}),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
 											}
 										}
 									}
@@ -18608,6 +18627,12 @@ var _user$project$DragDrop_DragDrop$countStyle = function (dragState) {
 			}
 		});
 };
+var _user$project$DragDrop_DragDrop$onchange = function (action) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, action, _simonh1000$file_reader$FileReader$parseSelectedFiles));
+};
 var _user$project$DragDrop_DragDrop$dropAllowedForFile = function (file) {
 	var _p1 = file.mimeType;
 	if (_p1.ctor === 'Nothing') {
@@ -18706,7 +18731,18 @@ var _user$project$DragDrop_DragDrop$renderImageOrPrompt = F2(
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text('Drop your presentation SVG file here'),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$br,
+								{ctor: '[]'},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('or click to choose one from your disk'),
+								_1: {ctor: '[]'}
+							}
+						}
 					}),
 				_1: function () {
 					var _p5 = model.imageData;
@@ -18714,7 +18750,7 @@ var _user$project$DragDrop_DragDrop$renderImageOrPrompt = F2(
 						case 'None':
 							return A2(
 								image,
-								'',
+								'Example file:',
 								_elm_lang$core$Json_Encode$string(demoFile));
 						case 'Loading':
 							return A2(
@@ -18756,58 +18792,82 @@ var _user$project$DragDrop_DragDrop$loadData = function (file) {
 				_simonh1000$file_reader$FileReader$readAsDataUrl(file))));
 };
 var _user$project$DragDrop_DragDrop$loadFirstFile = _user$project$DragDrop_DragDrop$loadFirstFileWithLoader(_user$project$DragDrop_DragDrop$loadData);
+var _user$project$DragDrop_DragDrop$Drop2 = function (a) {
+	return {ctor: 'Drop2', _0: a};
+};
 var _user$project$DragDrop_DragDrop$update = F2(
 	function (msg, model) {
 		var _p7 = msg;
-		if (_p7.ctor === 'DnD') {
-			if (_p7._0.ctor === 'Drop') {
-				var _p8 = _p7._0._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
+		switch (_p7.ctor) {
+			case 'Drop2':
+				if (_p7._0.ctor === 'Drop') {
+					var _p8 = _p7._0._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								dnDModel: A2(
+									_user$project$DragDrop_DragDropModel$update,
+									_user$project$DragDrop_DragDropModel$Drop(_p8),
+									model.dnDModel)
+							}),
+						_1: _user$project$DragDrop_DragDrop$loadFirstFile(_p8)
+					};
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
-						{
-							dnDModel: A2(
-								_user$project$DragDrop_DragDropModel$update,
-								_user$project$DragDrop_DragDropModel$Drop(_p8),
-								model.dnDModel),
-							imageData: _user$project$DragDrop_DragDrop$Loading
-						}),
-					_1: _user$project$DragDrop_DragDrop$loadFirstFile(_p8)
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							dnDModel: A2(_user$project$DragDrop_DragDropModel$update, _p7._0, model.dnDModel)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			}
-		} else {
-			if (_p7._0.ctor === 'Ok') {
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							imageData: _user$project$DragDrop_DragDrop$Image(_p7._0._0),
-							imageLoadError: _elm_lang$core$Maybe$Nothing
-						}),
-					{ctor: '[]'});
-			} else {
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							imageLoadError: _elm_lang$core$Maybe$Just(
-								_simonh1000$file_reader$FileReader$prettyPrint(_p7._0._0))
-						}),
-					{ctor: '[]'});
-			}
+						{ctor: '[]'});
+				}
+			case 'DnD':
+				if (_p7._0.ctor === 'Drop') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{imageData: _user$project$DragDrop_DragDrop$Loading}),
+						_1: A2(
+							_elm_lang$core$Platform_Cmd$map,
+							_user$project$DragDrop_DragDrop$Drop2,
+							A2(
+								_elm_lang$core$Task$perform,
+								_user$project$DragDrop_DragDropModel$Drop,
+								_elm_lang$core$Task$succeed(_p7._0._0)))
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								dnDModel: A2(_user$project$DragDrop_DragDropModel$update, _p7._0, model.dnDModel)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			default:
+				if (_p7._0.ctor === 'Ok') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								imageData: _user$project$DragDrop_DragDrop$Image(_p7._0._0),
+								imageLoadError: _elm_lang$core$Maybe$Nothing
+							}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								imageLoadError: _elm_lang$core$Maybe$Just(
+									_simonh1000$file_reader$FileReader$prettyPrint(_p7._0._0))
+							}),
+						{ctor: '[]'});
+				}
 		}
 	});
 var _user$project$DragDrop_DragDrop$DnD = function (a) {
@@ -18841,7 +18901,22 @@ var _user$project$DragDrop_DragDrop$view = F2(
 				{
 					ctor: '::',
 					_0: A2(_user$project$DragDrop_DragDrop$renderImageOrPrompt, demoFile, model),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('file'),
+								_1: {
+									ctor: '::',
+									_0: _user$project$DragDrop_DragDrop$onchange(_user$project$DragDrop_DragDropModel$Drop),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
+					}
 				}));
 	});
 var _user$project$DragDrop_DragDrop$main = _elm_lang$html$Html$program(

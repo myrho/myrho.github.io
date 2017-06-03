@@ -71,6 +71,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+    position: relative;
 }
 
 .dndDropzone.dndDropping {
@@ -79,6 +80,18 @@ body {
 
 .dndDropzone  img {
     max-height: 350px;
+}
+
+.dndDropzone  input {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
 }
 
 .dndDropzone  .dndDzMessage {
