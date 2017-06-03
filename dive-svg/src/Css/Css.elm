@@ -70,7 +70,7 @@ general =
         , fontWeight bold
         ]
     , class Note
-        [ fontSize (Css.rem 0.8)
+        [ fontSize (Css.rem 1)
         , fontWeight (int 200)
         , property "display" "block"
         , marginTop (Css.rem 1)

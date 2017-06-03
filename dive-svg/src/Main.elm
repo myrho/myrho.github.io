@@ -6,7 +6,7 @@ import DiveSvg.Sub
 import DiveSvg.Update
 import DiveSvg.Parser
 import DragDrop.DragDrop as DragDrop
-import Html exposing (Html, div, h1, button, text, img, span, a)
+import Html exposing (Html, div, h1, h2, button, text, img, span, a)
 import Html.Attributes exposing (disabled, style, href)
 import Html.Events exposing (onClick)
 import Json.Decode as Dec
@@ -190,51 +190,7 @@ view model =
             , div
                 [ class [ Css.Note ]
                 ]
-                [ text "Groups of "
-                , span
-                    [ style
-                        [ ( "font-weight", "bold" )
-                        ]
-                    ]
-                    [ span
-                        [ style
-                            [ ( "color", "red" )
-                            ]
-                        ]
-                        [ text "red rectangles "
-                        ]
-                    , text
-                        "plus a number "
-                    ]
-                , text
-                    "are removed and turned into frames."
-                ]
-            , div
-                [ class [ Css.Note ]
-                ]
-                [ text "These are the parts of your SVG where you want to put focus on in your presentation."
-                ]
-            , div
-                [ class [ Css.Note ]
-                ]
                 [ text "Works best in the Chrome browser."
-                ]
-            , div
-                [ class [ Css.Note ]
-                , style [ ( "font-weight", "bold" ) ]
-                ]
-                [ text "100% open source, completely client side, your file never gets uploaded anywhere!"
-                ]
-            , div
-                [ class [ Css.Note ]
-                ]
-                [ text "Source code of this page can be found "
-                , a
-                    [ href "https://github.com/myrho/myrho.github.io/tree/master/dive-svg"
-                    ]
-                    [ text "here"
-                    ]
-                , text "."
                 ]
             , let
                 numFrames =
@@ -279,6 +235,92 @@ view model =
                         [ text "Let's go"
                         ]
                     ]
+            , h2
+                []
+                [ text "Usage"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "As opposed to slide based presentations, visual presentations (like "
+                , a
+                    [ href "https://prezi.com"
+                    ]
+                    [ text "Prezi"
+                    ]
+                , text "'s) contain all the content in one big picture. Content is presented by moving and zooming into certain parts (frames) of this picture."
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "With "
+                , span
+                    [ style [ ( "font-weight", "bold" ) ]
+                    ]
+                    [ text "Dive SVG"
+                    ]
+                , text " you can use plain SVG for that. Draw the big picture and the frames using your favorite vector graphics editor (eg. "
+                , a
+                    [ href "http://inkscape.org"
+                    ]
+                    [ text "Inkscape"
+                    ]
+                , text "), save it as SVG and drop the file in the dropzone above. And you are ready to run your visual presentation!"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Here is an "
+                , a
+                    [ href "samples/demo.svg"
+                    ]
+                    [ text "example file"
+                    ]
+                , text "."
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Groups of "
+                , span
+                    [ style
+                        [ ( "font-weight", "bold" )
+                        ]
+                    ]
+                    [ span
+                        [ style
+                            [ ( "color", "red" )
+                            ]
+                        ]
+                        [ text "red rectangles "
+                        ]
+                    , text
+                        "plus a number "
+                    ]
+                , text
+                    "are removed and turned into frames. These are the parts of your SVG where you want to put focus on in your presentation."
+                ]
+            , h2
+                []
+                [ text "Source"
+                ]
+            , div
+                [ class [ Css.Note ]
+                , style [ ( "font-weight", "bold" ) ]
+                ]
+                [ text "100% open source, completely client side, your file never gets uploaded anywhere!"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ text "Source code of this page can be found "
+                , a
+                    [ href "https://github.com/myrho/myrho.github.io/tree/master/dive-svg"
+                    ]
+                    [ text "here"
+                    ]
+                , text "."
+                ]
             ]
 
 
