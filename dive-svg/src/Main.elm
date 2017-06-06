@@ -90,7 +90,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     updateSubmodels msg model
         |> (\( model, cmd ) ->
-                case Debug.log "msg" msg of
+                case msg of
                     DndMsg (DragDrop.FileData (Ok str)) ->
                         case
                             Dec.decodeValue Dec.string str
@@ -113,7 +113,7 @@ update msg model =
 
                             Ok dive ->
                                 { model
-                                    | dive = Just <| Debug.log "dive" dive
+                                    | dive = Just dive
                                 }
                                     ! [ cmd ]
 
@@ -248,7 +248,7 @@ view model =
                     ]
                     [ text "Prezi"
                     ]
-                , text "'s) contain all the content in one big picture. Content is presented by moving to and zooming into certain parts (frames) of this picture."
+                , text "'s) contain all the content in one big picture. Content is presented by moving and zooming into certain parts (frames) of this picture."
                 ]
             , div
                 [ class [ Css.Note ]

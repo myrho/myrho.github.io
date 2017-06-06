@@ -135,6 +135,27 @@ function A9(fun, a, b, c, d, e, f, g, h, i)
     : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
+var _elm_lang$lazy$Native_Lazy = function() {
+
+function memoize(thunk)
+{
+    var value;
+    var isForced = false;
+    return function(tuple0) {
+        if (!isForced) {
+            value = thunk(tuple0);
+            isForced = true;
+        }
+        return value;
+    };
+}
+
+return {
+    memoize: memoize
+};
+
+}();
+
 //import Native.Utils //
 
 var _elm_lang$core$Native_Basics = function() {
@@ -3167,6 +3188,1215 @@ var _elm_lang$core$Platform$Program = {ctor: 'Program'};
 var _elm_lang$core$Platform$Task = {ctor: 'Task'};
 var _elm_lang$core$Platform$ProcessId = {ctor: 'ProcessId'};
 var _elm_lang$core$Platform$Router = {ctor: 'Router'};
+
+var _elm_lang$lazy$Lazy$force = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0(
+		{ctor: '_Tuple0'});
+};
+var _elm_lang$lazy$Lazy$Lazy = function (a) {
+	return {ctor: 'Lazy', _0: a};
+};
+var _elm_lang$lazy$Lazy$lazy = function (thunk) {
+	return _elm_lang$lazy$Lazy$Lazy(
+		_elm_lang$lazy$Native_Lazy.memoize(thunk));
+};
+var _elm_lang$lazy$Lazy$map = F2(
+	function (f, a) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p2) {
+				var _p3 = _p2;
+				return f(
+					_elm_lang$lazy$Lazy$force(a));
+			});
+	});
+var _elm_lang$lazy$Lazy$map2 = F3(
+	function (f, a, b) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p4) {
+				var _p5 = _p4;
+				return A2(
+					f,
+					_elm_lang$lazy$Lazy$force(a),
+					_elm_lang$lazy$Lazy$force(b));
+			});
+	});
+var _elm_lang$lazy$Lazy$map3 = F4(
+	function (f, a, b, c) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p6) {
+				var _p7 = _p6;
+				return A3(
+					f,
+					_elm_lang$lazy$Lazy$force(a),
+					_elm_lang$lazy$Lazy$force(b),
+					_elm_lang$lazy$Lazy$force(c));
+			});
+	});
+var _elm_lang$lazy$Lazy$map4 = F5(
+	function (f, a, b, c, d) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p8) {
+				var _p9 = _p8;
+				return A4(
+					f,
+					_elm_lang$lazy$Lazy$force(a),
+					_elm_lang$lazy$Lazy$force(b),
+					_elm_lang$lazy$Lazy$force(c),
+					_elm_lang$lazy$Lazy$force(d));
+			});
+	});
+var _elm_lang$lazy$Lazy$map5 = F6(
+	function (f, a, b, c, d, e) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p10) {
+				var _p11 = _p10;
+				return A5(
+					f,
+					_elm_lang$lazy$Lazy$force(a),
+					_elm_lang$lazy$Lazy$force(b),
+					_elm_lang$lazy$Lazy$force(c),
+					_elm_lang$lazy$Lazy$force(d),
+					_elm_lang$lazy$Lazy$force(e));
+			});
+	});
+var _elm_lang$lazy$Lazy$apply = F2(
+	function (f, x) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p12) {
+				var _p13 = _p12;
+				return A2(
+					_elm_lang$lazy$Lazy$force,
+					f,
+					_elm_lang$lazy$Lazy$force(x));
+			});
+	});
+var _elm_lang$lazy$Lazy$andThen = F2(
+	function (callback, a) {
+		return _elm_lang$lazy$Lazy$lazy(
+			function (_p14) {
+				var _p15 = _p14;
+				return _elm_lang$lazy$Lazy$force(
+					callback(
+						_elm_lang$lazy$Lazy$force(a)));
+			});
+	});
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _Bogdanp$elm_combine$Combine$app = function (p) {
+	var _p0 = p;
+	if (_p0.ctor === 'Parser') {
+		return _p0._0;
+	} else {
+		return _elm_lang$lazy$Lazy$force(_p0._0);
+	}
+};
+var _Bogdanp$elm_combine$Combine$InputStream = F3(
+	function (a, b, c) {
+		return {data: a, input: b, position: c};
+	});
+var _Bogdanp$elm_combine$Combine$initStream = function (s) {
+	return A3(_Bogdanp$elm_combine$Combine$InputStream, s, s, 0);
+};
+var _Bogdanp$elm_combine$Combine$runParser = F3(
+	function (p, st, s) {
+		var _p1 = A3(
+			_Bogdanp$elm_combine$Combine$app,
+			p,
+			st,
+			_Bogdanp$elm_combine$Combine$initStream(s));
+		if (_p1._2.ctor === 'Ok') {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '_Tuple3', _0: _p1._0, _1: _p1._1, _2: _p1._2._0});
+		} else {
+			return _elm_lang$core$Result$Err(
+				{ctor: '_Tuple3', _0: _p1._0, _1: _p1._1, _2: _p1._2._0});
+		}
+	});
+var _Bogdanp$elm_combine$Combine$parse = function (p) {
+	return A2(
+		_Bogdanp$elm_combine$Combine$runParser,
+		p,
+		{ctor: '_Tuple0'});
+};
+var _Bogdanp$elm_combine$Combine$ParseLocation = F3(
+	function (a, b, c) {
+		return {source: a, line: b, column: c};
+	});
+var _Bogdanp$elm_combine$Combine$currentLocation = function (stream) {
+	var find = F3(
+		function (position, currentLine, lines) {
+			find:
+			while (true) {
+				var _p2 = lines;
+				if (_p2.ctor === '[]') {
+					return A3(_Bogdanp$elm_combine$Combine$ParseLocation, '', 1, position);
+				} else {
+					if (_p2._1.ctor === '[]') {
+						return A3(_Bogdanp$elm_combine$Combine$ParseLocation, _p2._0, currentLine + 1, position);
+					} else {
+						var _p3 = _p2._0;
+						var length = _elm_lang$core$String$length(_p3);
+						if (_elm_lang$core$Native_Utils.cmp(position, length) > -1) {
+							var _v3 = (position - length) - 1,
+								_v4 = currentLine + 1,
+								_v5 = _p2._1;
+							position = _v3;
+							currentLine = _v4;
+							lines = _v5;
+							continue find;
+						} else {
+							if (_elm_lang$core$Native_Utils.eq(currentLine, 0)) {
+								return A3(_Bogdanp$elm_combine$Combine$ParseLocation, _p3, 1, position);
+							} else {
+								return A3(_Bogdanp$elm_combine$Combine$ParseLocation, _p3, currentLine, position - 1);
+							}
+						}
+					}
+				}
+			}
+		});
+	var lines = A2(_elm_lang$core$String$split, '\n', stream.data);
+	return A3(find, stream.position, 0, lines);
+};
+var _Bogdanp$elm_combine$Combine$currentSourceLine = function (_p4) {
+	return function (_) {
+		return _.source;
+	}(
+		_Bogdanp$elm_combine$Combine$currentLocation(_p4));
+};
+var _Bogdanp$elm_combine$Combine$currentLine = function (_p5) {
+	return function (_) {
+		return _.line;
+	}(
+		_Bogdanp$elm_combine$Combine$currentLocation(_p5));
+};
+var _Bogdanp$elm_combine$Combine$currentColumn = function (_p6) {
+	return function (_) {
+		return _.column;
+	}(
+		_Bogdanp$elm_combine$Combine$currentLocation(_p6));
+};
+var _Bogdanp$elm_combine$Combine$RecursiveParser = function (a) {
+	return {ctor: 'RecursiveParser', _0: a};
+};
+var _Bogdanp$elm_combine$Combine$lazy = function (t) {
+	return _Bogdanp$elm_combine$Combine$RecursiveParser(
+		_elm_lang$lazy$Lazy$lazy(
+			function (_p7) {
+				var _p8 = _p7;
+				return _Bogdanp$elm_combine$Combine$app(
+					t(
+						{ctor: '_Tuple0'}));
+			}));
+};
+var _Bogdanp$elm_combine$Combine$Parser = function (a) {
+	return {ctor: 'Parser', _0: a};
+};
+var _Bogdanp$elm_combine$Combine$primitive = _Bogdanp$elm_combine$Combine$Parser;
+var _Bogdanp$elm_combine$Combine$bimap = F3(
+	function (fok, ferr, p) {
+		return _Bogdanp$elm_combine$Combine$Parser(
+			F2(
+				function (state, stream) {
+					var _p9 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+					if (_p9._2.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple3',
+							_0: _p9._0,
+							_1: _p9._1,
+							_2: _elm_lang$core$Result$Ok(
+								fok(_p9._2._0))
+						};
+					} else {
+						return {
+							ctor: '_Tuple3',
+							_0: _p9._0,
+							_1: _p9._1,
+							_2: _elm_lang$core$Result$Err(
+								ferr(_p9._2._0))
+						};
+					}
+				}));
+	});
+var _Bogdanp$elm_combine$Combine$map = F2(
+	function (f, p) {
+		return A3(_Bogdanp$elm_combine$Combine$bimap, f, _elm_lang$core$Basics$identity, p);
+	});
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<$>'] = _Bogdanp$elm_combine$Combine$map;
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<$'] = function (res) {
+	return _Bogdanp$elm_combine$Combine$map(
+		_elm_lang$core$Basics$always(res));
+};
+var _Bogdanp$elm_combine$Combine$skip = function (p) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<$'],
+		{ctor: '_Tuple0'},
+		p);
+};
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['$>'] = _elm_lang$core$Basics$flip(
+	F2(
+		function (x, y) {
+			return A2(_Bogdanp$elm_combine$Combine_ops['<$'], x, y);
+		}));
+var _Bogdanp$elm_combine$Combine$mapError = _Bogdanp$elm_combine$Combine$bimap(_elm_lang$core$Basics$identity);
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<?>'] = F2(
+	function (p, m) {
+		return A2(
+			_Bogdanp$elm_combine$Combine$mapError,
+			_elm_lang$core$Basics$always(
+				{
+					ctor: '::',
+					_0: m,
+					_1: {ctor: '[]'}
+				}),
+			p);
+	});
+var _Bogdanp$elm_combine$Combine$withState = function (f) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					f(state),
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$withLocation = function (f) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					f(
+						_Bogdanp$elm_combine$Combine$currentLocation(stream)),
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$withLine = function (f) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					f(
+						_Bogdanp$elm_combine$Combine$currentLine(stream)),
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$withColumn = function (f) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					f(
+						_Bogdanp$elm_combine$Combine$currentColumn(stream)),
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$andThen = F2(
+	function (f, p) {
+		return _Bogdanp$elm_combine$Combine$Parser(
+			F2(
+				function (state, stream) {
+					var _p10 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+					if (_p10._2.ctor === 'Ok') {
+						return A3(
+							_Bogdanp$elm_combine$Combine$app,
+							f(_p10._2._0),
+							_p10._0,
+							_p10._1);
+					} else {
+						return {
+							ctor: '_Tuple3',
+							_0: _p10._0,
+							_1: _p10._1,
+							_2: _elm_lang$core$Result$Err(_p10._2._0)
+						};
+					}
+				}));
+	});
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['>>='] = _elm_lang$core$Basics$flip(_Bogdanp$elm_combine$Combine$andThen);
+var _Bogdanp$elm_combine$Combine$andMap = F2(
+	function (rp, lp) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['>>='],
+			lp,
+			A2(_elm_lang$core$Basics$flip, _Bogdanp$elm_combine$Combine$map, rp));
+	});
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<*>'] = _elm_lang$core$Basics$flip(_Bogdanp$elm_combine$Combine$andMap);
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<*'] = F2(
+	function (lp, rp) {
+		return A2(
+			_Bogdanp$elm_combine$Combine$andMap,
+			rp,
+			A2(_Bogdanp$elm_combine$Combine$map, _elm_lang$core$Basics$always, lp));
+	});
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['*>'] = F2(
+	function (lp, rp) {
+		return A2(
+			_Bogdanp$elm_combine$Combine$andMap,
+			rp,
+			A2(
+				_Bogdanp$elm_combine$Combine$map,
+				_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always),
+				lp));
+	});
+var _Bogdanp$elm_combine$Combine$between = F3(
+	function (lp, rp, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<*'],
+			A2(_Bogdanp$elm_combine$Combine_ops['*>'], lp, p),
+			rp);
+	});
+var _Bogdanp$elm_combine$Combine$sequence = function (ps) {
+	var accumulate = F4(
+		function (acc, ps, state, stream) {
+			accumulate:
+			while (true) {
+				var _p11 = ps;
+				if (_p11.ctor === '[]') {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Ok(
+							_elm_lang$core$List$reverse(acc))
+					};
+				} else {
+					var _p12 = A3(_Bogdanp$elm_combine$Combine$app, _p11._0, state, stream);
+					if (_p12._2.ctor === 'Ok') {
+						var _v11 = {ctor: '::', _0: _p12._2._0, _1: acc},
+							_v12 = _p11._1,
+							_v13 = _p12._0,
+							_v14 = _p12._1;
+						acc = _v11;
+						ps = _v12;
+						state = _v13;
+						stream = _v14;
+						continue accumulate;
+					} else {
+						return {
+							ctor: '_Tuple3',
+							_0: _p12._0,
+							_1: _p12._1,
+							_2: _elm_lang$core$Result$Err(_p12._2._0)
+						};
+					}
+				}
+			}
+		});
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A4(
+					accumulate,
+					{ctor: '[]'},
+					ps,
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$fail = function (m) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return {
+					ctor: '_Tuple3',
+					_0: state,
+					_1: stream,
+					_2: _elm_lang$core$Result$Err(
+						{
+							ctor: '::',
+							_0: m,
+							_1: {ctor: '[]'}
+						})
+				};
+			}));
+};
+var _Bogdanp$elm_combine$Combine$emptyErr = _Bogdanp$elm_combine$Combine$Parser(
+	F2(
+		function (state, stream) {
+			return {
+				ctor: '_Tuple3',
+				_0: state,
+				_1: stream,
+				_2: _elm_lang$core$Result$Err(
+					{ctor: '[]'})
+			};
+		}));
+var _Bogdanp$elm_combine$Combine$succeed = function (res) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return {
+					ctor: '_Tuple3',
+					_0: state,
+					_1: stream,
+					_2: _elm_lang$core$Result$Ok(res)
+				};
+			}));
+};
+var _Bogdanp$elm_combine$Combine$putState = function (state) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (_p13, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					_Bogdanp$elm_combine$Combine$succeed(
+						{ctor: '_Tuple0'}),
+					state,
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$modifyState = function (f) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				return A3(
+					_Bogdanp$elm_combine$Combine$app,
+					_Bogdanp$elm_combine$Combine$succeed(
+						{ctor: '_Tuple0'}),
+					f(state),
+					stream);
+			}));
+};
+var _Bogdanp$elm_combine$Combine$count = F2(
+	function (n, p) {
+		var accumulate = F2(
+			function (x, acc) {
+				return (_elm_lang$core$Native_Utils.cmp(x, 0) < 1) ? _Bogdanp$elm_combine$Combine$succeed(
+					_elm_lang$core$List$reverse(acc)) : A2(
+					_Bogdanp$elm_combine$Combine$andThen,
+					function (res) {
+						return A2(
+							accumulate,
+							x - 1,
+							{ctor: '::', _0: res, _1: acc});
+					},
+					p);
+			});
+		return A2(
+			accumulate,
+			n,
+			{ctor: '[]'});
+	});
+var _Bogdanp$elm_combine$Combine$string = function (s) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				if (A2(_elm_lang$core$String$startsWith, s, stream.input)) {
+					var len = _elm_lang$core$String$length(s);
+					var rem = A2(_elm_lang$core$String$dropLeft, len, stream.input);
+					var pos = stream.position + len;
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: _elm_lang$core$Native_Utils.update(
+							stream,
+							{input: rem, position: pos}),
+						_2: _elm_lang$core$Result$Ok(s)
+					};
+				} else {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Err(
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'expected ',
+									_elm_lang$core$Basics$toString(s)),
+								_1: {ctor: '[]'}
+							})
+					};
+				}
+			}));
+};
+var _Bogdanp$elm_combine$Combine$parens = A2(
+	_Bogdanp$elm_combine$Combine$between,
+	_Bogdanp$elm_combine$Combine$string('('),
+	_Bogdanp$elm_combine$Combine$string(')'));
+var _Bogdanp$elm_combine$Combine$braces = A2(
+	_Bogdanp$elm_combine$Combine$between,
+	_Bogdanp$elm_combine$Combine$string('{'),
+	_Bogdanp$elm_combine$Combine$string('}'));
+var _Bogdanp$elm_combine$Combine$brackets = A2(
+	_Bogdanp$elm_combine$Combine$between,
+	_Bogdanp$elm_combine$Combine$string('['),
+	_Bogdanp$elm_combine$Combine$string(']'));
+var _Bogdanp$elm_combine$Combine$regex = function (pat) {
+	var pattern = A2(_elm_lang$core$String$startsWith, '^', pat) ? pat : A2(_elm_lang$core$Basics_ops['++'], '^', pat);
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				var _p14 = A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(pattern),
+					stream.input);
+				if ((_p14.ctor === '::') && (_p14._1.ctor === '[]')) {
+					var _p15 = _p14._0;
+					var len = _elm_lang$core$String$length(_p15.match);
+					var rem = A2(_elm_lang$core$String$dropLeft, len, stream.input);
+					var pos = stream.position + len;
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: _elm_lang$core$Native_Utils.update(
+							stream,
+							{input: rem, position: pos}),
+						_2: _elm_lang$core$Result$Ok(_p15.match)
+					};
+				} else {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Err(
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'expected input matching Regexp /',
+									A2(_elm_lang$core$Basics_ops['++'], pattern, '/')),
+								_1: {ctor: '[]'}
+							})
+					};
+				}
+			}));
+};
+var _Bogdanp$elm_combine$Combine$whitespace = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine$regex('[ \t\r\n]*'),
+	'whitespace');
+var _Bogdanp$elm_combine$Combine$while = function (pred) {
+	var accumulate = F3(
+		function (acc, state, stream) {
+			accumulate:
+			while (true) {
+				var _p16 = _elm_lang$core$String$uncons(stream.input);
+				if (_p16.ctor === 'Just') {
+					var _p17 = _p16._0._0;
+					if (pred(_p17)) {
+						var pos = stream.position + 1;
+						var c = A2(_elm_lang$core$String$cons, _p17, '');
+						var _v17 = A2(_elm_lang$core$Basics_ops['++'], acc, c),
+							_v18 = state,
+							_v19 = _elm_lang$core$Native_Utils.update(
+							stream,
+							{input: _p16._0._1, position: pos});
+						acc = _v17;
+						state = _v18;
+						stream = _v19;
+						continue accumulate;
+					} else {
+						return {ctor: '_Tuple3', _0: state, _1: stream, _2: acc};
+					}
+				} else {
+					return {ctor: '_Tuple3', _0: state, _1: stream, _2: acc};
+				}
+			}
+		});
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				var _p18 = A3(accumulate, '', state, stream);
+				var rstate = _p18._0;
+				var rstream = _p18._1;
+				var res = _p18._2;
+				return {
+					ctor: '_Tuple3',
+					_0: rstate,
+					_1: rstream,
+					_2: _elm_lang$core$Result$Ok(res)
+				};
+			}));
+};
+var _Bogdanp$elm_combine$Combine$end = _Bogdanp$elm_combine$Combine$Parser(
+	F2(
+		function (state, stream) {
+			return _elm_lang$core$Native_Utils.eq(stream.input, '') ? {
+				ctor: '_Tuple3',
+				_0: state,
+				_1: stream,
+				_2: _elm_lang$core$Result$Ok(
+					{ctor: '_Tuple0'})
+			} : {
+				ctor: '_Tuple3',
+				_0: state,
+				_1: stream,
+				_2: _elm_lang$core$Result$Err(
+					{
+						ctor: '::',
+						_0: 'expected end of input',
+						_1: {ctor: '[]'}
+					})
+			};
+		}));
+var _Bogdanp$elm_combine$Combine$lookAhead = function (p) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				var _p19 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+				if ((_p19.ctor === '_Tuple3') && (_p19._2.ctor === 'Ok')) {
+					return {
+						ctor: '_Tuple3',
+						_0: _p19._0,
+						_1: stream,
+						_2: _elm_lang$core$Result$Ok(_p19._2._0)
+					};
+				} else {
+					return _p19;
+				}
+			}));
+};
+var _Bogdanp$elm_combine$Combine$or = F2(
+	function (lp, rp) {
+		return _Bogdanp$elm_combine$Combine$Parser(
+			F2(
+				function (state, stream) {
+					var _p20 = A3(_Bogdanp$elm_combine$Combine$app, lp, state, stream);
+					if (_p20._2.ctor === 'Ok') {
+						return _p20;
+					} else {
+						var _p21 = A3(_Bogdanp$elm_combine$Combine$app, rp, state, stream);
+						if (_p21._2.ctor === 'Ok') {
+							return _p21;
+						} else {
+							return {
+								ctor: '_Tuple3',
+								_0: state,
+								_1: stream,
+								_2: _elm_lang$core$Result$Err(
+									A2(_elm_lang$core$Basics_ops['++'], _p20._2._0, _p21._2._0))
+							};
+						}
+					}
+				}));
+	});
+var _Bogdanp$elm_combine$Combine$choice = function (xs) {
+	return A3(_elm_lang$core$List$foldr, _Bogdanp$elm_combine$Combine$or, _Bogdanp$elm_combine$Combine$emptyErr, xs);
+};
+var _Bogdanp$elm_combine$Combine_ops = _Bogdanp$elm_combine$Combine_ops || {};
+_Bogdanp$elm_combine$Combine_ops['<|>'] = _Bogdanp$elm_combine$Combine$or;
+var _Bogdanp$elm_combine$Combine$optional = F2(
+	function (res, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<|>'],
+			p,
+			_Bogdanp$elm_combine$Combine$succeed(res));
+	});
+var _Bogdanp$elm_combine$Combine$chainl = F2(
+	function (op, p) {
+		var accumulate = function (x) {
+			return A2(
+				_Bogdanp$elm_combine$Combine_ops['<|>'],
+				A2(
+					_Bogdanp$elm_combine$Combine$andThen,
+					function (f) {
+						return A2(
+							_Bogdanp$elm_combine$Combine$andThen,
+							function (y) {
+								return accumulate(
+									A2(f, x, y));
+							},
+							p);
+					},
+					op),
+				_Bogdanp$elm_combine$Combine$succeed(x));
+		};
+		return A2(_Bogdanp$elm_combine$Combine$andThen, accumulate, p);
+	});
+var _Bogdanp$elm_combine$Combine$chainr = F2(
+	function (op, p) {
+		var accumulate = function (x) {
+			return A2(
+				_Bogdanp$elm_combine$Combine_ops['<|>'],
+				A2(
+					_Bogdanp$elm_combine$Combine$andThen,
+					function (f) {
+						return A2(
+							_Bogdanp$elm_combine$Combine$andThen,
+							function (y) {
+								return _Bogdanp$elm_combine$Combine$succeed(
+									A2(f, x, y));
+							},
+							A2(_Bogdanp$elm_combine$Combine$andThen, accumulate, p));
+					},
+					op),
+				_Bogdanp$elm_combine$Combine$succeed(x));
+		};
+		return A2(_Bogdanp$elm_combine$Combine$andThen, accumulate, p);
+	});
+var _Bogdanp$elm_combine$Combine$maybe = function (p) {
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				var _p22 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+				if ((_p22.ctor === '_Tuple3') && (_p22._2.ctor === 'Ok')) {
+					return {
+						ctor: '_Tuple3',
+						_0: _p22._0,
+						_1: _p22._1,
+						_2: _elm_lang$core$Result$Ok(
+							_elm_lang$core$Maybe$Just(_p22._2._0))
+					};
+				} else {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Ok(_elm_lang$core$Maybe$Nothing)
+					};
+				}
+			}));
+};
+var _Bogdanp$elm_combine$Combine$many = function (p) {
+	var accumulate = F3(
+		function (acc, state, stream) {
+			accumulate:
+			while (true) {
+				var _p23 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+				if ((_p23.ctor === '_Tuple3') && (_p23._2.ctor === 'Ok')) {
+					var _p25 = _p23._1;
+					var _p24 = _p23._0;
+					if (_elm_lang$core$Native_Utils.eq(stream, _p25)) {
+						return {
+							ctor: '_Tuple3',
+							_0: _p24,
+							_1: _p25,
+							_2: _elm_lang$core$List$reverse(acc)
+						};
+					} else {
+						var _v25 = {ctor: '::', _0: _p23._2._0, _1: acc},
+							_v26 = _p24,
+							_v27 = _p25;
+						acc = _v25;
+						state = _v26;
+						stream = _v27;
+						continue accumulate;
+					}
+				} else {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$List$reverse(acc)
+					};
+				}
+			}
+		});
+	return _Bogdanp$elm_combine$Combine$Parser(
+		F2(
+			function (state, stream) {
+				var _p26 = A3(
+					accumulate,
+					{ctor: '[]'},
+					state,
+					stream);
+				var rstate = _p26._0;
+				var rstream = _p26._1;
+				var res = _p26._2;
+				return {
+					ctor: '_Tuple3',
+					_0: rstate,
+					_1: rstream,
+					_2: _elm_lang$core$Result$Ok(res)
+				};
+			}));
+};
+var _Bogdanp$elm_combine$Combine$many1 = function (p) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<*>'],
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<$>'],
+			F2(
+				function (x, y) {
+					return {ctor: '::', _0: x, _1: y};
+				}),
+			p),
+		_Bogdanp$elm_combine$Combine$many(p));
+};
+var _Bogdanp$elm_combine$Combine$skipMany1 = function (p) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<$'],
+		{ctor: '_Tuple0'},
+		_Bogdanp$elm_combine$Combine$many1(
+			_Bogdanp$elm_combine$Combine$skip(p)));
+};
+var _Bogdanp$elm_combine$Combine$sepBy1 = F2(
+	function (sep, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<*>'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['<$>'],
+				F2(
+					function (x, y) {
+						return {ctor: '::', _0: x, _1: y};
+					}),
+				p),
+			_Bogdanp$elm_combine$Combine$many(
+				A2(_Bogdanp$elm_combine$Combine_ops['*>'], sep, p)));
+	});
+var _Bogdanp$elm_combine$Combine$sepBy = F2(
+	function (sep, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<|>'],
+			A2(_Bogdanp$elm_combine$Combine$sepBy1, sep, p),
+			_Bogdanp$elm_combine$Combine$succeed(
+				{ctor: '[]'}));
+	});
+var _Bogdanp$elm_combine$Combine$sepEndBy1 = F2(
+	function (sep, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<*'],
+			A2(_Bogdanp$elm_combine$Combine$sepBy1, sep, p),
+			_Bogdanp$elm_combine$Combine$maybe(sep));
+	});
+var _Bogdanp$elm_combine$Combine$sepEndBy = F2(
+	function (sep, p) {
+		return A2(
+			_Bogdanp$elm_combine$Combine_ops['<|>'],
+			A2(_Bogdanp$elm_combine$Combine$sepEndBy1, sep, p),
+			_Bogdanp$elm_combine$Combine$succeed(
+				{ctor: '[]'}));
+	});
+var _Bogdanp$elm_combine$Combine$skipMany = function (p) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<$'],
+		{ctor: '_Tuple0'},
+		_Bogdanp$elm_combine$Combine$many(
+			_Bogdanp$elm_combine$Combine$skip(p)));
+};
+var _Bogdanp$elm_combine$Combine$manyTill = F2(
+	function (p, end) {
+		var accumulate = F3(
+			function (acc, state, stream) {
+				accumulate:
+				while (true) {
+					var _p27 = A3(_Bogdanp$elm_combine$Combine$app, end, state, stream);
+					if (_p27._2.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple3',
+							_0: _p27._0,
+							_1: _p27._1,
+							_2: _elm_lang$core$Result$Ok(
+								_elm_lang$core$List$reverse(acc))
+						};
+					} else {
+						var _p28 = A3(_Bogdanp$elm_combine$Combine$app, p, state, stream);
+						if ((_p28.ctor === '_Tuple3') && (_p28._2.ctor === 'Ok')) {
+							var _v30 = {ctor: '::', _0: _p28._2._0, _1: acc},
+								_v31 = _p28._0,
+								_v32 = _p28._1;
+							acc = _v30;
+							state = _v31;
+							stream = _v32;
+							continue accumulate;
+						} else {
+							return {
+								ctor: '_Tuple3',
+								_0: _p27._0,
+								_1: _p27._1,
+								_2: _elm_lang$core$Result$Err(_p27._2._0)
+							};
+						}
+					}
+				}
+			});
+		return _Bogdanp$elm_combine$Combine$Parser(
+			accumulate(
+				{ctor: '[]'}));
+	});
+
+var _Bogdanp$elm_combine$Combine_Char$crlf = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$'],
+	_elm_lang$core$Native_Utils.chr('\n'),
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<?>'],
+		_Bogdanp$elm_combine$Combine$regex('\r\n'),
+		'expected crlf'));
+var _Bogdanp$elm_combine$Combine_Char$satisfy = function (pred) {
+	return _Bogdanp$elm_combine$Combine$primitive(
+		F2(
+			function (state, stream) {
+				var message = 'could not satisfy predicate';
+				var _p0 = _elm_lang$core$String$uncons(stream.input);
+				if (_p0.ctor === 'Just') {
+					var _p1 = _p0._0._0;
+					return pred(_p1) ? {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: _elm_lang$core$Native_Utils.update(
+							stream,
+							{input: _p0._0._1, position: stream.position + 1}),
+						_2: _elm_lang$core$Result$Ok(_p1)
+					} : {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Err(
+							{
+								ctor: '::',
+								_0: message,
+								_1: {ctor: '[]'}
+							})
+					};
+				} else {
+					return {
+						ctor: '_Tuple3',
+						_0: state,
+						_1: stream,
+						_2: _elm_lang$core$Result$Err(
+							{
+								ctor: '::',
+								_0: message,
+								_1: {ctor: '[]'}
+							})
+					};
+				}
+			}));
+};
+var _Bogdanp$elm_combine$Combine_Char$char = function (c) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<?>'],
+		_Bogdanp$elm_combine$Combine_Char$satisfy(
+			F2(
+				function (x, y) {
+					return _elm_lang$core$Native_Utils.eq(x, y);
+				})(c)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'expected ',
+			_elm_lang$core$Basics$toString(c)));
+};
+var _Bogdanp$elm_combine$Combine_Char$anyChar = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(
+		_elm_lang$core$Basics$always(true)),
+	'expected any character');
+var _Bogdanp$elm_combine$Combine_Char$oneOf = function (cs) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<?>'],
+		_Bogdanp$elm_combine$Combine_Char$satisfy(
+			A2(_elm_lang$core$Basics$flip, _elm_lang$core$List$member, cs)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'expected one of ',
+			_elm_lang$core$Basics$toString(cs)));
+};
+var _Bogdanp$elm_combine$Combine_Char$noneOf = function (cs) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<?>'],
+		_Bogdanp$elm_combine$Combine_Char$satisfy(
+			function (_p2) {
+				return !A3(_elm_lang$core$Basics$flip, _elm_lang$core$List$member, cs, _p2);
+			}),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'expected none of ',
+			_elm_lang$core$Basics$toString(cs)));
+};
+var _Bogdanp$elm_combine$Combine_Char$space = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(
+		F2(
+			function (x, y) {
+				return _elm_lang$core$Native_Utils.eq(x, y);
+			})(
+			_elm_lang$core$Native_Utils.chr(' '))),
+	'expected space');
+var _Bogdanp$elm_combine$Combine_Char$tab = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(
+		F2(
+			function (x, y) {
+				return _elm_lang$core$Native_Utils.eq(x, y);
+			})(
+			_elm_lang$core$Native_Utils.chr('\t'))),
+	'expected tab');
+var _Bogdanp$elm_combine$Combine_Char$newline = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(
+		F2(
+			function (x, y) {
+				return _elm_lang$core$Native_Utils.eq(x, y);
+			})(
+			_elm_lang$core$Native_Utils.chr('\n'))),
+	'expected newline');
+var _Bogdanp$elm_combine$Combine_Char$eol = A2(_Bogdanp$elm_combine$Combine_ops['<|>'], _Bogdanp$elm_combine$Combine_Char$newline, _Bogdanp$elm_combine$Combine_Char$crlf);
+var _Bogdanp$elm_combine$Combine_Char$lower = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(_elm_lang$core$Char$isLower),
+	'expected a lowercase character');
+var _Bogdanp$elm_combine$Combine_Char$upper = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(_elm_lang$core$Char$isUpper),
+	'expected an uppercase character');
+var _Bogdanp$elm_combine$Combine_Char$digit = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(_elm_lang$core$Char$isDigit),
+	'expected a digit');
+var _Bogdanp$elm_combine$Combine_Char$octDigit = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(_elm_lang$core$Char$isOctDigit),
+	'expected an octal digit');
+var _Bogdanp$elm_combine$Combine_Char$hexDigit = A2(
+	_Bogdanp$elm_combine$Combine_ops['<?>'],
+	_Bogdanp$elm_combine$Combine_Char$satisfy(_elm_lang$core$Char$isHexDigit),
+	'expected a hexadecimal digit');
 
 var _Zinggi$elm_webgl_math$Vector2$dot = F2(
 	function (_p1, _p0) {
@@ -7249,143 +8479,6 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
-//import Maybe, Native.List //
-
-var _elm_lang$core$Native_Regex = function() {
-
-function escape(str)
-{
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-function caseInsensitive(re)
-{
-	return new RegExp(re.source, 'gi');
-}
-function regex(raw)
-{
-	return new RegExp(raw, 'g');
-}
-
-function contains(re, string)
-{
-	return string.match(re) !== null;
-}
-
-function find(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var out = [];
-	var number = 0;
-	var string = str;
-	var lastIndex = re.lastIndex;
-	var prevLastIndex = -1;
-	var result;
-	while (number++ < n && (result = re.exec(string)))
-	{
-		if (prevLastIndex === re.lastIndex) break;
-		var i = result.length - 1;
-		var subs = new Array(i);
-		while (i > 0)
-		{
-			var submatch = result[i];
-			subs[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		out.push({
-			match: result[0],
-			submatches: _elm_lang$core$Native_List.fromArray(subs),
-			index: result.index,
-			number: number
-		});
-		prevLastIndex = re.lastIndex;
-	}
-	re.lastIndex = lastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-function replace(n, re, replacer, string)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var count = 0;
-	function jsReplacer(match)
-	{
-		if (count++ >= n)
-		{
-			return match;
-		}
-		var i = arguments.length - 3;
-		var submatches = new Array(i);
-		while (i > 0)
-		{
-			var submatch = arguments[i];
-			submatches[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		return replacer({
-			match: match,
-			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[arguments.length - 2],
-			number: count
-		});
-	}
-	return string.replace(re, jsReplacer);
-}
-
-function split(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	if (n === Infinity)
-	{
-		return _elm_lang$core$Native_List.fromArray(str.split(re));
-	}
-	var string = str;
-	var result;
-	var out = [];
-	var start = re.lastIndex;
-	var restoreLastIndex = re.lastIndex;
-	while (n--)
-	{
-		if (!(result = re.exec(string))) break;
-		out.push(string.slice(start, result.index));
-		start = re.lastIndex;
-	}
-	out.push(string.slice(start));
-	re.lastIndex = restoreLastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-return {
-	regex: regex,
-	caseInsensitive: caseInsensitive,
-	escape: escape,
-
-	contains: F2(contains),
-	find: F3(find),
-	replace: F4(replace),
-	split: F3(split)
-};
-
-}();
-
-var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
-var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
-var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
-var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
-var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
-var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
-var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
-var _elm_lang$core$Regex$Match = F4(
-	function (a, b, c, d) {
-		return {match: a, submatches: b, index: c, number: d};
-	});
-var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
-var _elm_lang$core$Regex$AtMost = function (a) {
-	return {ctor: 'AtMost', _0: a};
-};
-var _elm_lang$core$Regex$All = {ctor: 'All'};
-
 var _elm_lang$dom$Native_Dom = function() {
 
 var fakeNode = {
@@ -11156,530 +12249,332 @@ var _myrho$dive_svg$DiveSvg_Model$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
 };
 
-var _myrho$elm_xml$Xml$xmlToJson = function (xml) {
-	var _p0 = xml;
-	switch (_p0.ctor) {
-		case 'Tag':
-			var jsonAttrs = _elm_lang$core$Json_Encode$object(
-				function (list) {
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						list,
+var _myrho$elm_xml_parser$Xml_Parser$xmlDeclaration = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$'],
+	{ctor: '_Tuple0'},
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<*'],
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['*>'],
+			_Bogdanp$elm_combine$Combine$string('<?xml'),
+			_Bogdanp$elm_combine$Combine$while(
+				F2(
+					function (x, y) {
+						return !_elm_lang$core$Native_Utils.eq(x, y);
+					})(
+					_elm_lang$core$Native_Utils.chr('?')))),
+		_Bogdanp$elm_combine$Combine$string('?>')));
+var _myrho$elm_xml_parser$Xml_Parser$name = _Bogdanp$elm_combine$Combine$regex('[:A-Z_a-z][\\w:\\-.]*');
+var _myrho$elm_xml_parser$Xml_Parser$betweenBoth = function (ch) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<$>'],
+		_elm_lang$core$String$fromList,
+		A3(
+			_Bogdanp$elm_combine$Combine$between,
+			_Bogdanp$elm_combine$Combine_Char$char(ch),
+			_Bogdanp$elm_combine$Combine_Char$char(ch),
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['<|>'],
+				_Bogdanp$elm_combine$Combine$many1(
+					_Bogdanp$elm_combine$Combine_Char$noneOf(
 						{
 							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: 'value',
-								_1: _myrho$elm_xml$Xml$xmlToJson(_p0._2)
-							},
+							_0: ch,
 							_1: {ctor: '[]'}
-						});
-				}(
-					A2(
-						_elm_lang$core$List$map,
-						function (_p1) {
-							var _p2 = _p1;
-							return {
-								ctor: '_Tuple2',
-								_0: _p2._0,
-								_1: _myrho$elm_xml$Xml$xmlToJson(_p2._1)
-							};
-						},
-						_elm_lang$core$Dict$toList(_p0._1))));
-			return _elm_lang$core$Json_Encode$object(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: _p0._0, _1: jsonAttrs},
-					_1: {ctor: '[]'}
-				});
-		case 'StrNode':
-			return _elm_lang$core$Json_Encode$string(_p0._0);
-		case 'IntNode':
-			return _elm_lang$core$Json_Encode$int(_p0._0);
-		case 'FloatNode':
-			return _elm_lang$core$Json_Encode$float(_p0._0);
-		case 'BoolNode':
-			return _elm_lang$core$Json_Encode$bool(_p0._0);
-		case 'Object':
-			return _elm_lang$core$Json_Encode$list(
-				A2(_elm_lang$core$List$map, _myrho$elm_xml$Xml$xmlToJson, _p0._0));
-		default:
-			return _elm_lang$core$Json_Encode$null;
-	}
+						})),
+				_Bogdanp$elm_combine$Combine$succeed(
+					{ctor: '[]'}))));
 };
-var _myrho$elm_xml$Xml$foldl = F3(
-	function (fn, init, value) {
-		foldl:
-		while (true) {
-			var _p3 = value;
-			switch (_p3.ctor) {
-				case 'Tag':
-					var _v3 = fn,
-						_v4 = A2(fn, value, init),
-						_v5 = _p3._2;
-					fn = _v3;
-					init = _v4;
-					value = _v5;
-					continue foldl;
-				case 'Object':
-					return A3(
-						_elm_lang$core$List$foldl,
-						F2(
-							function (elm, b) {
-								return A3(_myrho$elm_xml$Xml$foldl, fn, b, elm);
-							}),
-						A2(fn, value, init),
-						_p3._0);
-				default:
-					return A2(fn, _p3, init);
-			}
-		}
-	});
-var _myrho$elm_xml$Xml$DocType = F2(
-	function (a, b) {
-		return {ctor: 'DocType', _0: a, _1: b};
-	});
-var _myrho$elm_xml$Xml$Object = function (a) {
-	return {ctor: 'Object', _0: a};
-};
-var _myrho$elm_xml$Xml$BoolNode = function (a) {
-	return {ctor: 'BoolNode', _0: a};
-};
-var _myrho$elm_xml$Xml$FloatNode = function (a) {
-	return {ctor: 'FloatNode', _0: a};
-};
-var _myrho$elm_xml$Xml$IntNode = function (a) {
-	return {ctor: 'IntNode', _0: a};
-};
-var _myrho$elm_xml$Xml$StrNode = function (a) {
-	return {ctor: 'StrNode', _0: a};
-};
-var _myrho$elm_xml$Xml$Tag = F3(
-	function (a, b, c) {
-		return {ctor: 'Tag', _0: a, _1: b, _2: c};
-	});
-var _myrho$elm_xml$Xml$map = F2(
-	function (fn, value) {
-		var _p4 = value;
-		switch (_p4.ctor) {
-			case 'Tag':
-				return fn(
-					A3(
-						_myrho$elm_xml$Xml$Tag,
-						_p4._0,
-						_p4._1,
-						A2(_myrho$elm_xml$Xml$map, fn, _p4._2)));
-			case 'Object':
-				return fn(
-					_myrho$elm_xml$Xml$Object(
-						A2(
-							_elm_lang$core$List$map,
-							_myrho$elm_xml$Xml$map(fn),
-							_p4._0)));
-			default:
-				return fn(_p4);
-		}
-	});
-var _myrho$elm_xml$Xml$xmlDecoder = _elm_lang$core$Json_Decode$oneOf(
-	{
-		ctor: '::',
-		_0: A2(_elm_lang$core$Json_Decode$map, _myrho$elm_xml$Xml$StrNode, _elm_lang$core$Json_Decode$string),
-		_1: {
-			ctor: '::',
-			_0: A2(_elm_lang$core$Json_Decode$map, _myrho$elm_xml$Xml$IntNode, _elm_lang$core$Json_Decode$int),
-			_1: {
-				ctor: '::',
-				_0: A2(_elm_lang$core$Json_Decode$map, _myrho$elm_xml$Xml$FloatNode, _elm_lang$core$Json_Decode$float),
-				_1: {
-					ctor: '::',
-					_0: A2(_elm_lang$core$Json_Decode$map, _myrho$elm_xml$Xml$BoolNode, _elm_lang$core$Json_Decode$bool),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$core$Json_Decode$map,
-							_myrho$elm_xml$Xml$Object,
-							_elm_lang$core$Json_Decode$list(
-								_elm_lang$core$Json_Decode$lazy(
-									function (_p5) {
-										return _myrho$elm_xml$Xml$xmlDecoder;
-									}))),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$core$Json_Decode$map,
-								function (_p6) {
-									return _myrho$elm_xml$Xml$Object(
-										A2(
-											_elm_lang$core$List$map,
-											function (_p7) {
-												var _p8 = _p7;
-												return A3(_myrho$elm_xml$Xml$Tag, _p8._0, _elm_lang$core$Dict$empty, _p8._1);
-											},
-											_elm_lang$core$Dict$toList(_p6)));
-								},
-								_elm_lang$core$Json_Decode$dict(
-									_elm_lang$core$Json_Decode$lazy(
-										function (_p9) {
-											return _myrho$elm_xml$Xml$xmlDecoder;
-										}))),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		}
-	});
-var _myrho$elm_xml$Xml$jsonToXml = function (json) {
-	return A2(
-		_elm_lang$core$Result$withDefault,
-		_myrho$elm_xml$Xml$Object(
-			{ctor: '[]'}),
-		A2(_elm_lang$core$Json_Decode$decodeValue, _myrho$elm_xml$Xml$xmlDecoder, json));
-};
-
-var _myrho$elm_xml$Xml_Decode$decodeBool = function (str) {
-	return _elm_lang$core$Native_Utils.eq(str, 'true') ? _elm_lang$core$Result$Ok(
-		_myrho$elm_xml$Xml$BoolNode(true)) : (_elm_lang$core$Native_Utils.eq(str, 'false') ? _elm_lang$core$Result$Ok(
-		_myrho$elm_xml$Xml$BoolNode(false)) : _elm_lang$core$Result$Err('Not a bool'));
-};
-var _myrho$elm_xml$Xml_Decode$decodeFloat = function (str) {
-	var _p0 = _elm_lang$core$String$toFloat(str);
-	if (_p0.ctor === 'Err') {
-		return _elm_lang$core$Result$Err(_p0._0);
-	} else {
-		return _elm_lang$core$Result$Ok(
-			_myrho$elm_xml$Xml$FloatNode(_p0._0));
-	}
-};
-var _myrho$elm_xml$Xml_Decode$decodeInt = function (str) {
-	var _p1 = _elm_lang$core$String$toInt(str);
-	if (_p1.ctor === 'Err') {
-		return _elm_lang$core$Result$Err(_p1._0);
-	} else {
-		return _elm_lang$core$Result$Ok(
-			_myrho$elm_xml$Xml$IntNode(_p1._0));
-	}
-};
-var _myrho$elm_xml$Xml_Decode$decodeString = function (str) {
-	return _elm_lang$core$Result$Ok(
-		_myrho$elm_xml$Xml$StrNode(str));
-};
-var _myrho$elm_xml$Xml_Decode$propRegex = _elm_lang$core$Regex$regex(' .+?=\".+?\"');
-var _myrho$elm_xml$Xml_Decode$decodeProps = function (str) {
-	return A3(
-		_elm_lang$core$List$foldl,
-		F2(
-			function (decoder, val) {
-				var _p2 = val;
-				if (_p2.ctor === 'Ok') {
-					return val;
-				} else {
-					return decoder(str);
-				}
-			}),
-		_elm_lang$core$Result$Err(''),
-		{
-			ctor: '::',
-			_0: _myrho$elm_xml$Xml_Decode$decodeBool,
-			_1: {
-				ctor: '::',
-				_0: _myrho$elm_xml$Xml_Decode$decodeInt,
-				_1: {
-					ctor: '::',
-					_0: _myrho$elm_xml$Xml_Decode$decodeFloat,
-					_1: {
-						ctor: '::',
-						_0: _myrho$elm_xml$Xml_Decode$decodeString,
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
-};
-var _myrho$elm_xml$Xml_Decode$parseProps = _elm_lang$core$List$filterMap(
-	function (n) {
-		var _p3 = A2(_elm_lang$core$String$split, '=', n);
-		if (((_p3.ctor === '::') && (_p3._1.ctor === '::')) && (_p3._1._1.ctor === '[]')) {
-			var withoutQuotes = A2(
-				_elm_lang$core$String$dropRight,
-				1,
-				A2(_elm_lang$core$String$dropLeft, 1, _p3._1._0));
-			var _p4 = _myrho$elm_xml$Xml_Decode$decodeProps(withoutQuotes);
-			if (_p4.ctor === 'Err') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return _elm_lang$core$Maybe$Just(
-					{ctor: '_Tuple2', _0: _p3._0, _1: _p4._0});
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _myrho$elm_xml$Xml_Decode$findProps = function (_p5) {
-	return _elm_lang$core$Dict$fromList(
-		_myrho$elm_xml$Xml_Decode$parseProps(
+var _myrho$elm_xml_parser$Xml_Parser$betweenSingleQuotes = _myrho$elm_xml_parser$Xml_Parser$betweenBoth(
+	_elm_lang$core$Native_Utils.chr('\''));
+var _myrho$elm_xml_parser$Xml_Parser$betweenDoubleQuotes = _myrho$elm_xml_parser$Xml_Parser$betweenBoth(
+	_elm_lang$core$Native_Utils.chr('\"'));
+var _myrho$elm_xml_parser$Xml_Parser$quotedString = A2(_Bogdanp$elm_combine$Combine_ops['<|>'], _myrho$elm_xml_parser$Xml_Parser$betweenSingleQuotes, _myrho$elm_xml_parser$Xml_Parser$betweenDoubleQuotes);
+var _myrho$elm_xml_parser$Xml_Parser$letter = A2(_Bogdanp$elm_combine$Combine_ops['<|>'], _Bogdanp$elm_combine$Combine_Char$upper, _Bogdanp$elm_combine$Combine_Char$lower);
+var _myrho$elm_xml_parser$Xml_Parser$spaces = _Bogdanp$elm_combine$Combine$many(
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<|>'],
+		_Bogdanp$elm_combine$Combine_Char$space,
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<|>'],
+			_Bogdanp$elm_combine$Combine_Char$tab,
 			A2(
-				_elm_lang$core$List$map,
-				function (_p6) {
-					return _elm_lang$core$String$trim(
-						function (_) {
-							return _.match;
-						}(_p6));
-				},
-				A3(
-					_elm_lang$core$Regex$find,
-					_elm_lang$core$Regex$All,
-					_myrho$elm_xml$Xml_Decode$propRegex,
-					function (s) {
-						return A2(_elm_lang$core$Basics_ops['++'], ' ', s);
-					}(
+				_Bogdanp$elm_combine$Combine_ops['<|>'],
+				_Bogdanp$elm_combine$Combine_Char$char(
+					_elm_lang$core$Native_Utils.chr('\r')),
+				_Bogdanp$elm_combine$Combine_Char$newline))));
+var _myrho$elm_xml_parser$Xml_Parser$keyValue = A2(
+	_Bogdanp$elm_combine$Combine_ops['<*>'],
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<$>'],
+		F2(
+			function (key, value) {
+				return {ctor: '_Tuple2', _0: key, _1: value};
+			}),
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<*'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['<*'],
+				A2(
+					_Bogdanp$elm_combine$Combine_ops['<*'],
+					A2(_Bogdanp$elm_combine$Combine_ops['<?>'], _myrho$elm_xml_parser$Xml_Parser$name, 'Invalid Attribute name'),
+					_myrho$elm_xml_parser$Xml_Parser$spaces),
+				_Bogdanp$elm_combine$Combine_Char$char(
+					_elm_lang$core$Native_Utils.chr('='))),
+			_myrho$elm_xml_parser$Xml_Parser$spaces)),
+	A2(_Bogdanp$elm_combine$Combine_ops['<*'], _myrho$elm_xml_parser$Xml_Parser$quotedString, _myrho$elm_xml_parser$Xml_Parser$spaces));
+var _myrho$elm_xml_parser$Xml_Parser$openTag = A2(
+	_Bogdanp$elm_combine$Combine_ops['<*>'],
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<$>'],
+		F2(
+			function (tagName, attribs) {
+				return {ctor: '_Tuple2', _0: tagName, _1: attribs};
+			}),
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['*>'],
+			_Bogdanp$elm_combine$Combine_Char$char(
+				_elm_lang$core$Native_Utils.chr('<')),
+			A2(_Bogdanp$elm_combine$Combine_ops['<?>'], _myrho$elm_xml_parser$Xml_Parser$name, 'Invalid Tag name'))),
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<*'],
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['*>'],
+			_myrho$elm_xml_parser$Xml_Parser$spaces,
+			_Bogdanp$elm_combine$Combine$many(_myrho$elm_xml_parser$Xml_Parser$keyValue)),
+		_Bogdanp$elm_combine$Combine_Char$char(
+			_elm_lang$core$Native_Utils.chr('>'))));
+var _myrho$elm_xml_parser$Xml_Parser$closeTag = function (str) {
+	return A2(
+		_Bogdanp$elm_combine$Combine_ops['<$'],
+		{ctor: '_Tuple0'},
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<?>'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['*>'],
+				A2(
+					_Bogdanp$elm_combine$Combine_ops['*>'],
+					A2(
+						_Bogdanp$elm_combine$Combine_ops['*>'],
 						A2(
-							_elm_lang$core$String$join,
-							' ',
-							A2(
-								_elm_lang$core$Maybe$withDefault,
-								{ctor: '[]'},
-								_elm_lang$core$List$tail(_p5))))))));
-};
-var _myrho$elm_xml$Xml_Decode$CloseTag = {ctor: 'CloseTag'};
-var _myrho$elm_xml$Xml_Decode$OpenTag = {ctor: 'OpenTag'};
-var _myrho$elm_xml$Xml_Decode$parseSlice = F3(
-	function (first, firstClose, trimmed) {
-		var reduce = function (list) {
-			reduce:
-			while (true) {
-				var _p7 = list;
-				if (((_p7.ctor === '::') && (_p7._0.ctor === '_Tuple2')) && (_p7._0._0.ctor === 'OpenTag')) {
-					if (((_p7._1.ctor === '::') && (_p7._1._0.ctor === '_Tuple2')) && (_p7._1._0._0.ctor === 'CloseTag')) {
-						var _v6 = _p7._1._1;
-						list = _v6;
-						continue reduce;
-					} else {
-						var _p8 = reduce(_p7._1);
-						if (((_p8.ctor === '::') && (_p8._0.ctor === '_Tuple2')) && (_p8._0._0.ctor === 'CloseTag')) {
-							var _v8 = _p8._1;
-							list = _v8;
-							continue reduce;
-						} else {
-							return _p8;
-						}
-					}
-				} else {
-					return list;
-				}
-			}
-		};
-		var afterOpen = A3(
-			_elm_lang$core$String$slice,
-			first + 1,
-			_elm_lang$core$String$length(trimmed),
-			trimmed);
-		var beforeClose = A3(_elm_lang$core$String$slice, first + 1, firstClose, trimmed);
-		var words = _elm_lang$core$String$words(beforeClose);
-		var tagName = A2(
-			_elm_lang$core$Maybe$withDefault,
-			'',
-			_elm_lang$core$List$head(words));
-		var closeTag = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'</',
-			A2(_elm_lang$core$Basics_ops['++'], tagName, '>'));
-		var closeTags = A2(
-			_elm_lang$core$List$map,
-			F2(
-				function (v0, v1) {
-					return {ctor: '_Tuple2', _0: v0, _1: v1};
-				})(_myrho$elm_xml$Xml_Decode$CloseTag),
-			A2(_elm_lang$core$String$indexes, closeTag, trimmed));
-		var openTag = _elm_lang$core$Regex$regex(
+							_Bogdanp$elm_combine$Combine_ops['*>'],
+							_Bogdanp$elm_combine$Combine$string('</'),
+							_myrho$elm_xml_parser$Xml_Parser$spaces),
+						_Bogdanp$elm_combine$Combine$string(str)),
+					_myrho$elm_xml_parser$Xml_Parser$spaces),
+				_Bogdanp$elm_combine$Combine_Char$char(
+					_elm_lang$core$Native_Utils.chr('>'))),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'<',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Regex$escape(tagName),
-					'[\\s\\n]*[^/]*?>')));
-		var openTags = A2(
-			_elm_lang$core$List$map,
-			function (_p9) {
-				return A2(
-					F2(
-						function (v0, v1) {
-							return {ctor: '_Tuple2', _0: v0, _1: v1};
-						}),
-					_myrho$elm_xml$Xml_Decode$OpenTag,
-					function (_) {
-						return _.index;
-					}(_p9));
-			},
-			A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, openTag, afterOpen));
-		var allTags = A2(
-			_elm_lang$core$List$sortBy,
-			_elm_lang$core$Tuple$second,
-			A2(_elm_lang$core$Basics_ops['++'], openTags, closeTags));
-		var props = _myrho$elm_xml$Xml_Decode$findProps(words);
-		var _p10 = _elm_lang$core$List$head(
-			reduce(allTags));
-		if (_p10.ctor === 'Nothing') {
-			return A2(_elm_lang$core$String$startsWith, '?', tagName) ? _elm_lang$core$Result$Ok(
-				{
-					ctor: '_Tuple2',
-					_0: A2(_myrho$elm_xml$Xml$DocType, tagName, props),
-					_1: firstClose + 1
-				}) : (A2(_elm_lang$core$String$endsWith, '/', beforeClose) ? _elm_lang$core$Result$Ok(
-				{
-					ctor: '_Tuple2',
-					_0: A3(
-						_myrho$elm_xml$Xml$Tag,
-						tagName,
-						props,
-						_myrho$elm_xml$Xml$Object(
-							{ctor: '[]'})),
-					_1: firstClose + 1
-				}) : (A2(_elm_lang$core$String$startsWith, '!', tagName) ? _elm_lang$core$Result$Ok(
-				{
-					ctor: '_Tuple2',
-					_0: _myrho$elm_xml$Xml$Object(
-						{ctor: '[]'}),
-					_1: firstClose + 1
-				}) : _elm_lang$core$Result$Err(
-				A2(_elm_lang$core$Basics_ops['++'], 'Failed to find close tag for ', tagName))));
-		} else {
-			var _p12 = _p10._0._1;
-			var contents = A3(_elm_lang$core$String$slice, firstClose + 1, _p12, trimmed);
-			var _p11 = _myrho$elm_xml$Xml_Decode$decodeChildren(contents);
-			if (_p11.ctor === 'Err') {
-				return _elm_lang$core$Result$Err(_p11._0);
-			} else {
-				return _elm_lang$core$Result$Ok(
-					{
-						ctor: '_Tuple2',
-						_0: A3(_myrho$elm_xml$Xml$Tag, tagName, props, _p11._0),
-						_1: _p12 + _elm_lang$core$String$length(closeTag)
-					});
-			}
-		}
+				'Expected closing Tag for ',
+				_elm_lang$core$Basics$toString(str))));
+};
+var _myrho$elm_xml_parser$Xml_Parser$ProcessingInstruction = F3(
+	function (a, b, c) {
+		return {ctor: 'ProcessingInstruction', _0: a, _1: b, _2: c};
 	});
-var _myrho$elm_xml$Xml_Decode$decodeChildren = function (str) {
-	return A3(
-		_elm_lang$core$List$foldl,
+var _myrho$elm_xml_parser$Xml_Parser$processingInstruction = A2(
+	_Bogdanp$elm_combine$Combine_ops['<*>'],
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<$>'],
 		F2(
-			function (decoder, val) {
-				var _p13 = val;
-				if (_p13.ctor === 'Ok') {
-					return val;
-				} else {
-					return decoder(str);
-				}
+			function (name, contentChars) {
+				var content = _elm_lang$core$String$trim(
+					_elm_lang$core$String$fromList(contentChars));
+				var attribs = function () {
+					var _p0 = A2(
+						_Bogdanp$elm_combine$Combine$parse,
+						_Bogdanp$elm_combine$Combine$many(_myrho$elm_xml_parser$Xml_Parser$keyValue),
+						content);
+					if (_p0.ctor === 'Ok') {
+						return _p0._0._2;
+					} else {
+						return {ctor: '[]'};
+					}
+				}();
+				return A3(_myrho$elm_xml_parser$Xml_Parser$ProcessingInstruction, name, content, attribs);
 			}),
-		_elm_lang$core$Result$Err(''),
-		{
-			ctor: '::',
-			_0: _myrho$elm_xml$Xml_Decode$decode,
-			_1: {
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<*'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['*>'],
+				_Bogdanp$elm_combine$Combine$string('<?'),
+				_myrho$elm_xml_parser$Xml_Parser$name),
+			_myrho$elm_xml_parser$Xml_Parser$spaces)),
+	A2(
+		_Bogdanp$elm_combine$Combine$manyTill,
+		_Bogdanp$elm_combine$Combine_Char$anyChar,
+		_Bogdanp$elm_combine$Combine$string('?>')));
+var _myrho$elm_xml_parser$Xml_Parser$CDATA = function (a) {
+	return {ctor: 'CDATA', _0: a};
+};
+var _myrho$elm_xml_parser$Xml_Parser$cdata = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$>'],
+	function (_p1) {
+		return _myrho$elm_xml_parser$Xml_Parser$CDATA(
+			_elm_lang$core$String$trim(
+				_elm_lang$core$String$fromList(_p1)));
+	},
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['*>'],
+		_Bogdanp$elm_combine$Combine$string('<![CDATA['),
+		A2(
+			_Bogdanp$elm_combine$Combine$manyTill,
+			_Bogdanp$elm_combine$Combine_Char$anyChar,
+			_Bogdanp$elm_combine$Combine$string(']]>'))));
+var _myrho$elm_xml_parser$Xml_Parser$Comment = function (a) {
+	return {ctor: 'Comment', _0: a};
+};
+var _myrho$elm_xml_parser$Xml_Parser$comment = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$>'],
+	function (_p2) {
+		return _myrho$elm_xml_parser$Xml_Parser$Comment(
+			_elm_lang$core$String$trim(
+				_elm_lang$core$String$fromList(_p2)));
+	},
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['*>'],
+		_Bogdanp$elm_combine$Combine$string('<!--'),
+		A2(
+			_Bogdanp$elm_combine$Combine$manyTill,
+			_Bogdanp$elm_combine$Combine_Char$anyChar,
+			_Bogdanp$elm_combine$Combine$string('-->'))));
+var _myrho$elm_xml_parser$Xml_Parser$Body = function (a) {
+	return {ctor: 'Body', _0: a};
+};
+var _myrho$elm_xml_parser$Xml_Parser$parseBody = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$>'],
+	function (_p3) {
+		return _myrho$elm_xml_parser$Xml_Parser$Body(
+			_elm_lang$core$String$trim(
+				_elm_lang$core$String$fromList(_p3)));
+	},
+	_Bogdanp$elm_combine$Combine$many1(
+		_Bogdanp$elm_combine$Combine_Char$noneOf(
+			{
 				ctor: '::',
-				_0: _myrho$elm_xml$Xml_Decode$decodeInt,
+				_0: _elm_lang$core$Native_Utils.chr('<'),
 				_1: {
 					ctor: '::',
-					_0: _myrho$elm_xml$Xml_Decode$decodeFloat,
-					_1: {
-						ctor: '::',
-						_0: _myrho$elm_xml$Xml_Decode$decodeString,
-						_1: {ctor: '[]'}
-					}
+					_0: _elm_lang$core$Native_Utils.chr('>'),
+					_1: {ctor: '[]'}
+				}
+			})));
+var _myrho$elm_xml_parser$Xml_Parser$Element = F3(
+	function (a, b, c) {
+		return {ctor: 'Element', _0: a, _1: b, _2: c};
+	});
+var _myrho$elm_xml_parser$Xml_Parser$withoutExplicitCloseTag = A2(
+	_Bogdanp$elm_combine$Combine_ops['<*>'],
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<$>'],
+		F2(
+			function (tagName, attribs) {
+				return A3(
+					_myrho$elm_xml_parser$Xml_Parser$Element,
+					tagName,
+					attribs,
+					{ctor: '[]'});
+			}),
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<*'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['*>'],
+				_Bogdanp$elm_combine$Combine_Char$char(
+					_elm_lang$core$Native_Utils.chr('<')),
+				A2(_Bogdanp$elm_combine$Combine_ops['<?>'], _myrho$elm_xml_parser$Xml_Parser$name, 'Invalid Tag name')),
+			_myrho$elm_xml_parser$Xml_Parser$spaces)),
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<*'],
+		_Bogdanp$elm_combine$Combine$many(_myrho$elm_xml_parser$Xml_Parser$keyValue),
+		_Bogdanp$elm_combine$Combine$string('/>')));
+var _myrho$elm_xml_parser$Xml_Parser$xmlParser = A2(
+	_Bogdanp$elm_combine$Combine_ops['<|>'],
+	_Bogdanp$elm_combine$Combine$lazy(
+		function (_p4) {
+			var _p5 = _p4;
+			return _myrho$elm_xml_parser$Xml_Parser$withExplicitCloseTag;
+		}),
+	_Bogdanp$elm_combine$Combine$lazy(
+		function (_p6) {
+			var _p7 = _p6;
+			return _myrho$elm_xml_parser$Xml_Parser$withoutExplicitCloseTag;
+		}));
+var _myrho$elm_xml_parser$Xml_Parser$withExplicitCloseTag = A2(
+	_Bogdanp$elm_combine$Combine_ops['<$>'],
+	function (_p8) {
+		var _p9 = _p8;
+		return A3(_myrho$elm_xml_parser$Xml_Parser$Element, _p9._0, _p9._1, _p9._2);
+	},
+	A2(
+		_Bogdanp$elm_combine$Combine$andThen,
+		function (_p10) {
+			var _p11 = _p10;
+			var _p12 = _p11._0;
+			return A2(
+				_Bogdanp$elm_combine$Combine_ops['<$>'],
+				function (xml) {
+					return {ctor: '_Tuple3', _0: _p12, _1: _p11._1, _2: xml};
+				},
+				A2(
+					_Bogdanp$elm_combine$Combine_ops['<*'],
+					_Bogdanp$elm_combine$Combine$many(
+						A2(_Bogdanp$elm_combine$Combine_ops['<*'], _myrho$elm_xml_parser$Xml_Parser$innerXml, _myrho$elm_xml_parser$Xml_Parser$spaces)),
+					_myrho$elm_xml_parser$Xml_Parser$closeTag(_p12)));
+		},
+		A2(_Bogdanp$elm_combine$Combine_ops['<*'], _myrho$elm_xml_parser$Xml_Parser$openTag, _myrho$elm_xml_parser$Xml_Parser$spaces)));
+var _myrho$elm_xml_parser$Xml_Parser$innerXml = A2(
+	_Bogdanp$elm_combine$Combine_ops['<|>'],
+	_myrho$elm_xml_parser$Xml_Parser$comment,
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<|>'],
+		_myrho$elm_xml_parser$Xml_Parser$processingInstruction,
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['<|>'],
+			_myrho$elm_xml_parser$Xml_Parser$cdata,
+			A2(_Bogdanp$elm_combine$Combine_ops['<|>'], _myrho$elm_xml_parser$Xml_Parser$xmlParser, _myrho$elm_xml_parser$Xml_Parser$parseBody))));
+var _myrho$elm_xml_parser$Xml_Parser$rootElements = _Bogdanp$elm_combine$Combine$many1(
+	_Bogdanp$elm_combine$Combine$choice(
+		{
+			ctor: '::',
+			_0: _myrho$elm_xml_parser$Xml_Parser$xmlParser,
+			_1: {
+				ctor: '::',
+				_0: A2(_Bogdanp$elm_combine$Combine_ops['<*'], _myrho$elm_xml_parser$Xml_Parser$comment, _myrho$elm_xml_parser$Xml_Parser$spaces),
+				_1: {
+					ctor: '::',
+					_0: A2(_Bogdanp$elm_combine$Combine_ops['<*'], _myrho$elm_xml_parser$Xml_Parser$processingInstruction, _myrho$elm_xml_parser$Xml_Parser$spaces),
+					_1: {ctor: '[]'}
 				}
 			}
-		});
-};
-var _myrho$elm_xml$Xml_Decode$decode = function (text) {
-	var _p14 = _elm_lang$core$String$trim(text);
-	if (_p14 === '') {
-		return _elm_lang$core$Result$Ok(
-			_myrho$elm_xml$Xml$Object(
-				{ctor: '[]'}));
+		}));
+var _myrho$elm_xml_parser$Xml_Parser$parser = A2(
+	_Bogdanp$elm_combine$Combine_ops['<*'],
+	A2(
+		_Bogdanp$elm_combine$Combine_ops['<*'],
+		A2(
+			_Bogdanp$elm_combine$Combine_ops['*>'],
+			A2(
+				_Bogdanp$elm_combine$Combine_ops['*>'],
+				A2(
+					_Bogdanp$elm_combine$Combine_ops['*>'],
+					_myrho$elm_xml_parser$Xml_Parser$spaces,
+					_Bogdanp$elm_combine$Combine$maybe(_myrho$elm_xml_parser$Xml_Parser$xmlDeclaration)),
+				_myrho$elm_xml_parser$Xml_Parser$spaces),
+			_myrho$elm_xml_parser$Xml_Parser$rootElements),
+		_myrho$elm_xml_parser$Xml_Parser$spaces),
+	_Bogdanp$elm_combine$Combine$end);
+var _myrho$elm_xml_parser$Xml_Parser$parseXml = function (str) {
+	var _p13 = A2(_Bogdanp$elm_combine$Combine$parse, _myrho$elm_xml_parser$Xml_Parser$parser, str);
+	if (_p13.ctor === 'Ok') {
+		return _elm_lang$core$Result$Ok(_p13._0._2);
 	} else {
-		return A2(
-			_elm_lang$core$Result$map,
-			_myrho$elm_xml$Xml$Object,
-			_myrho$elm_xml$Xml_Decode$actualDecode(_p14));
-	}
-};
-var _myrho$elm_xml$Xml_Decode$actualDecode = function (text) {
-	var closeIndexes = A2(_elm_lang$core$String$indexes, '>', text);
-	var openIndexes = A2(_elm_lang$core$String$indexes, '<', text);
-	var _p15 = {ctor: '_Tuple2', _0: openIndexes, _1: closeIndexes};
-	if (((_p15.ctor === '_Tuple2') && (_p15._0.ctor === '::')) && (_p15._1.ctor === '::')) {
-		return A2(
-			_elm_lang$core$Result$andThen,
-			function (_p16) {
-				var _p17 = _p16;
-				var _p20 = _p17._0;
-				var _p18 = _myrho$elm_xml$Xml_Decode$actualDecode(
-					A3(
-						_elm_lang$core$String$slice,
-						_p17._1,
-						_elm_lang$core$String$length(text) + 1,
-						text));
-				if (_p18.ctor === 'Err') {
-					var _p19 = _p18._0;
-					return _elm_lang$core$Native_Utils.eq(_p19, 'Nothing left') ? _elm_lang$core$Result$Ok(
-						{
-							ctor: '::',
-							_0: _p20,
-							_1: {ctor: '[]'}
-						}) : _elm_lang$core$Result$Err(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'Parsed to ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p20),
-								A2(_elm_lang$core$Basics_ops['++'], ', but then hit ', _p19))));
-				} else {
-					return _elm_lang$core$Result$Ok(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							{
-								ctor: '::',
-								_0: _p20,
-								_1: {ctor: '[]'}
-							},
-							_p18._0));
-				}
-			},
-			A3(_myrho$elm_xml$Xml_Decode$parseSlice, _p15._0._0, _p15._1._0, text));
-	} else {
-		return _elm_lang$core$Result$Err('Nothing left');
+		return _elm_lang$core$Result$Err(_p13._0._2);
 	}
 };
 
-var _myrho$dive_svg$DiveSvg_Parser$toAttr = function (_p0) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (_p1) {
-			var _p2 = _p1;
-			return A2(
-				_elm_lang$virtual_dom$VirtualDom$attribute,
-				_p2._0,
-				function () {
-					var _p3 = _p2._1;
-					switch (_p3.ctor) {
-						case 'StrNode':
-							return _p3._0;
-						case 'IntNode':
-							return _elm_lang$core$Basics$toString(_p3._0);
-						case 'FloatNode':
-							return _elm_lang$core$Basics$toString(_p3._0);
-						case 'BoolNode':
-							return _elm_lang$core$String$toLower(
-								_elm_lang$core$Basics$toString(_p3._0));
-						default:
-							return '';
-					}
-				}());
-		},
-		_elm_lang$core$Dict$toList(_p0));
-};
+var _myrho$dive_svg$DiveSvg_Parser$toAttr = _elm_lang$core$List$map(
+	_elm_lang$core$Basics$uncurry(_elm_lang$virtual_dom$VirtualDom$attribute));
 var _myrho$dive_svg$DiveSvg_Parser$frame2Viewbox = function (current) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -11701,17 +12596,17 @@ var _myrho$dive_svg$DiveSvg_Parser$frame2Viewbox = function (current) {
 							' ',
 							_elm_lang$core$Basics$toString(current.h)))))));
 };
-var _myrho$dive_svg$DiveSvg_Parser$matrix2Frame = function (_p4) {
-	var _p5 = _p4;
-	return A4(_myrho$dive_svg$DiveSvg_Model$Frame, _p5._2._0, _p5._2._1, _p5._0._0, _p5._1._1);
+var _myrho$dive_svg$DiveSvg_Parser$matrix2Frame = function (_p0) {
+	var _p1 = _p0;
+	return A4(_myrho$dive_svg$DiveSvg_Model$Frame, _p1._2._0, _p1._2._1, _p1._0._0, _p1._1._1);
 };
-var _myrho$dive_svg$DiveSvg_Parser$frame2Matrix = function (_p6) {
-	var _p7 = _p6;
+var _myrho$dive_svg$DiveSvg_Parser$frame2Matrix = function (_p2) {
+	var _p3 = _p2;
 	return {
 		ctor: '_Tuple3',
-		_0: {ctor: '_Tuple3', _0: _p7.w, _1: 0, _2: 0},
-		_1: {ctor: '_Tuple3', _0: 0, _1: _p7.h, _2: 0},
-		_2: {ctor: '_Tuple3', _0: _p7.x, _1: _p7.y, _2: 1}
+		_0: {ctor: '_Tuple3', _0: _p3.w, _1: 0, _2: 0},
+		_1: {ctor: '_Tuple3', _0: 0, _1: _p3.h, _2: 0},
+		_2: {ctor: '_Tuple3', _0: _p3.x, _1: _p3.y, _2: 1}
 	};
 };
 var _myrho$dive_svg$DiveSvg_Parser$transformFrame = F2(
@@ -11727,10 +12622,10 @@ var _myrho$dive_svg$DiveSvg_Parser$map6 = F7(
 		return A3(
 			_elm_lang$core$Maybe$map2,
 			F2(
-				function (_p9, _p8) {
-					var _p10 = _p9;
-					var _p11 = _p8;
-					return A6(mapFunc, _p10._0, _p10._1, _p10._2, _p11._0, _p11._1, _p11._2);
+				function (_p5, _p4) {
+					var _p6 = _p5;
+					var _p7 = _p4;
+					return A6(mapFunc, _p6._0, _p6._1, _p6._2, _p7._0, _p7._1, _p7._2);
 				}),
 			A4(
 				_elm_lang$core$Maybe$map3,
@@ -11753,12 +12648,12 @@ var _myrho$dive_svg$DiveSvg_Parser$map6 = F7(
 	});
 var _myrho$dive_svg$DiveSvg_Parser$floatRegex = _elm_lang$core$Regex$regex('[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?');
 var _myrho$dive_svg$DiveSvg_Parser$numbers2 = function (op) {
-	var _p12 = A3(
+	var _p8 = A3(
 		_elm_lang$core$Regex$find,
 		_elm_lang$core$Regex$AtMost(2),
 		_myrho$dive_svg$DiveSvg_Parser$floatRegex,
 		op);
-	if (_p12.ctor === '::') {
+	if (_p8.ctor === '::') {
 		return A2(
 			_elm_lang$core$Maybe$andThen,
 			function (x) {
@@ -11773,46 +12668,46 @@ var _myrho$dive_svg$DiveSvg_Parser$numbers2 = function (op) {
 						_elm_lang$core$Result$toMaybe,
 						A2(
 							_elm_lang$core$Maybe$map,
-							function (_p13) {
+							function (_p9) {
 								return _elm_lang$core$String$toFloat(
 									function (_) {
 										return _.match;
-									}(_p13));
+									}(_p9));
 							},
-							_elm_lang$core$List$head(_p12._1))));
+							_elm_lang$core$List$head(_p8._1))));
 			},
 			_elm_lang$core$Result$toMaybe(
-				_elm_lang$core$String$toFloat(_p12._0.match)));
+				_elm_lang$core$String$toFloat(_p8._0.match)));
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
 };
 var _myrho$dive_svg$DiveSvg_Parser$numbers6 = function (op) {
-	var toMaybe = function (_p14) {
+	var toMaybe = function (_p10) {
 		return _elm_lang$core$Result$toMaybe(
 			_elm_lang$core$String$toFloat(
 				function (_) {
 					return _.match;
-				}(_p14)));
+				}(_p10)));
 	};
-	var _p15 = A3(
+	var _p11 = A3(
 		_elm_lang$core$Regex$find,
 		_elm_lang$core$Regex$AtMost(6),
 		_myrho$dive_svg$DiveSvg_Parser$floatRegex,
 		op);
-	if ((((((_p15.ctor === '::') && (_p15._1.ctor === '::')) && (_p15._1._1.ctor === '::')) && (_p15._1._1._1.ctor === '::')) && (_p15._1._1._1._1.ctor === '::')) && (_p15._1._1._1._1._1.ctor === '::')) {
+	if ((((((_p11.ctor === '::') && (_p11._1.ctor === '::')) && (_p11._1._1.ctor === '::')) && (_p11._1._1._1.ctor === '::')) && (_p11._1._1._1._1.ctor === '::')) && (_p11._1._1._1._1._1.ctor === '::')) {
 		return A7(
 			_myrho$dive_svg$DiveSvg_Parser$map6,
 			F6(
 				function (v0, v1, v2, v3, v4, v5) {
 					return {ctor: '_Tuple6', _0: v0, _1: v1, _2: v2, _3: v3, _4: v4, _5: v5};
 				}),
-			toMaybe(_p15._0),
-			toMaybe(_p15._1._0),
-			toMaybe(_p15._1._1._0),
-			toMaybe(_p15._1._1._1._0),
-			toMaybe(_p15._1._1._1._1._0),
-			toMaybe(_p15._1._1._1._1._1._0));
+			toMaybe(_p11._0),
+			toMaybe(_p11._1._0),
+			toMaybe(_p11._1._1._0),
+			toMaybe(_p11._1._1._1._0),
+			toMaybe(_p11._1._1._1._1._0),
+			toMaybe(_p11._1._1._1._1._1._0));
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
@@ -11823,108 +12718,90 @@ var _myrho$dive_svg$DiveSvg_Parser$op2Matrix = function (op) {
 		_Zinggi$elm_webgl_math$Matrix3$identity,
 		A2(_elm_lang$core$String$startsWith, 'translate', op) ? A2(
 			_elm_lang$core$Maybe$map,
-			function (_p16) {
-				var _p17 = _p16;
+			function (_p12) {
+				var _p13 = _p12;
 				return {
 					ctor: '_Tuple3',
 					_0: {ctor: '_Tuple3', _0: 1, _1: 0, _2: 0},
 					_1: {ctor: '_Tuple3', _0: 0, _1: 1, _2: 0},
-					_2: {ctor: '_Tuple3', _0: _p17._0, _1: _p17._1, _2: 1}
+					_2: {ctor: '_Tuple3', _0: _p13._0, _1: _p13._1, _2: 1}
 				};
 			},
 			_myrho$dive_svg$DiveSvg_Parser$numbers2(op)) : (A2(_elm_lang$core$String$startsWith, 'rotate', op) ? _elm_lang$core$Maybe$Nothing : (A2(_elm_lang$core$String$startsWith, 'scale', op) ? _elm_lang$core$Maybe$Nothing : (A2(_elm_lang$core$String$startsWith, 'skewX', op) ? _elm_lang$core$Maybe$Nothing : (A2(_elm_lang$core$String$startsWith, 'skewY', op) ? _elm_lang$core$Maybe$Nothing : (A2(_elm_lang$core$String$startsWith, 'matrix', op) ? A2(
 			_elm_lang$core$Maybe$map,
-			function (_p18) {
-				var _p19 = _p18;
+			function (_p14) {
+				var _p15 = _p14;
 				return {
 					ctor: '_Tuple3',
-					_0: {ctor: '_Tuple3', _0: _p19._0, _1: _p19._1, _2: 0},
-					_1: {ctor: '_Tuple3', _0: _p19._2, _1: _p19._3, _2: 0},
-					_2: {ctor: '_Tuple3', _0: _p19._4, _1: _p19._5, _2: 1}
+					_0: {ctor: '_Tuple3', _0: _p15._0, _1: _p15._1, _2: 0},
+					_1: {ctor: '_Tuple3', _0: _p15._2, _1: _p15._3, _2: 0},
+					_2: {ctor: '_Tuple3', _0: _p15._4, _1: _p15._5, _2: 1}
 				};
 			},
 			_myrho$dive_svg$DiveSvg_Parser$numbers6(op)) : _elm_lang$core$Maybe$Nothing))))));
 };
 var _myrho$dive_svg$DiveSvg_Parser$attr2Matrix = function (attr) {
-	var _p20 = A2(_elm_lang$core$Dict$get, 'transform', attr);
-	if ((_p20.ctor === 'Just') && (_p20._0.ctor === 'StrNode')) {
+	var _p16 = A2(
+		_elm_lang$core$Dict$get,
+		'transform',
+		_elm_lang$core$Dict$fromList(attr));
+	if (_p16.ctor === 'Just') {
 		return A3(
 			_elm_lang$core$List$foldr,
 			F2(
-				function (_p21, matrix) {
-					var _p22 = _p21;
+				function (_p17, matrix) {
+					var _p18 = _p17;
 					return A2(
 						_Zinggi$elm_webgl_math$Matrix3$mul,
 						matrix,
-						_myrho$dive_svg$DiveSvg_Parser$op2Matrix(_p22.match));
+						_myrho$dive_svg$DiveSvg_Parser$op2Matrix(_p18.match));
 				}),
 			_Zinggi$elm_webgl_math$Matrix3$identity,
 			A3(
 				_elm_lang$core$Regex$find,
 				_elm_lang$core$Regex$All,
 				_elm_lang$core$Regex$regex('(translate|scale|matrix|skewX|skewY|rotate)\\(.+?\\)'),
-				_p20._0._0));
+				_p16._0));
 	} else {
 		return _Zinggi$elm_webgl_math$Matrix3$identity;
 	}
 };
-var _myrho$dive_svg$DiveSvg_Parser$findNumber = function (children) {
-	findNumber:
-	while (true) {
-		var _p23 = children;
-		_v12_4:
-		do {
-			switch (_p23.ctor) {
-				case 'IntNode':
-					return _elm_lang$core$Maybe$Just(
-						_elm_lang$core$Basics$toFloat(_p23._0));
-				case 'FloatNode':
-					return _elm_lang$core$Maybe$Just(_p23._0);
-				case 'Tag':
-					var _v13 = _p23._2;
-					children = _v13;
-					continue findNumber;
-				case 'Object':
-					if (_p23._0.ctor === '::') {
-						var _v14 = _p23._0._0;
-						children = _v14;
-						continue findNumber;
-					} else {
-						break _v12_4;
-					}
+var _myrho$dive_svg$DiveSvg_Parser$findNumber = F2(
+	function (child, result) {
+		var _p19 = result;
+		if (_p19.ctor === 'Nothing') {
+			var _p20 = child;
+			switch (_p20.ctor) {
+				case 'Body':
+					return _elm_lang$core$Result$toMaybe(
+						_elm_lang$core$String$toFloat(_p20._0));
+				case 'Element':
+					return A3(_elm_lang$core$List$foldl, _myrho$dive_svg$DiveSvg_Parser$findNumber, _elm_lang$core$Maybe$Nothing, _p20._2);
 				default:
-					break _v12_4;
+					return _elm_lang$core$Maybe$Nothing;
 			}
-		} while(false);
-		return _elm_lang$core$Maybe$Nothing;
-	}
-};
+		} else {
+			return _elm_lang$core$Maybe$Just(_p19._0);
+		}
+	});
 var _myrho$dive_svg$DiveSvg_Parser$getFloat = F2(
 	function (key, attr) {
-		var _p24 = A2(_elm_lang$core$Dict$get, key, attr);
-		_v15_2:
-		do {
-			if (_p24.ctor === 'Just') {
-				switch (_p24._0.ctor) {
-					case 'FloatNode':
-						return _elm_lang$core$Maybe$Just(_p24._0._0);
-					case 'IntNode':
-						return _elm_lang$core$Maybe$Just(
-							_elm_lang$core$Basics$toFloat(_p24._0._0));
-					default:
-						break _v15_2;
-				}
-			} else {
-				break _v15_2;
-			}
-		} while(false);
-		return _elm_lang$core$Maybe$Nothing;
+		return A2(
+			_elm_lang$core$Maybe$andThen,
+			function (_p21) {
+				return _elm_lang$core$Result$toMaybe(
+					_elm_lang$core$String$toFloat(_p21));
+			},
+			A2(
+				_elm_lang$core$Dict$get,
+				key,
+				_elm_lang$core$Dict$fromList(attr)));
 	});
 var _myrho$dive_svg$DiveSvg_Parser$foldFrame = F2(
-	function (child, _p25) {
-		var _p26 = _p25;
-		var _p34 = _p26._0;
-		var _p33 = _p26._1;
+	function (child, _p22) {
+		var _p23 = _p22;
+		var _p31 = _p23._0;
+		var _p30 = _p23._1;
 		var getFrame = function (attr) {
 			return A2(
 				_elm_lang$core$Maybe$andThen,
@@ -11949,127 +12826,132 @@ var _myrho$dive_svg$DiveSvg_Parser$foldFrame = F2(
 				},
 				A2(_myrho$dive_svg$DiveSvg_Parser$getFloat, 'x', attr));
 		};
-		var _p27 = child;
-		if (_p27.ctor === 'Tag') {
-			var _p32 = _p27._0;
-			var _p31 = _p27._1;
-			if (_elm_lang$core$Native_Utils.eq(_p32, 'rect')) {
-				var _p28 = A2(_elm_lang$core$Dict$get, 'style', _p31);
-				if ((_p28.ctor === 'Just') && (_p28._0.ctor === 'StrNode')) {
-					return (!A2(_elm_lang$core$String$contains, 'stroke:#ff0000', _p28._0._0)) ? {ctor: '_Tuple2', _0: _p34, _1: _p33} : {
+		var _p24 = child;
+		if (_p24.ctor === 'Element') {
+			var _p29 = _p24._0;
+			var _p28 = _p24._1;
+			if (_elm_lang$core$Native_Utils.eq(_p29, 'rect')) {
+				var dict = _elm_lang$core$Dict$fromList(_p28);
+				var _p25 = A2(_elm_lang$core$Dict$get, 'style', dict);
+				if (_p25.ctor === 'Just') {
+					return (!A2(_elm_lang$core$String$contains, 'stroke:#ff0000', _p25._0)) ? {ctor: '_Tuple2', _0: _p31, _1: _p30} : {
 						ctor: '_Tuple2',
-						_0: _p34,
-						_1: getFrame(_p31)
+						_0: _p31,
+						_1: getFrame(_p28)
 					};
 				} else {
-					var _p29 = A2(_elm_lang$core$Dict$get, 'stroke', _p31);
-					if ((_p29.ctor === 'Just') && (_p29._0.ctor === 'StrNode')) {
-						return (!_elm_lang$core$Native_Utils.eq(_p29._0._0, '#ff0000')) ? {ctor: '_Tuple2', _0: _p34, _1: _p33} : {
+					var _p26 = A2(_elm_lang$core$Dict$get, 'stroke', dict);
+					if (_p26.ctor === 'Just') {
+						return (!_elm_lang$core$Native_Utils.eq(_p26._0, '#ff0000')) ? {ctor: '_Tuple2', _0: _p31, _1: _p30} : {
 							ctor: '_Tuple2',
-							_0: _p34,
-							_1: getFrame(_p31)
+							_0: _p31,
+							_1: getFrame(_p28)
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: _p34, _1: _p33};
+						return {ctor: '_Tuple2', _0: _p31, _1: _p30};
 					}
 				}
 			} else {
-				if (_elm_lang$core$Native_Utils.eq(_p32, 'text')) {
+				if (_elm_lang$core$Native_Utils.eq(_p29, 'text')) {
 					return {
 						ctor: '_Tuple2',
 						_0: function () {
-							var _p30 = _myrho$dive_svg$DiveSvg_Parser$findNumber(_p27._2);
-							if (_p30.ctor === 'Just') {
-								return _elm_lang$core$Maybe$Just(_p30._0);
+							var _p27 = A3(_elm_lang$core$List$foldl, _myrho$dive_svg$DiveSvg_Parser$findNumber, _elm_lang$core$Maybe$Nothing, _p24._2);
+							if (_p27.ctor === 'Just') {
+								return _elm_lang$core$Maybe$Just(_p27._0);
 							} else {
-								return _p34;
+								return _p31;
 							}
 						}(),
-						_1: _p33
+						_1: _p30
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p34, _1: _p33};
+					return {ctor: '_Tuple2', _0: _p31, _1: _p30};
 				}
 			}
 		} else {
-			return {ctor: '_Tuple2', _0: _p34, _1: _p33};
+			return {ctor: '_Tuple2', _0: _p31, _1: _p30};
 		}
 	});
 var _myrho$dive_svg$DiveSvg_Parser$findFrame = F3(
 	function (name, attr, children) {
-		if (!_elm_lang$core$Native_Utils.eq(name, 'g')) {
-			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-		} else {
-			var _p35 = children;
-			if (_p35.ctor === 'Object') {
-				return A3(
-					_elm_lang$core$List$foldl,
-					_myrho$dive_svg$DiveSvg_Parser$foldFrame,
-					{ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing},
-					_p35._0);
-			} else {
-				return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-			}
-		}
+		return (!_elm_lang$core$Native_Utils.eq(name, 'g')) ? {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing} : A3(
+			_elm_lang$core$List$foldl,
+			_myrho$dive_svg$DiveSvg_Parser$foldFrame,
+			{ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing},
+			children);
 	});
-var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
-	function (frames, parentTransformations, value) {
-		var _p36 = value;
-		switch (_p36.ctor) {
-			case 'Tag':
-				var _p41 = _p36._0;
-				var _p40 = _p36._2;
-				var _p39 = _p36._1;
-				var parentTransformations_ = A2(
-					_Zinggi$elm_webgl_math$Matrix3$mul,
-					_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p39),
-					parentTransformations);
-				var _p37 = A3(_myrho$dive_svg$DiveSvg_Parser$findFrame, _p41, _p39, _p40);
-				if (((_p37.ctor === '_Tuple2') && (_p37._0.ctor === 'Just')) && (_p37._1.ctor === 'Just')) {
-					return {
-						ctor: '_Tuple2',
-						_0: {ctor: '[]'},
-						_1: {
-							ctor: '::',
-							_0: {
-								ctor: '_Tuple2',
-								_0: _p37._0._0,
-								_1: A2(_myrho$dive_svg$DiveSvg_Parser$transformFrame, parentTransformations_, _p37._1._0)
-							},
-							_1: frames
-						}
-					};
-				} else {
-					var _p38 = A3(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations_, _p40);
-					var nodes = _p38._0;
-					var frames_ = _p38._1;
+var _myrho$dive_svg$DiveSvg_Parser$parseChild = F3(
+	function (frames, parentTransformations, child) {
+		var _p32 = child;
+		switch (_p32.ctor) {
+			case 'Element':
+				if (_p32._0 === 'image') {
 					return {
 						ctor: '_Tuple2',
 						_0: {
 							ctor: '::',
 							_0: A3(
 								_elm_lang$svg$Svg$node,
-								_p41,
-								_myrho$dive_svg$DiveSvg_Parser$toAttr(_p39),
-								nodes),
+								'image',
+								_myrho$dive_svg$DiveSvg_Parser$toAttr(
+									A2(
+										_elm_lang$core$List$map,
+										function (_p33) {
+											var _p34 = _p33;
+											var _p36 = _p34._1;
+											var _p35 = _p34._0;
+											return _elm_lang$core$Native_Utils.eq(_p35, 'xlink:href') ? {ctor: '_Tuple2', _0: 'href', _1: _p36} : {ctor: '_Tuple2', _0: _p35, _1: _p36};
+										},
+										_p32._1)),
+								{ctor: '[]'}),
 							_1: {ctor: '[]'}
 						},
-						_1: frames_
+						_1: frames
 					};
+				} else {
+					var _p41 = _p32._0;
+					var _p40 = _p32._2;
+					var _p39 = _p32._1;
+					var parentTransformations_ = A2(
+						_Zinggi$elm_webgl_math$Matrix3$mul,
+						_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p39),
+						parentTransformations);
+					var _p37 = A3(_myrho$dive_svg$DiveSvg_Parser$findFrame, _p41, _p39, _p40);
+					if (((_p37.ctor === '_Tuple2') && (_p37._0.ctor === 'Just')) && (_p37._1.ctor === 'Just')) {
+						return {
+							ctor: '_Tuple2',
+							_0: {ctor: '[]'},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: _p37._0._0,
+									_1: A2(_myrho$dive_svg$DiveSvg_Parser$transformFrame, parentTransformations_, _p37._1._0)
+								},
+								_1: frames
+							}
+						};
+					} else {
+						var _p38 = A3(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations_, _p40);
+						var nodes = _p38._0;
+						var frames_ = _p38._1;
+						return {
+							ctor: '_Tuple2',
+							_0: {
+								ctor: '::',
+								_0: A3(
+									_elm_lang$svg$Svg$node,
+									_p41,
+									_myrho$dive_svg$DiveSvg_Parser$toAttr(_p39),
+									nodes),
+								_1: {ctor: '[]'}
+							},
+							_1: frames_
+						};
+					}
 				}
-			case 'Object':
-				return A2(
-					_elm_lang$core$Tuple$mapSecond,
-					_elm_lang$core$List$concat,
-					A2(
-						_elm_lang$core$Tuple$mapFirst,
-						_elm_lang$core$List$concat,
-						_elm_lang$core$List$unzip(
-							A2(
-								_elm_lang$core$List$map,
-								A2(_myrho$dive_svg$DiveSvg_Parser$parse, frames, parentTransformations),
-								_p36._0))));
-			case 'StrNode':
+			case 'Body':
 				return {
 					ctor: '_Tuple2',
 					_0: {
@@ -12081,43 +12963,10 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 								_0: A2(
 									_elm_lang$virtual_dom$VirtualDom$property,
 									'innerHTML',
-									_elm_lang$core$Json_Encode$string(_p36._0)),
+									_elm_lang$core$Json_Encode$string(_p32._0)),
 								_1: {ctor: '[]'}
 							},
 							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					},
-					_1: frames
-				};
-			case 'IntNode':
-				return {
-					ctor: '_Tuple2',
-					_0: {
-						ctor: '::',
-						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p36._0)),
-						_1: {ctor: '[]'}
-					},
-					_1: frames
-				};
-			case 'FloatNode':
-				return {
-					ctor: '_Tuple2',
-					_0: {
-						ctor: '::',
-						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p36._0)),
-						_1: {ctor: '[]'}
-					},
-					_1: frames
-				};
-			case 'BoolNode':
-				return {
-					ctor: '_Tuple2',
-					_0: {
-						ctor: '::',
-						_0: _elm_lang$virtual_dom$VirtualDom$text(
-							_elm_lang$core$Basics$toString(_p36._0)),
 						_1: {ctor: '[]'}
 					},
 					_1: frames
@@ -12130,10 +12979,24 @@ var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
 				};
 		}
 	});
-var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
+var _myrho$dive_svg$DiveSvg_Parser$parse = F3(
+	function (frames, parentTransformations, children) {
+		return A2(
+			_elm_lang$core$Tuple$mapSecond,
+			_elm_lang$core$List$concat,
+			A2(
+				_elm_lang$core$Tuple$mapFirst,
+				_elm_lang$core$List$concat,
+				_elm_lang$core$List$unzip(
+					A2(
+						_elm_lang$core$List$map,
+						A2(_myrho$dive_svg$DiveSvg_Parser$parseChild, frames, parentTransformations),
+						children))));
+	});
+var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (roots) {
 	var isSvgTag = function (item) {
 		var _p42 = item;
-		if ((_p42.ctor === 'Tag') && (_p42._0 === 'svg')) {
+		if ((_p42.ctor === 'Element') && (_p42._0 === 'svg')) {
 			return true;
 		} else {
 			return false;
@@ -12148,68 +13011,64 @@ var _myrho$dive_svg$DiveSvg_Parser$parseRoot = function (value) {
 			_1: {ctor: '[]'}
 		};
 	};
-	var _p44 = value;
-	if (_p44.ctor === 'Object') {
-		var _p45 = A2(_elm_lang$core$List$filter, isSvgTag, _p44._0);
-		if (((_p45.ctor === '::') && (_p45._0.ctor === 'Tag')) && (_p45._0._0 === 'svg')) {
-			var _p47 = _p45._0._1;
-			var _p46 = A3(
-				_myrho$dive_svg$DiveSvg_Parser$parse,
-				{ctor: '[]'},
-				_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p47),
-				_p45._0._2);
-			var nodes = _p46._0;
-			var frames = _p46._1;
-			return {
-				ctor: '_Tuple2',
-				_0: function (frame) {
-					return A2(
-						_elm_lang$svg$Svg$svg,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_myrho$dive_svg$DiveSvg_Parser$toAttr(_p47),
-							{
+	var _p44 = A2(_elm_lang$core$List$filter, isSvgTag, roots);
+	if (((_p44.ctor === '::') && (_p44._0.ctor === 'Element')) && (_p44._0._0 === 'svg')) {
+		var _p46 = _p44._0._1;
+		var _p45 = A3(
+			_myrho$dive_svg$DiveSvg_Parser$parse,
+			{ctor: '[]'},
+			_myrho$dive_svg$DiveSvg_Parser$attr2Matrix(_p46),
+			_p44._0._2);
+		var nodes = _p45._0;
+		var frames = _p45._1;
+		return {
+			ctor: '_Tuple2',
+			_0: function (frame) {
+				return A2(
+					_elm_lang$svg$Svg$svg,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_myrho$dive_svg$DiveSvg_Parser$toAttr(_p46),
+						{
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$viewBox(
+								_myrho$dive_svg$DiveSvg_Parser$frame2Viewbox(frame)),
+							_1: {
 								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$viewBox(
-									_myrho$dive_svg$DiveSvg_Parser$frame2Viewbox(frame)),
+								_0: _elm_lang$svg$Svg_Attributes$width('99vw'),
 								_1: {
 									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$width('99vw'),
+									_0: _elm_lang$svg$Svg_Attributes$height('99vh'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$height('99vh'),
-										_1: {
-											ctor: '::',
-											_0: A2(_elm_lang$virtual_dom$VirtualDom$attribute, 'preserveAspectRatio', 'xMidYMid meet'),
-											_1: {ctor: '[]'}
-										}
+										_0: A2(_elm_lang$virtual_dom$VirtualDom$attribute, 'preserveAspectRatio', 'xMidYMid meet'),
+										_1: {ctor: '[]'}
 									}
 								}
-							}),
-						nodes);
-				},
-				_1: A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Tuple$second,
-					A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, frames))
-			};
-		} else {
-			return errorMsg('no svg tag found');
-		}
+							}
+						}),
+					nodes);
+			},
+			_1: A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Tuple$second,
+				A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, frames))
+		};
 	} else {
 		return errorMsg('no svg tag found');
 	}
 };
 var _myrho$dive_svg$DiveSvg_Parser$load = function (xml) {
-	var _p48 = function (result) {
-		var _p49 = result;
-		if (_p49.ctor === 'Ok') {
-			return {ctor: '_Tuple2', _0: _p49._0._0, _1: _p49._0._1};
+	var _p47 = function (result) {
+		var _p48 = result;
+		if (_p48.ctor === 'Ok') {
+			return {ctor: '_Tuple2', _0: _p48._0._0, _1: _p48._0._1};
 		} else {
 			return {
 				ctor: '_Tuple2',
-				_0: function (_p50) {
-					return _elm_lang$virtual_dom$VirtualDom$text(_p49._0);
+				_0: function (_p49) {
+					return _elm_lang$virtual_dom$VirtualDom$text(
+						_elm_lang$core$Basics$toString(_p48._0));
 				},
 				_1: {ctor: '[]'}
 			};
@@ -12218,13 +13077,13 @@ var _myrho$dive_svg$DiveSvg_Parser$load = function (xml) {
 		A2(
 			_elm_lang$core$Result$map,
 			_myrho$dive_svg$DiveSvg_Parser$parseRoot,
-			_myrho$elm_xml$Xml_Decode$decode(xml)));
-	var slides = _p48._0;
-	var frames = _p48._1;
-	var _p51 = frames;
-	if (_p51.ctor === '::') {
+			_myrho$elm_xml_parser$Xml_Parser$parseXml(xml)));
+	var slides = _p47._0;
+	var frames = _p47._1;
+	var _p50 = frames;
+	if (_p50.ctor === '::') {
 		return _elm_lang$core$Result$Ok(
-			A4(_myrho$dive_svg$DiveSvg_Model$Model, _p51._0, _p51._1, _elm_lang$core$Maybe$Nothing, slides));
+			A4(_myrho$dive_svg$DiveSvg_Model$Model, _p50._0, _p50._1, _elm_lang$core$Maybe$Nothing, slides));
 	} else {
 		return _elm_lang$core$Result$Err('no frames found');
 	}
@@ -12252,7 +13111,7 @@ var _myrho$dive_svg$DiveSvg_Sub$subscriptions = function (model) {
 					ctor: '::',
 					_0: _elm_lang$keyboard$Keyboard$downs(
 						function (code) {
-							var _p2 = A2(_elm_lang$core$Debug$log, 'code', code);
+							var _p2 = code;
 							switch (_p2) {
 								case 37:
 									return _myrho$dive_svg$DiveSvg_Model$Back;
@@ -12287,7 +13146,7 @@ var _myrho$dive_svg$DiveSvg_Update$update = F2(
 					1,
 					oldProgress + (diff / _elm_lang$core$Basics$toFloat(_myrho$dive_svg$DiveSvg_Model$duration)));
 			});
-		var _p0 = A2(_elm_lang$core$Debug$log, 'msg', msg);
+		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'Load':
 				var _p1 = A2(
@@ -19012,7 +19871,7 @@ var _user$project$Main$update = F2(
 			var _p10 = _p9;
 			var _p14 = _p10._0;
 			var _p13 = _p10._1;
-			var _p11 = A2(_elm_lang$core$Debug$log, 'msg', msg);
+			var _p11 = msg;
 			switch (_p11.ctor) {
 				case 'DndMsg':
 					if ((_p11._0.ctor === 'FileData') && (_p11._0._0.ctor === 'Ok')) {
@@ -19052,8 +19911,7 @@ var _user$project$Main$update = F2(
 								_elm_lang$core$Native_Utils.update(
 									_p14,
 									{
-										dive: _elm_lang$core$Maybe$Just(
-											A2(_elm_lang$core$Debug$log, 'dive', _p12._0))
+										dive: _elm_lang$core$Maybe$Just(_p12._0)
 									}),
 								{
 									ctor: '::',
@@ -19375,7 +20233,7 @@ var _user$project$Main$view = function (model) {
 													}),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('\'s) contain all the content in one big picture. Content is presented by moving to and zooming into certain parts (frames) of this picture.'),
+													_0: _elm_lang$html$Html$text('\'s) contain all the content in one big picture. Content is presented by moving and zooming into certain parts (frames) of this picture.'),
 													_1: {ctor: '[]'}
 												}
 											}
