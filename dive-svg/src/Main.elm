@@ -26,7 +26,7 @@ demoFile =
 
 
 type alias Model =
-    { dive : Maybe (DiveSvg.Model.Model DiveSvg.Model.Msg)
+    { dive : Maybe DiveSvg.Model.Model
     , dnd : DragDrop.Model
     , run : Bool
     , demoFile : String
