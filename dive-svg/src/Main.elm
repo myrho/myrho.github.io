@@ -47,7 +47,7 @@ init { file, time } =
             Maybe.withDefault demoFile file
     in
         ( Model Nothing DragDrop.init False f
-        , Http.getString f |> Http.send Load
+        , Http.getString (f ++ "?" ++ (toString time)) |> Http.send Load
         )
 
 
