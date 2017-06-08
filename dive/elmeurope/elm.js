@@ -13487,6 +13487,8 @@ var _myrho$dive$Dive_Update$update = F2(
 								return _myrho$dive$Dive_Model$back(model);
 							case 39:
 								return _myrho$dive$Dive_Model$forth(model);
+							case 32:
+								return _myrho$dive$Dive_Model$forth(model);
 							default:
 								return model;
 						}
@@ -14576,6 +14578,65 @@ var _myrho$dive$Params$font = {
 	}
 };
 
+var _myrho$dive$Parts_PartContact$world = _myrho$dive$Dive$group(
+	{
+		ctor: '::',
+		_0: A3(
+			_myrho$dive$Dive$image,
+			{ctor: '_Tuple2', _0: 2226, _1: 1252},
+			{ctor: '_Tuple2', _0: 0, _1: 0},
+			'schneeberg.jpg'),
+		_1: {
+			ctor: '::',
+			_0: A3(
+				_myrho$dive$Dive$image,
+				{ctor: '_Tuple2', _0: 350, _1: 350},
+				{ctor: '_Tuple2', _0: -200, _1: 200},
+				'me.jpg'),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_myrho$dive$Dive$lineHeight,
+					1,
+					_myrho$dive$Dive$leftAligned(
+						A2(
+							_myrho$dive$Dive$height,
+							60,
+							A2(
+								_myrho$dive$Dive$fontFamily,
+								_myrho$dive$Params$font,
+								A2(
+									_myrho$dive$Dive$color,
+									_elm_lang$core$Color$white,
+									A2(
+										_myrho$dive$Dive$text,
+										{ctor: '_Tuple2', _0: 0, _1: 300},
+										'Matthias Rella')))))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_myrho$dive$Dive$lineHeight,
+						1.2,
+						_myrho$dive$Dive$leftAligned(
+							A2(
+								_myrho$dive$Dive$height,
+								60,
+								A2(
+									_myrho$dive$Dive$fontFamily,
+									_myrho$dive$Params$font,
+									A2(
+										_myrho$dive$Dive$color,
+										_elm_lang$core$Color$white,
+										A2(
+											_myrho$dive$Dive$text,
+											{ctor: '_Tuple2', _0: 0, _1: 200},
+											'github.com/myrho\n@my_rho')))))),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+
 var _myrho$dive$Parts_PartIntro$world = _myrho$dive$Dive$group(
 	{
 		ctor: '::',
@@ -14640,27 +14701,7 @@ var _myrho$dive$Parts_PartIntro$world = _myrho$dive$Dive$group(
 											_myrho$dive$Dive$text,
 											{ctor: '_Tuple2', _0: 0, _1: -1.2},
 											'github.com/myrho/dive')))))),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_myrho$dive$Dive$lineHeight,
-							1.2,
-							_myrho$dive$Dive$centered(
-								A2(
-									_myrho$dive$Dive$height,
-									8.0e-2,
-									A2(
-										_myrho$dive$Dive$fontFamily,
-										_myrho$dive$Params$font,
-										A2(
-											_myrho$dive$Dive$color,
-											_elm_lang$core$Color$darkBlue,
-											A2(
-												_myrho$dive$Dive$text,
-												{ctor: '_Tuple2', _0: 0, _1: -1.4},
-												'Click or press the left/right arrow keys to dive!')))))),
-						_1: {ctor: '[]'}
-					}
+					_1: {ctor: '[]'}
 				}
 			}
 		}
@@ -14774,7 +14815,7 @@ var _myrho$dive$Parts_PartModel$helloWorldExplained = F2(
 			}
 		};
 	});
-var _myrho$dive$Parts_PartModel$modelCode = '\ntype alias Model =\n  { world : List Object\n  , frames : List Frame\n  , current : Frame\n  , animation :\n      Maybe Transition\n  , viewport : Size \n  }\n';
+var _myrho$dive$Parts_PartModel$modelCode = '\ntype alias Model =\n  { world : List Object\n  , frames : List Frame\n  , current : Frame\n  , transition :\n      Maybe Transition\n  , viewport : Size \n  }\n';
 var _myrho$dive$Parts_PartModel$helloWorldframesCode = 'frames =\n  [ frame (90,60) (0,-10) \n  , frame (70,30) (0,3)\n  , frame (15,15) (-8,-30) \n  ]\n';
 var _myrho$dive$Parts_PartModel$helloWorldCode = '\nworld =\n  [ text (0,0) \"Hello\\nW rld\"\n    |> color blue\n    |> fontFamily [\"serif\"]\n    |> height  20\n    |> centered\n    |> lineHeight 1.5\n  , image (10,10) (-5,-30) \"world.png\" \n  ]\n';
 var _myrho$dive$Parts_PartModel$helloWorldFrames = {
@@ -15280,7 +15321,7 @@ var _myrho$dive$Parts_PartModel$frameBox = F2(
 										A2(
 											_myrho$dive$Dive$text,
 											{ctor: '_Tuple2', _0: x - 0.12, _1: y - 0.0},
-											'position: Position')))))),
+											'x: Float')))))),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -15299,8 +15340,48 @@ var _myrho$dive$Parts_PartModel$frameBox = F2(
 											A2(
 												_myrho$dive$Dive$text,
 												{ctor: '_Tuple2', _0: x - 0.12, _1: y - 2.0e-2},
-												'size: Size')))))),
-						_1: {ctor: '[]'}
+												'y: Float')))))),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_myrho$dive$Dive$lineHeight,
+								_myrho$dive$Parts_PartModel$lineHeight_,
+								_myrho$dive$Dive$leftAligned(
+									A2(
+										_myrho$dive$Dive$height,
+										2.0e-2,
+										A2(
+											_myrho$dive$Dive$fontFamily,
+											_myrho$dive$Params$fontCode,
+											A2(
+												_myrho$dive$Dive$color,
+												_elm_lang$core$Color$black,
+												A2(
+													_myrho$dive$Dive$text,
+													{ctor: '_Tuple2', _0: x - 0.12, _1: y - 4.0e-2},
+													'width: Float')))))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_myrho$dive$Dive$lineHeight,
+									_myrho$dive$Parts_PartModel$lineHeight_,
+									_myrho$dive$Dive$leftAligned(
+										A2(
+											_myrho$dive$Dive$height,
+											2.0e-2,
+											A2(
+												_myrho$dive$Dive$fontFamily,
+												_myrho$dive$Params$fontCode,
+												A2(
+													_myrho$dive$Dive$color,
+													_elm_lang$core$Color$black,
+													A2(
+														_myrho$dive$Dive$text,
+														{ctor: '_Tuple2', _0: x - 0.12, _1: y - 6.0e-2},
+														'height: Float')))))),
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			}
@@ -15350,7 +15431,7 @@ var _myrho$dive$Parts_PartModel$rightArm = function (x) {
 									A2(
 										_myrho$dive$Dive$text,
 										{ctor: '_Tuple2', _0: 0.16, _1: 0.37},
-										'animation')))))),
+										'transition')))))),
 				_1: {ctor: '[]'}
 			}
 		}
@@ -15822,8 +15903,8 @@ var _myrho$dive$Parts_PartView$frames = {
 		}
 	}
 };
-var _myrho$dive$Parts_PartView$transformCode = 'transform : Model -> Transform\ntransform model =\n  let\n    frame =\n      case model.animation of\n        Nothing ->\n          model.current\n        Just animation ->\n          animate \n            animation.progress \n            model.current \n            animation.target\n  in\n    matrix model.viewport frame\n';
-var _myrho$dive$Parts_PartView$object2FormCode = 'object2Form : Object -> Form\nobject2Form object =\n  case object of\n    Image {src, width, height, position} ->\n      image width height src\n        |> toForm\n        |> move (position.x, position.y)\n    ...\n';
+var _myrho$dive$Parts_PartView$transformCode = 'transform : Model -> Transform\ntransform model =\n  let\n    frame =\n      case model.transition of\n        Nothing ->\n          model.current\n        Just transition ->\n          animate \n            transition.progress \n            model.current \n            transition.target\n  in\n    matrix model.viewport frame\n';
+var _myrho$dive$Parts_PartView$object2FormCode = 'object2Form : Object -> Form\nobject2Form object =\n  case object of\n    Image {src, width, height, x, y} ->\n      image width height src\n        |> toForm\n        |> move (x, y)\n    ...\n';
 var _myrho$dive$Parts_PartView$viewCode = 'view : Model -> Html Msg\nview model =\n  model.world \n  |> List.map object2Form\n  |> groupTransform \n      (transform model)\n  |> \\x -> [x]\n  |> collage \n      model.viewport.width \n      model.viewport.height\n  |> toHtml\n';
 var _myrho$dive$Parts_PartView$linenumbers = function (text) {
 	return _elm_lang$core$String$concat(
@@ -16088,10 +16169,10 @@ var _myrho$dive$Parts_PartUpdate$frames = {
 		}
 	}
 };
-var _myrho$dive$Parts_PartUpdate$updateCode = 'update : Msg -> Model -> Model\nupdate msg model =\n  case msg of\n    Resize size ->\n      { model\n        | viewport = \n          { width = toFloat size.width\n          , height = toFloat size.height\n          }\n      }\n    Forth ->\n      case List.head model.frames of\n        Nothing ->\n          model\n        Just frame ->\n          { model\n            | frames = List.drop 1 model.frames\n            , animation = \n                Just\n                  { progress = 0\n                  , target = frame \n                  }\n          }\n    Animate diff ->\n      case model.animation of\n        Nothing ->\n          model\n        Just animation ->\n          let\n            progress = \n              animation.progress \n              + (diff / duration)\n          in\n            if progress < 1\n              then\n                { model\n                  | animation =\n                      Just \n                        { animation \n                          | progress = progress\n                        }\n                }\n              else\n                { model\n                  | animation = Nothing\n                }\n';
-var _myrho$dive$Parts_PartUpdate$animateCode = 'animateSub : Model -> Sub Msg\nanimateSub model =\n  case model.animation of\n    Just animation -> \n      AnimationFrame.diffs Animate\n    Nothing ->\n      Sub.none\n';
+var _myrho$dive$Parts_PartUpdate$updateCode = 'update : Msg -> Model -> Model\nupdate msg model =\n  case msg of\n    Resize size ->\n      { model\n        | viewport = \n          { width = toFloat size.width\n          , height = toFloat size.height\n          }\n      }\n    Forth ->\n      case List.head model.frames of\n        Nothing ->\n          model\n        Just frame ->\n          { model\n            | frames = List.drop 1 model.frames\n            , transition = \n                Just\n                  { progress = 0\n                  , target = frame \n                  }\n          }\n    Tick diff ->\n      case model.transition of\n        Nothing ->\n          model\n        Just transition ->\n          let\n            progress = \n              transition.progress \n              + (diff / duration)\n          in\n            if progress < 1\n              then\n                { model\n                  | transition =\n                      Just \n                        { transition \n                          | progress = progress\n                        }\n                }\n              else\n                { model\n                  | transition = Nothing\n                }\n';
+var _myrho$dive$Parts_PartUpdate$animateCode = 'animateSub : Model -> Sub Msg\nanimateSub model =\n  case model.transition of\n    Just transition -> \n      AnimationFrame.diffs Tick\n    Nothing ->\n      Sub.none\n';
 var _myrho$dive$Parts_PartUpdate$subCode = 'subscriptions : Model -> Sub Msg\nsubscriptions model =\n  Sub.batch\n    [ Window.resizes Resize\n    , Mouse.clicks (always Forth)\n    , animateSub model\n    ]\n';
-var _myrho$dive$Parts_PartUpdate$msgCode = '\ntype Msg =\n  Resize Window.Size\n  | Forth\n  | Animate Time\n';
+var _myrho$dive$Parts_PartUpdate$msgCode = '\ntype Msg =\n  Resize Window.Size\n  | Forth\n  | Tick Time\n';
 var _myrho$dive$Parts_PartUpdate$color_ = _elm_lang$core$Color$black;
 var _myrho$dive$Parts_PartUpdate$msgText = F2(
 	function (x, y) {
@@ -16318,17 +16399,19 @@ var _myrho$dive$Intro$introFrame = function (dur) {
 			{ctor: '_Tuple2', _0: _myrho$dive$Intro$introWidth + 5000, _1: _myrho$dive$Intro$introHeight + 5000},
 			{ctor: '_Tuple2', _0: _myrho$dive$Intro$introPosX, _1: _myrho$dive$Intro$introPosY - 500}));
 };
-var _myrho$dive$Intro$frames = A2(
-	_elm_lang$core$Basics_ops['++'],
-	{
+var _myrho$dive$Intro$contactPosY = 10000;
+var _myrho$dive$Intro$contactPosX = 0;
+var _myrho$dive$Intro$contactFrame = A2(
+	_myrho$dive$Dive$frame,
+	{ctor: '_Tuple2', _0: 1920, _1: 1080},
+	{ctor: '_Tuple2', _0: _myrho$dive$Intro$contactPosX, _1: _myrho$dive$Intro$contactPosY});
+var _myrho$dive$Intro$frames = {
+	ctor: '::',
+	_0: _myrho$dive$Intro$contactFrame,
+	_1: {
 		ctor: '::',
 		_0: _myrho$dive$Intro$introFrame(0),
-		_1: {ctor: '[]'}
-	},
-	A2(
-		_elm_lang$core$Basics_ops['++'],
-		_myrho$dive$Intro$archFrames,
-		A2(
+		_1: A2(
 			_elm_lang$core$Basics_ops['++'],
 			_myrho$dive$Intro$modelFrames,
 			A2(
@@ -16358,43 +16441,53 @@ var _myrho$dive$Intro$frames = A2(
 									ctor: '::',
 									_0: _myrho$dive$Intro$introFrame(1000),
 									_1: {ctor: '[]'}
-								}))))))));
+								}))))))
+	}
+};
 var _myrho$dive$Intro$world = {
 	ctor: '::',
 	_0: A3(
 		_myrho$dive$Dive$transformObject,
-		{ctor: '_Tuple2', _0: _myrho$dive$Intro$introWidth, _1: _myrho$dive$Intro$introHeight},
-		{ctor: '_Tuple2', _0: _myrho$dive$Intro$introPosX, _1: _myrho$dive$Intro$introPosY},
-		_myrho$dive$Parts_PartIntro$world),
+		{ctor: '_Tuple2', _0: 1, _1: 1},
+		{ctor: '_Tuple2', _0: _myrho$dive$Intro$contactPosX, _1: _myrho$dive$Intro$contactPosY},
+		_myrho$dive$Parts_PartContact$world),
 	_1: {
 		ctor: '::',
 		_0: A3(
 			_myrho$dive$Dive$transformObject,
-			{ctor: '_Tuple2', _0: _myrho$dive$Intro$archWidth, _1: _myrho$dive$Intro$archHeight},
-			{ctor: '_Tuple2', _0: _myrho$dive$Intro$archPosX, _1: _myrho$dive$Intro$archPosY},
-			_myrho$dive$Parts_PartArch$world),
+			{ctor: '_Tuple2', _0: _myrho$dive$Intro$introWidth, _1: _myrho$dive$Intro$introHeight},
+			{ctor: '_Tuple2', _0: _myrho$dive$Intro$introPosX, _1: _myrho$dive$Intro$introPosY},
+			_myrho$dive$Parts_PartIntro$world),
 		_1: {
 			ctor: '::',
 			_0: A3(
 				_myrho$dive$Dive$transformObject,
-				{ctor: '_Tuple2', _0: _myrho$dive$Intro$modelWidth, _1: _myrho$dive$Intro$modelHeight},
-				{ctor: '_Tuple2', _0: _myrho$dive$Intro$modelPosX, _1: _myrho$dive$Intro$modelPosY},
-				_myrho$dive$Parts_PartModel$world),
+				{ctor: '_Tuple2', _0: _myrho$dive$Intro$archWidth, _1: _myrho$dive$Intro$archHeight},
+				{ctor: '_Tuple2', _0: _myrho$dive$Intro$archPosX, _1: _myrho$dive$Intro$archPosY},
+				_myrho$dive$Parts_PartArch$world),
 			_1: {
 				ctor: '::',
 				_0: A3(
 					_myrho$dive$Dive$transformObject,
-					{ctor: '_Tuple2', _0: _myrho$dive$Intro$viewWidth, _1: _myrho$dive$Intro$viewHeight},
-					{ctor: '_Tuple2', _0: _myrho$dive$Intro$viewPosX, _1: _myrho$dive$Intro$viewPosY},
-					_myrho$dive$Parts_PartView$world),
+					{ctor: '_Tuple2', _0: _myrho$dive$Intro$modelWidth, _1: _myrho$dive$Intro$modelHeight},
+					{ctor: '_Tuple2', _0: _myrho$dive$Intro$modelPosX, _1: _myrho$dive$Intro$modelPosY},
+					_myrho$dive$Parts_PartModel$world),
 				_1: {
 					ctor: '::',
 					_0: A3(
 						_myrho$dive$Dive$transformObject,
-						{ctor: '_Tuple2', _0: _myrho$dive$Intro$updateWidth, _1: _myrho$dive$Intro$updateHeight},
-						{ctor: '_Tuple2', _0: _myrho$dive$Intro$updatePosX, _1: _myrho$dive$Intro$updatePosY},
-						_myrho$dive$Parts_PartUpdate$world),
-					_1: {ctor: '[]'}
+						{ctor: '_Tuple2', _0: _myrho$dive$Intro$viewWidth, _1: _myrho$dive$Intro$viewHeight},
+						{ctor: '_Tuple2', _0: _myrho$dive$Intro$viewPosX, _1: _myrho$dive$Intro$viewPosY},
+						_myrho$dive$Parts_PartView$world),
+					_1: {
+						ctor: '::',
+						_0: A3(
+							_myrho$dive$Dive$transformObject,
+							{ctor: '_Tuple2', _0: _myrho$dive$Intro$updateWidth, _1: _myrho$dive$Intro$updateHeight},
+							{ctor: '_Tuple2', _0: _myrho$dive$Intro$updatePosX, _1: _myrho$dive$Intro$updatePosY},
+							_myrho$dive$Parts_PartUpdate$world),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		}
