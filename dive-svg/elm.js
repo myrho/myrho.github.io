@@ -19807,10 +19807,16 @@ var _user$project$Main$Load = function (a) {
 };
 var _user$project$Main$init = function (_p1) {
 	var _p2 = _p1;
-	var f = A2(_elm_lang$core$Maybe$withDefault, _user$project$Main$demoFile, _p2.file);
+	var _p3 = _p2.file;
+	var f = A2(_elm_lang$core$Maybe$withDefault, _user$project$Main$demoFile, _p3);
 	return {
 		ctor: '_Tuple2',
-		_0: A4(_user$project$Main$Model, _elm_lang$core$Maybe$Nothing, _user$project$DragDrop_DragDrop$init, false, f),
+		_0: A4(
+			_user$project$Main$Model,
+			_elm_lang$core$Maybe$Nothing,
+			_user$project$DragDrop_DragDrop$init,
+			!_elm_lang$core$Native_Utils.eq(_p3, _elm_lang$core$Maybe$Nothing),
+			f),
 		_1: A2(
 			_elm_lang$http$Http$send,
 			_user$project$Main$Load,
@@ -19833,38 +19839,38 @@ var _user$project$Main$DiveMsg = function (a) {
 };
 var _user$project$Main$updateSubmodels = F2(
 	function (msg, model) {
-		var _p3 = msg;
-		switch (_p3.ctor) {
+		var _p4 = msg;
+		switch (_p4.ctor) {
 			case 'DndMsg':
-				return function (_p4) {
-					var _p5 = _p4;
+				return function (_p5) {
+					var _p6 = _p5;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{dnd: _p5._0}),
-						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DndMsg, _p5._1)
+							{dnd: _p6._0}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DndMsg, _p6._1)
 					};
 				}(
-					A2(_user$project$DragDrop_DragDrop$update, _p3._0, model.dnd));
+					A2(_user$project$DragDrop_DragDrop$update, _p4._0, model.dnd));
 			case 'DiveMsg':
-				var _p6 = model.dive;
-				if (_p6.ctor === 'Nothing') {
+				var _p7 = model.dive;
+				if (_p7.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					return function (_p7) {
-						var _p8 = _p7;
+					return function (_p8) {
+						var _p9 = _p8;
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
 								{
-									dive: _elm_lang$core$Maybe$Just(_p8._0)
+									dive: _elm_lang$core$Maybe$Just(_p9._0)
 								}),
-							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DiveMsg, _p8._1)
+							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Main$DiveMsg, _p9._1)
 						};
 					}(
-						A2(_myrho$dive_svg$DiveSvg_Update$update, _p3._0, _p6._0));
+						A2(_myrho$dive_svg$DiveSvg_Update$update, _p4._0, _p7._0));
 				}
 			case 'Run':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -19874,15 +19880,15 @@ var _user$project$Main$updateSubmodels = F2(
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		return function (_p9) {
-			var _p10 = _p9;
-			var _p14 = _p10._0;
-			var _p13 = _p10._1;
-			var _p11 = msg;
-			switch (_p11.ctor) {
+		return function (_p10) {
+			var _p11 = _p10;
+			var _p15 = _p11._0;
+			var _p14 = _p11._1;
+			var _p12 = msg;
+			switch (_p12.ctor) {
 				case 'DndMsg':
-					if ((_p11._0.ctor === 'FileData') && (_p11._0._0.ctor === 'Ok')) {
-						var _p12 = A2(
+					if ((_p12._0.ctor === 'FileData') && (_p12._0._0.ctor === 'Ok')) {
+						var _p13 = A2(
 							_elm_lang$core$Result$andThen,
 							_myrho$dive_svg$DiveSvg_Parser$load,
 							A2(
@@ -19891,86 +19897,86 @@ var _user$project$Main$update = F2(
 								A2(
 									_elm_lang$core$Result$map,
 									_user$project$Main$removeUriStart,
-									A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, _p11._0._0._0))));
-						if (_p12.ctor === 'Err') {
+									A2(_elm_lang$core$Json_Decode$decodeValue, _elm_lang$core$Json_Decode$string, _p12._0._0._0))));
+						if (_p13.ctor === 'Err') {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
-									_p14,
+									_p15,
 									{
 										dnd: function (dnd) {
 											return _elm_lang$core$Native_Utils.update(
 												dnd,
 												{
-													imageLoadError: _elm_lang$core$Maybe$Just(_p12._0)
+													imageLoadError: _elm_lang$core$Maybe$Just(_p13._0)
 												});
-										}(_p14.dnd),
+										}(_p15.dnd),
 										dive: _elm_lang$core$Maybe$Nothing
 									}),
 								{
 									ctor: '::',
-									_0: _p13,
+									_0: _p14,
 									_1: {ctor: '[]'}
 								});
 						} else {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
 								_elm_lang$core$Native_Utils.update(
-									_p14,
+									_p15,
 									{
-										dive: _elm_lang$core$Maybe$Just(_p12._0)
+										dive: _elm_lang$core$Maybe$Just(_p13._0)
 									}),
 								{
 									ctor: '::',
-									_0: _p13,
+									_0: _p14,
 									_1: {ctor: '[]'}
 								});
 						}
 					} else {
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
-							_p14,
+							_p15,
 							{
 								ctor: '::',
-								_0: _p13,
+								_0: _p14,
 								_1: {ctor: '[]'}
 							});
 					}
 				case 'DiveMsg':
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
-						_p14,
+						_p15,
 						{
 							ctor: '::',
-							_0: _p13,
+							_0: _p14,
 							_1: {ctor: '[]'}
 						});
 				case 'Run':
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
-							_p14,
+							_p15,
 							{run: true}),
 						{
 							ctor: '::',
-							_0: _p13,
+							_0: _p14,
 							_1: {ctor: '[]'}
 						});
 				default:
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
-							_p14,
+							_p15,
 							{
 								dive: _elm_lang$core$Result$toMaybe(
 									A2(
 										_elm_lang$core$Result$andThen,
 										_myrho$dive_svg$DiveSvg_Parser$load,
-										A2(_elm_lang$core$Result$mapError, _elm_lang$core$Basics$toString, _p11._0)))
+										A2(_elm_lang$core$Result$mapError, _elm_lang$core$Basics$toString, _p12._0)))
 							}),
 						{
 							ctor: '::',
-							_0: _p13,
+							_0: _p14,
 							_1: {ctor: '[]'}
 						});
 			}
@@ -19979,14 +19985,14 @@ var _user$project$Main$update = F2(
 	});
 var _user$project$Main$subscriptions = function (model) {
 	if (model.run) {
-		var _p15 = model.dive;
-		if (_p15.ctor === 'Nothing') {
+		var _p16 = model.dive;
+		if (_p16.ctor === 'Nothing') {
 			return _elm_lang$core$Platform_Sub$none;
 		} else {
 			return A2(
 				_elm_lang$core$Platform_Sub$map,
 				_user$project$Main$DiveMsg,
-				_myrho$dive_svg$DiveSvg_Sub$subscriptions(_p15._0));
+				_myrho$dive_svg$DiveSvg_Sub$subscriptions(_p16._0));
 		}
 	} else {
 		return _elm_lang$core$Platform_Sub$none;
@@ -19994,14 +20000,15 @@ var _user$project$Main$subscriptions = function (model) {
 };
 var _user$project$Main$view = function (model) {
 	if (model.run) {
-		var _p16 = model.dive;
-		if (_p16.ctor === 'Nothing') {
-			return _elm_lang$html$Html$text('nothing to run');
+		var _p17 = model.dive;
+		if (_p17.ctor === 'Nothing') {
+			return _elm_lang$html$Html$text(
+				A2(_elm_lang$core$Debug$log, '', 'presentation is loading ...'));
 		} else {
 			return A2(
 				_elm_lang$html$Html$map,
 				_user$project$Main$DiveMsg,
-				_myrho$dive_svg$DiveSvg_View$view(_p16._0));
+				_myrho$dive_svg$DiveSvg_View$view(_p17._0));
 		}
 	} else {
 		return A2(
@@ -20072,7 +20079,7 @@ var _user$project$Main$view = function (model) {
 									0,
 									A2(
 										_elm_lang$core$Maybe$map,
-										function (_p17) {
+										function (_p18) {
 											return A2(
 												F2(
 													function (x, y) {
@@ -20082,7 +20089,7 @@ var _user$project$Main$view = function (model) {
 												_elm_lang$core$List$length(
 													function (_) {
 														return _.frames;
-													}(_p17)));
+													}(_p18)));
 										},
 										model.dive));
 								return A2(
@@ -20133,8 +20140,8 @@ var _user$project$Main$view = function (model) {
 													ctor: '::',
 													_0: _elm_lang$html$Html$text(
 														function () {
-															var _p18 = model.dnd.imageLoadError;
-															if (_p18.ctor === 'Nothing') {
+															var _p19 = model.dnd.imageLoadError;
+															if (_p19.ctor === 'Nothing') {
 																return A2(
 																	_elm_lang$core$Basics_ops['++'],
 																	_elm_lang$core$Basics$toString(numFrames),
@@ -20146,7 +20153,7 @@ var _user$project$Main$view = function (model) {
 																			_elm_lang$core$Native_Utils.eq(numFrames, 1) ? '' : 's',
 																			' found')));
 															} else {
-																return _p18._0;
+																return _p19._0;
 															}
 														}()),
 													_1: {ctor: '[]'}

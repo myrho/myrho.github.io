@@ -46,7 +46,7 @@ init { file, time } =
         f =
             Maybe.withDefault demoFile file
     in
-        ( Model Nothing DragDrop.init False f
+        ( Model Nothing DragDrop.init (file /= Nothing) f
         , Http.getString (f ++ "?" ++ (toString time)) |> Http.send Load
         )
 
@@ -169,7 +169,7 @@ view model =
     if model.run then
         case model.dive of
             Nothing ->
-                text "nothing to run"
+                text "presentation is loading ..."
 
             Just dive ->
                 DiveSvg.View.view dive
