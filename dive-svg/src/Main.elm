@@ -6,7 +6,7 @@ import DiveSvg.Sub
 import DiveSvg.Update
 import DiveSvg.Parser
 import DragDrop.DragDrop as DragDrop
-import Html exposing (Html, div, h1, h2, button, text, img, span, a)
+import Html exposing (Html, div, h1, h2, button, text, img, span, a, br)
 import Html.Attributes exposing (disabled, style, href)
 import Html.Events exposing (onClick)
 import Json.Decode as Dec
@@ -191,6 +191,27 @@ view model =
                 [ class [ Css.Note ]
                 ]
                 [ text "Works best in the Chrome browser."
+                ]
+            , div
+                [ class [ Css.Note ]
+                , style [ ( "font-weight", "bold" ) ]
+                ]
+                [ text "It's written in Elm!"
+                , br [] []
+                , text "If you like it, please star this "
+                , a
+                    [ href "https://gist.github.com/myrho/8a7bbff836ee4d99cfb533db0b6906c9"
+                    ]
+                    [ text "Gist"
+                    ]
+                , text " to make it into the Lightning Talks of "
+                , a
+                    [ href "https://reactiveconf.com"
+                    ]
+                    [ text "ReactiveConf 2017"
+                    ]
+                , br [] []
+                , text "and help spread this awesome language!"
                 ]
             , let
                 numFrames =
