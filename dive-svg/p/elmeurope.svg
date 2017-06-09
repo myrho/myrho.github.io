@@ -23,12 +23,12 @@
    version="1.1"><sodipodi:namedview
      inkscape:guide-bbox="true"
      showguides="true"
-     inkscape:current-layer="g4109"
+     inkscape:current-layer="layer2"
      inkscape:window-maximized="1"
      inkscape:window-y="24"
      inkscape:window-x="65"
-     inkscape:cy="-161852.91"
-     inkscape:cx="-29021.007"
+     inkscape:cy="-159852.91"
+     inkscape:cx="-60798.449"
      inkscape:zoom="0.02"
      showgrid="false"
      id="namedview28016"
@@ -4047,15 +4047,19 @@
          y="154506.08"
          x="-69396.383"
          sodipodi:role="line"
-         id="tspan13344" /><tspan
+         id="tspan13342">myrho.github.io/dive-svg</tspan><tspan
          y="160473.34"
          x="-69396.383"
          sodipodi:role="line"
-         id="tspan13342">myrho.github.io/dive-svg</tspan><tspan
+         id="tspan15271"></tspan><tspan
          y="166440.62"
          x="-69396.383"
          sodipodi:role="line"
-         id="tspan15271">bit.ly/2skcbOp</tspan></text>
+         id="tspan5670">bit.ly/reactive-dive</tspan><tspan
+         y="172407.89"
+         x="-69396.383"
+         sodipodi:role="line"
+         id="tspan5662">@my_rho</tspan></text>
 <g
        style="display:inline"
        transform="matrix(1.7587021,0,0,2.0535084,61453.453,-43485.077)"
@@ -4124,19 +4128,19 @@
          sodipodi:role="line"
          x="-71453.492"
          y="154506.08"
-         id="tspan14929" /><tspan
-         sodipodi:role="line"
-         x="-71453.492"
-         y="160473.34"
          id="tspan14931">Web:</tspan><tspan
          sodipodi:role="line"
          x="-71453.492"
+         y="160473.34"
+         id="tspan15265"></tspan><tspan
+         sodipodi:role="line"
+         x="-71453.492"
          y="166440.62"
-         id="tspan15265">LTP Gist:</tspan><tspan
+         id="tspan5666">LTP Gist:</tspan><tspan
          sodipodi:role="line"
          x="-71453.492"
          y="172407.89"
-         id="tspan15267" /></text>
+         id="tspan15267">Me:</tspan></text>
 <g
        transform="matrix(115.84083,0,0,115.84083,-77330.82,-37382.468)"
        inkscape:label="Layer 1"
@@ -4302,7 +4306,7 @@
            id="tspan10609"
            sodipodi:role="line">15.1</tspan></text>
 </g><g
-       transform="matrix(-23.86927,-0.76270738,0.76270738,-23.86927,-20171.063,180473.02)"
+       transform="matrix(-18.581921,-0.59375792,0.59375792,-18.581921,-15959.476,177525.43)"
        id="Arrow_by_Adam_Stanislav"><title
          id="title7967">Hand-drawn Arrow by Adam Stanislav</title><path
          d="m 200.295,417.801 c -3.17,40.367 156.941,117.812 201.609,130.64 31.491,9.044 86.332,16.555 117.059,10.968 1.341,-0.358 -6.411,5.444 -8.799,7.251 -7.461,5.644 -12.107,8.991 -18.999,9.347 -24.796,1.281 -57.118,-3.003 -85.417,-7.663 -64.119,-10.559 -130.061,-48.992 -185.66,-87.943 -14.465,-10.134 -50.663,-41.113 -44.101,-50.214 3.652,-5.066 18.133,-9.246 23.83,-12.142 0.159,-0.081 0.319,-0.162 0.478,-0.244 z"
@@ -4317,7 +4321,7 @@
          id="Arrowhead"
          inkscape:connector-curvature="0"
          style="fill:#000000" /></g><g
-       transform="matrix(20.475566,0,0,20.475566,-25838.898,158944.59)"
+       transform="matrix(20.475566,0,0,20.475566,-21888.898,159094.59)"
        inkscape:label="Layer 1"
        id="layer1-3"><path
          d="M 431.42856,512.36219 251.89437,444.39711 94.12568,553.76264 103.2852,362.01311 -49.480808,245.76198 135.71428,195.21934 199.06838,14.006657 304.36572,174.51912 l 191.921,4.25553 -120.11776,149.7448 z"
