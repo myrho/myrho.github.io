@@ -198,20 +198,19 @@ view model =
                 ]
                 [ text "It's written in Elm!"
                 , br [] []
-                , text "If you like it, please star this "
+                , text "I'm going to give a "
                 , a
                     [ href "https://gist.github.com/myrho/8a7bbff836ee4d99cfb533db0b6906c9"
                     ]
-                    [ text "Gist"
+                    [ text "Lightning Talk"
                     ]
-                , text " to make it into the Lightning Talks of "
+                , text " at "
                 , a
                     [ href "https://reactiveconf.com"
                     ]
                     [ text "ReactiveConf 2017"
                     ]
-                , br [] []
-                , text "and help spread this awesome language!"
+                , text " about the framework behind!"
                 ]
             , let
                 numFrames =
