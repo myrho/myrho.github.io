@@ -20569,7 +20569,118 @@ var _user$project$Main$view = function (model) {
 																			}
 																		}
 																	}),
-																_1: {ctor: '[]'}
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$h2,
+																		{ctor: '[]'},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('More sources'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(
+																			_elm_lang$html$Html$div,
+																			{
+																				ctor: '::',
+																				_0: _user$project$Main$class(
+																					{
+																						ctor: '::',
+																						_0: _user$project$Css_Css$Note,
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			},
+																			{
+																				ctor: '::',
+																				_0: A2(
+																					_elm_lang$html$Html$div,
+																					{
+																						ctor: '::',
+																						_0: _user$project$Main$class(
+																							{
+																								ctor: '::',
+																								_0: _user$project$Css_Css$Note,
+																								_1: {ctor: '[]'}
+																							}),
+																						_1: {ctor: '[]'}
+																					},
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html$text('Dive SVG, the framework:'),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(
+																						_elm_lang$html$Html$div,
+																						{ctor: '[]'},
+																						{
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$html$Html$a,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$href('https://github.com/myrho/dive-svg'),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('https://github.com/myrho/dive-svg'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {
+																						ctor: '::',
+																						_0: A2(
+																							_elm_lang$html$Html$div,
+																							{
+																								ctor: '::',
+																								_0: _user$project$Main$class(
+																									{
+																										ctor: '::',
+																										_0: _user$project$Css_Css$Note,
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html$text('Porting Prezi to Elm in 99 LOC:'),
+																								_1: {ctor: '[]'}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$html$Html$div,
+																								{ctor: '[]'},
+																								{
+																									ctor: '::',
+																									_0: A2(
+																										_elm_lang$html$Html$a,
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html_Attributes$href('https://github.com/myrho/prezi-to-elm-in-99-loc'),
+																											_1: {ctor: '[]'}
+																										},
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html$text('https://github.com/myrho/prezi-to-elm-in-99-loc'),
+																											_1: {ctor: '[]'}
+																										}),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}
 															}
 														}
 													}

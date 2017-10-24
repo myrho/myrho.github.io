@@ -341,6 +341,40 @@ view model =
                     ]
                 , text "."
                 ]
+            , h2
+                []
+                [ text "More sources"
+                ]
+            , div
+                [ class [ Css.Note ]
+                ]
+                [ div
+                    [ class [ Css.Note ]
+                    ]
+                    [ text "Dive SVG, the framework:"
+                    ]
+                , div
+                    []
+                    [ a
+                        [ href "https://github.com/myrho/dive-svg"
+                        ]
+                        [ text "https://github.com/myrho/dive-svg"
+                        ]
+                    ]
+                , div
+                    [ class [ Css.Note ]
+                    ]
+                    [ text "Porting Prezi to Elm in 99 LOC:"
+                    ]
+                , div
+                    []
+                    [ a
+                        [ href "https://github.com/myrho/prezi-to-elm-in-99-loc"
+                        ]
+                        [ text "https://github.com/myrho/prezi-to-elm-in-99-loc"
+                        ]
+                    ]
+                ]
             ]
 
 
